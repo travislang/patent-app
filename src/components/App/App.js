@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
-  HashRouter as Router,
-  Route,
-  Redirect,
-  Switch,
+    HashRouter as Router,
+    Route,
+    Redirect,
+    Switch,
 } from 'react-router-dom';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
@@ -18,34 +18,42 @@ import UserPage from '../UserPage/UserPage';
 import InfoPage from '../InfoPage/InfoPage';
 
 import './App.css';
+import 'typeface-roboto';
+
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 class App extends Component {
-  componentDidMount () {
-    this.props.dispatch({type: 'FETCH_USER'})
-  }
+    componentDidMount() {
+        this.props.dispatch({ type: 'FETCH_USER' })
+    }
 
-  render() {
-    return (
-      <Router>
-        <div>
-          <Switch>
-            <Redirect exact from="/" to="/home" />
-            <ProtectedRoute
-              exact
-              path="/home"
-              component={UserPage}
-            />
-            <ProtectedRoute
-              exact
-              path="/info"
-              component={InfoPage}
-            />
-            <Route render={() => <h1>404</h1>} />
-          </Switch>
-          <Footer />
-        </div>
-      </Router>
-  )}
+    render() {
+        return (
+            <MuiThemeProvider theme={AppTheme}>
+                <CssBaseline />
+                <Router>
+                    <div>
+                        <Switch>
+                            <Redirect exact from="/" to="/home" />
+                            <ProtectedRoute
+                                exact
+                                path="/home"
+                                component={UserPage}
+                            />
+                            <ProtectedRoute
+                                exact
+                                path="/info"
+                                component={InfoPage}
+                            />
+                            <Route render={() => <h1>404</h1>} />
+                        </Switch>
+                        <Footer />
+                    </div>
+                </Router>
+            </MuiThemeProvider>
+        )
+    }
 }
 
 export default connect()(App);
