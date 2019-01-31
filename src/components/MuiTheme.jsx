@@ -12,7 +12,7 @@ const AppTheme = createMuiTheme({
         type: 'light',
         primary: blue,
         secondary: {
-            main: deepOrange,
+            main: deepOrange[500],
         },
         error: red,
         contrastThreshold: 3,

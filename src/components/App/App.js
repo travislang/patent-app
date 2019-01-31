@@ -8,20 +8,15 @@ import {
 
 import { connect } from 'react-redux';
 
-import Nav from '../Nav/Nav';
-import Footer from '../Footer/Footer';
-
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 
-import AboutPage from '../AboutPage/AboutPage';
+import Appbar from '../Appbar/Appbar';
 import UserPage from '../UserPage/UserPage';
-import InfoPage from '../InfoPage/InfoPage';
-
-import './App.css';
-import 'typeface-roboto';
+import PreviewPage from '../PreviewPage/PreviewPage';
 
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import AppTheme from '../MuiTheme';
 
 class App extends Component {
     componentDidMount() {
@@ -34,6 +29,7 @@ class App extends Component {
                 <CssBaseline />
                 <Router>
                     <div>
+                        <Appbar />
                         <Switch>
                             <Redirect exact from="/" to="/home" />
                             <ProtectedRoute
@@ -41,14 +37,12 @@ class App extends Component {
                                 path="/home"
                                 component={UserPage}
                             />
-                            <ProtectedRoute
-                                exact
-                                path="/info"
-                                component={InfoPage}
+                            <Route
+                                path="/preview"
+                                component={PreviewPage}
                             />
                             <Route render={() => <h1>404</h1>} />
                         </Switch>
-                        <Footer />
                     </div>
                 </Router>
             </MuiThemeProvider>
