@@ -105,7 +105,7 @@ function AppDrawer(props) {
             </main>
             <Fab variant="extended" className={classes.fab}>
                 <CloudDownload className={classes.extendedIcon} />
-                Download .Docx
+                Export as Docx
             </Fab>
         </div>
     );

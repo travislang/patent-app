@@ -1,83 +1,71 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+
 import { Editor } from 'slate-react';
-import { Value } from 'slate';
+
+import initialValue from './initialValue';
+import { BoldMark, ItalicMark, UnderlinedMark, FormatToolbar } from './index';
+import { isKeyHotkey } from 'is-hotkey'
+
+
 import IconButton from '@material-ui/core/IconButton';
-
-import FormatBold from '@material-ui/icons/FormatBold';
-import FormatItalic from '@material-ui/icons/FormatItalic';
-
-// import Icon from 'react-icons-kit';
-// import {bold} from 'react-icons-kit/feather/bold';
-// import {italic} from 'react-icons-kit/feather/italic';
-
-import {BoldMark, ItalicMark, FormatToolbar} from './index';
+import Icon from '@material-ui/core/Icon';
 
 import './index.css';
+
+const isBoldHotkey = isKeyHotkey('mod+b')
+const isItalicHotkey = isKeyHotkey('mod+i')
+const isUnderlinedHotkey = isKeyHotkey('mod+u')
 
 const styles = theme => ({
     button: {
         padding: theme.spacing.unit / 2,
     },
-});
+    buttonActive: {
+        padding: theme.spacing.unit / 2,
+        backgroundColor: theme.palette.grey[300]
+    },
 
-const initialValue = Value.fromJSON({
-    document: {
-        nodes: [
-            {
-                object: 'block',
-                type: 'paragragh',
-                nodes: [
-                    {
-                        object: 'text',
-                        leaves: [
-                            {
-                                text: 'My first para'
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    }
-})
+});
 
 
 class TextEditor extends Component {
     state = {
-        value: initialValue
+        value: initialValue,
+        activeButton: -1
+    }
+
+    ref = editor => {
+        this.editor = editor;
+    }
+
+    hasMark = type => {
+        const { value } = this.state
+        return value.activeMarks.some(mark => mark.type == type)
     }
 
     onChange = ({value}) => {
         this.setState({value})
     }
 
-    onKeyDown = (e, change) => {
-        if(!e.metaKey) {
-            return;
+    onKeyDown = (e, editor, next) => {
+        let mark;
+        if(isBoldHotkey(e)) {
+            mark = 'bold'
+        } else if(isItalicHotkey(e)) {
+            mark = 'italic'
+        } else if (isUnderlinedHotkey(e)) {
+            mark = 'underlined'
+        } else {
+            return next();
         }
         e.preventDefault();
-        switch(e.key){
-            case 'b': {
-                change.toggleMark('bold')
-                return true
-            }
-            case 'i': {
-                change.toggleMark('italic')
-                return true
-            }
-            default: {
-                return true
-            }
-
-        }
+        editor.toggleMark(mark);
     }
 
     onMarkClick = (e, type) => {
         e.preventDefault();
-        const { value } = this.state;
-        const change = value.change().toggleMark(type);
-        this.onChange(change);
+        this.editor.toggleMark(type);
     }
 
     renderMark = props => {
@@ -86,29 +74,39 @@ class TextEditor extends Component {
                 return <BoldMark {...props} />
             case 'italic':
                 return <ItalicMark {...props} />
+            case 'underlined':
+                return <UnderlinedMark {...props} />
         }
+    }
+
+    renderMarkButton = (type, icon) => {
+        const isActive = this.hasMark(type)
+        const {classes} = this.props;
+        return (
+            <IconButton
+                color={isActive ? 'primary' : 'default'}
+                onPointerDown={(e) => this.onMarkClick(e, type)}
+                className={classes.button}
+            >
+                <Icon>{icon}</Icon>
+            </IconButton>
+        )
     }
 
     render() {
         const { classes } = this.props;
         return (
             <React.Fragment>
-                <FormatToolbar>
-                    <IconButton 
-                        onPointerDown={(e) => this.onMarkClick(e, 'bold')}
-                        className={classes.button}
-                    >
-                        <FormatBold />
-                    </IconButton>
-                    <IconButton 
-                        onPointerDown={(e) => this.onMarkClick(e, 'italic')}
-                        className={classes.button}
-                    >
-                        <FormatItalic />
-                    </IconButton>
-                </FormatToolbar>
+                {/* <FormatToolbar>
+                    {this.renderMarkButton('bold', 'format_bold')}
+                    {this.renderMarkButton('italic', 'format_italic')}
+                    {this.renderMarkButton('underlined', 'format_underlined')}
+                </FormatToolbar> */}
                 <Editor
+                    spellCheck
+                    autoFocus
                     className={'mainEditor'}
+                    ref={this.ref}
                     value={this.state.value}
                     onChange={this.onChange}
                     onKeyDown={this.onKeyDown}
