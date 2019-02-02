@@ -4,6 +4,12 @@ CREATE TABLE "user" (
     "password" VARCHAR (255) NOT NULL,
     "role" VARCHAR(20) NOT NULL,
     "is_admin" BOOLEAN NOT NULL DEFAULT FALSE,
+    "signature_name" VARCHAR(70),
+    "registration_number" VARCHAR(10),
+    "phone_number" VARCHAR(20),
+    "firm_name" VARCHAR(70),
+    "uspto_customer_number" VARCHAR(9),
+    "deposit_account_number" VARCHAR(9),
     "active" BOOLEAN DEFAULT TRUE
 );
 
