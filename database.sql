@@ -1,5 +1,3 @@
-CREATE DATABASE "patent_responses";
-
 CREATE TABLE "user" (
     "id" SERIAL PRIMARY KEY,
     "user_name" VARCHAR (20) UNIQUE NOT NULL,
@@ -36,19 +34,9 @@ CREATE TABLE "status" (
     "color" VARCHAR(10)
 );
 
-CREATE TABLE "issue" (
+CREATE TABLE "rejection_reason" (
     "id" SERIAL PRIMARY KEY,
-    "office_action_id" INTEGER REFERENCES "office_action",
-    "rejection_reason_id" INTEGER REFERENCES "rejection_reason",
-    "claims" VARCHAR(30),
-    "need_peer_approval" BOOLEAN DEFAULT FALSE,
-    "need_client_approval" BOOLEAN DEFAULT FALSE,
-    "peer_approved" BOOLEAN DEFAULT FALSE,
-    "client_approved" BOOLEAN DEFAULT FALSE
-    "template_id" INTEGER REFERENCES "template",
-    "comment" VARCHAR(255),
-    "comment_peer_review" VARCHAR(255),
-    "comment_client_review" VARCHAR(255)
+    "reason" VARCHAR(30)
 );
 
 CREATE TABLE "strategy" (
@@ -62,10 +50,22 @@ CREATE TABLE "template" (
     "name" VARCHAR(60),
     "content" VARCHAR(1000)
 );
-CREATE TABLE "rejection_reason" (
+
+CREATE TABLE "issue" (
     "id" SERIAL PRIMARY KEY,
-    "reason" VARCHAR(30)
+    "office_action_id" INTEGER REFERENCES "office_action",
+    "rejection_reason_id" INTEGER REFERENCES "rejection_reason",
+    "claims" VARCHAR(30),
+    "need_peer_approval" BOOLEAN DEFAULT FALSE,
+    "need_client_approval" BOOLEAN DEFAULT FALSE,
+    "peer_approved" BOOLEAN DEFAULT FALSE,
+    "client_approved" BOOLEAN DEFAULT FALSE,
+    "template_id" INTEGER REFERENCES "template",
+    "comment" VARCHAR(255),
+    "comment_peer_review" VARCHAR(255),
+    "comment_client_review" VARCHAR(255)
 );
+
 CREATE TABLE "field_code" (
     "id" SERIAL PRIMARY KEY,
     "code" VARCHAR(20),
