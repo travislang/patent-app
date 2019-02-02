@@ -22,6 +22,7 @@ router.get('/list', rejectUnauthenticated, (req, res) => {
         res.send(results.rows);
       }).catch( (err) => {
         res.sendStatus(500);
+        console.error('Error in /user/list', err);
       })
   }
 });
@@ -29,14 +30,17 @@ router.get('/list', rejectUnauthenticated, (req, res) => {
 // Handles POST request with new user data
 // The only thing different from this and every other post we've seen
 // is that the password gets encrypted before being inserted
-router.post('/register', (req, res, next) => {  
-  const username = req.body.username;
+router.post('/register', rejectUnauthenticated, (req, res) => { 
+  const { user_name, role } = req.body;
   const hashedPassword = encryptLib.encryptPassword(req.body.password);
-
-  const queryText = 'INSERT INTO person (username, password) VALUES ($1, $2) RETURNING id';
-  pool.query(queryText, [username, hashedPassword])
-    .then(() => { res.sendStatus(201); })
-    .catch((err) => { next(err); });
+  const queryText = 'INSERT INTO "user" ("user_name", "password", "role") VALUES ($1, $2, $3) RETURNING id';
+  pool.query(queryText, [user_name, hashedPassword, role])
+    .then( (results) => {
+      res.sendStatus(201);
+    }).catch( (err) => {
+      res.sendStatus(500);
+      console.error('Error in /user/register', err);
+    });
 });
 
 // Handles login form authenticate/login POST
@@ -94,6 +98,7 @@ router.put('/edit/:id', (req, res) => {
         res.sendStatus(200);
       }).catch( err => {
         res.sendStatus(500);
+        console.error('Error in /user/edit', err);
       });
   }
 });
