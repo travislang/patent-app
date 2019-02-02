@@ -8,16 +8,9 @@ import {
 
 import {connect} from 'react-redux';
 
-import Nav from '../Nav/Nav';
-import Footer from '../Footer/Footer';
-
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 
-import AboutPage from '../AboutPage/AboutPage';
 import UserPage from '../UserPage/UserPage';
-import InfoPage from '../InfoPage/InfoPage';
-
-import './App.css';
 
 class App extends Component {
   componentDidMount () {
@@ -35,14 +28,8 @@ class App extends Component {
               path="/home"
               component={UserPage}
             />
-            <ProtectedRoute
-              exact
-              path="/info"
-              component={InfoPage}
-            />
             <Route render={() => <h1>404</h1>} />
           </Switch>
-          <Footer />
         </div>
       </Router>
   )}
