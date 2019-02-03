@@ -4,7 +4,7 @@ const pool = require('../modules/pool');
 const router = express.Router();
 
 router.get('/', rejectUnauthenticated, (req, res) => {
-    const query = `SELECT * FROM "applications" ORDER BY "id" DESC;`;
+    const query = `SELECT * FROM "application" ORDER BY "id" DESC;`;
     pool.query(query)
         .then((results) => {
             res.send(results.rows);
@@ -17,7 +17,7 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 
 router.get('/:id', rejectUnauthenticated, (req, res) => {
     const { id } = req.param;
-    const query = `SELECT * FROM "applications" WHERE "id"=$1;`;
+    const query = `SELECT * FROM "application" WHERE "id"=$1;`;
     pool.query(query, [id])
         .then((results) => {
             res.send(results.rows);
@@ -61,7 +61,7 @@ router.post('/add', rejectUnauthenticated, (req, res) => {
 router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
     const { id } = req.param;
     const query =
-        `UPDATE "user" SET (
+        `UPDATE "application" SET (
         "user_id"=$2,
         "applicant_name"=$3,
         "status"=$4,
