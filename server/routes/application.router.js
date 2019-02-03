@@ -58,7 +58,7 @@ router.post('/add', rejectUnauthenticated, (req, res) => {
     });
 });
 
-router.put('/edit/:id', (req, res) => {
+router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
     const { id } = req.param;
     const query =
         `UPDATE "user" SET (
@@ -93,7 +93,7 @@ router.put('/edit/:id', (req, res) => {
     });
 });
 
-router.delete('/delete/:id', (req, res) => {
+router.delete('/delete/:id', rejectUnauthenticated, (req, res) => {
     const { id } = req.param;
     const query = `DELETE FROM "application" WHERE "application"."id"=$1;
     `;
@@ -102,7 +102,7 @@ router.delete('/delete/:id', (req, res) => {
             res.sendStatus(200);
         }).catch(err => {
             res.sendStatus(500);
-            console.error('Error in /application/edit', err);
+            console.error('Error in /application/delete', err);
         }
     );
 });
