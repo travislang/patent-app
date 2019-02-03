@@ -15,6 +15,30 @@ router.get('/', rejectUnauthenticated, (req, res) => {
     );
 });
 
+// Results are all applications left-joined to office_action row 
+// with most recent response due date.
+// Office action table is joined to status table so that the
+// status is available.
+router.get('/status', rejectUnauthenticated, (req, res) => {
+    const query = 
+        `WITH "max_dates" AS (
+            SELECT DISTINCT ON ("application_id") * FROM "office_action"
+            JOIN "status" ON "status_id"="status"."id"
+            ORDER BY "application_id", "response_due_date" DESC
+        )
+        SELECT *, "application"."id" AS "app_table_id" FROM "application"
+        LEFT JOIN "max_dates" ON "application"."id"="max_dates"."application_id"
+        ORDER BY "max_dates"."response_due_date" DESC NULLS LAST;`;
+    pool.query(query)
+        .then((results) => {
+            res.send(results.rows);
+        }).catch((err) => {
+            res.sendStatus(500);
+            console.error('Error in GET /application/status', err);
+        }
+    );
+});
+
 router.get('/:id', rejectUnauthenticated, (req, res) => {
     const { id } = req.param;
     const query = `SELECT * FROM "application" WHERE "id"=$1;`;
