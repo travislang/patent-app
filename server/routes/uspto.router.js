@@ -9,7 +9,7 @@ const axios = require('axios');
 // GET ROUTE
 router.get('/', rejectUnauthenticated, (req, res) => {
 
-    // ---- USING USPTO API  ----
+    // ---- USING USPTO API  ---- 
     axios.post( // USPTO use POST route to grab information
         'https://ped.uspto.gov/api/queries', // api route
         {
@@ -20,13 +20,26 @@ router.get('/', rejectUnauthenticated, (req, res) => {
         //     headers: { "content-type": "application/json" } // header set content-type as JSON not needed with axios
         // }
     ).then(response => {
-        apiResponseBreakdown = response.data.queryResults.searchResponse.response // break down response to more relevant information
+        apiResponseBreakdown = response.data.queryResults.searchResponse.response.docs[0] // break down response to more relevant information
         res.send(apiResponseBreakdown)
     }).catch(error => {
         res.sendStatus(500);
     });
     // ---- END OF POST ----
 
+    /* ---- extracting data ----
+
+    .appEntityStatus // status
+    .appExamName // examiner name
+    .inventorName // inventor name
+    .transactions // list of action response in array
+    .transactions[0] // latest action response
+    .appStatus // latest status of the application // IE.  "Abandoned  --  Failure to Respond to an Office Action"
+    .appFilingDate // application filing date
+    .patentTitle // patent title
+
+
+     ---- end of data info ---- */
 });
 
 module.exports = router;
