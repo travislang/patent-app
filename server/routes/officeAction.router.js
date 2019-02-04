@@ -32,7 +32,7 @@ router.post('/add', rejectUnauthenticated, (req, res) => {
     const queryText =
         `INSERT INTO "office_action" (
             "application_id"=$1,
-            "response_due_date"=$2,
+            "uspto_mailing_date"=$2,
             "response_sent_date"=$3,
             "status_id"=$4
         )

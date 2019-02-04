@@ -24,11 +24,11 @@ router.get('/status', rejectUnauthenticated, (req, res) => {
         `WITH "max_dates" AS (
             SELECT DISTINCT ON ("application_id") * FROM "office_action"
             JOIN "status" ON "status_id"="status"."id"
-            ORDER BY "application_id", "response_due_date" DESC
+            ORDER BY "application_id", "uspto_mailing_date" DESC
         )
         SELECT *, "application"."id" AS "app_table_id" FROM "application"
         LEFT JOIN "max_dates" ON "application"."id"="max_dates"."application_id"
-        ORDER BY "max_dates"."response_due_date" DESC NULLS LAST;`;
+        ORDER BY "max_dates"."uspto_mailing_date" DESC NULLS LAST;`;
     pool.query(query)
         .then((results) => {
             res.send(results.rows);
