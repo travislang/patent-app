@@ -16,7 +16,7 @@ router.get('/list', rejectUnauthenticated, (req, res) => {
   if (!req.user.is_admin) {
     res.sendStatus(403);
   } else {
-    const query = `SELECT * FROM "users" ORDER BY "user_name";`;
+    const query = `SELECT * FROM "user" ORDER BY "user_name";`;
     pool.query(query)
       .then( (results) => {
         res.send(results.rows);
