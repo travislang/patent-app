@@ -33,8 +33,8 @@ describe('Login API', function () {
     );
 });
 
-// try authenticated tests
-var server = testServer.agent('http://localhost:5000');
+// Use .agent method to keep single session to reuse authorization
+const server = testServer.agent('http://localhost:5000');
 describe('GET /api/user/list', function () {
     test('login', loginUser());
     it('uri that requires user to be logged in', function (done) {
