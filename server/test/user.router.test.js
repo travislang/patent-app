@@ -1,5 +1,8 @@
 const app = require('../server.js');
 const testServer = require('supertest');
+const adminCredentials = { username: 'admin', password: 'admin' };
+const user1Credentials = { username: 'user', password: 'user' };
+const user2Credentials = { username: 'user2', password: 'user2' };
 
 describe('GET routes return 403 when not logged in', () => {
     const apiRoutes = [
@@ -24,7 +27,7 @@ describe('Login API', function () {
             .post('/api/user/login')
             .set('Accept', 'application/json')
             .set('Content-Type', 'application/json')
-            .send({ username: 'dpm', password: 'dpm' })
+            .send(user1Credentials)
             .then( resp => {
                 expect(resp.statusCode).toEqual(200);
                 done();
@@ -36,8 +39,8 @@ describe('Login API', function () {
 // Use .agent method to keep single session to reuse authorization
 const server = testServer.agent('http://localhost:5000');
 describe('GET /api/user/list', function () {
-    test('login', loginUser());
-    it('uri that requires user to be logged in', function (done) {
+    test('login', loginAdmin());
+    it('uri that requires ADMIN login', function (done) {
         server
             .get('/api/user/list')
             .expect(200)
@@ -49,13 +52,13 @@ describe('GET /api/user/list', function () {
     });
 });
 
-function loginUser() {
+function loginAdmin() {
     return function (done) {
         server
             .post('/api/user/login')
             .set('Accept', 'application/json')
             .set('Content-Type', 'application/json')
-            .send({ username: 'dpm', password: 'dpm' })
+            .send(adminCredentials)
             .then(resp => {
                 expect(resp.statusCode).toEqual(200);
                 done();
