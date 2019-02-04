@@ -7,9 +7,9 @@ const axios = require('axios');
 // uspto routes
 
 // GET ROUTE
-router.get('/', (req, res) => {
+router.get('/', rejectUnauthenticated, (req, res) => {
 
-    // ---- API  ----
+    // ---- USING USPTO API  ----
     axios.post( // USPTO use POST route to grab information
         'https://ped.uspto.gov/api/queries', // api route
         {
@@ -26,6 +26,7 @@ router.get('/', (req, res) => {
         res.sendStatus(500);
     });
     // ---- END OF POST ----
+
 });
 
 module.exports = router;
