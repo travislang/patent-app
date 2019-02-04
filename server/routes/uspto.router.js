@@ -6,28 +6,26 @@ const axios = require('axios');
 
 // uspto routes
 
-// uspto var req
+// GET ROUTE
+router.get('/', (req, res) => {
 
-
-// uspto POST  -- api use POST to grab information
-router.post('/', rejectUnauthenticated, (req, res) => {
-    const requestData = {
-        "searchText": `applId:${req}`,
-        "qf": "applId",
-        "sort": "applId asc",
-        "start": "0"
-    }
-    axios.post(
-        'https://ped.uspto.gov/api/queries',
-        requestData,
+    // ---- API  ----
+    axios.post( // USPTO use POST route to grab information
+        'https://ped.uspto.gov/api/queries', // api route
         {
-            headers: { "content-type": "application/json" }
+            "searchText": `applId:${req.body.applId}`, // search for this information / applId is the application id
+            "qf": "applId", // where it is searching, in this case just the application Id of the patent
         }
+        // {
+        //     headers: { "content-type": "application/json" } // header set content-type as JSON not needed with axios
+        // }
     ).then(response => {
-        console.log('have response', response);
+        apiResponseBreakdown = response.data.queryResults.searchResponse.response // break down response to more relevant information
+        res.send(apiResponseBreakdown)
     }).catch(error => {
-        console.log('have error', error);
+        res.sendStatus(500);
     });
+    // ---- END OF POST ----
 });
 
 module.exports = router;
