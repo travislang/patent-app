@@ -18,7 +18,7 @@ function MainAppBar(props) {
     const { classes } = props;
 
     return (
-            <AppBar position="fixed" color="default" className={classes.appBar}>
+            <AppBar position="fixed" color="default" className={classes.root}>
                 <Toolbar>
                     <Typography variant="h6" color="inherit" >
                         Patent App

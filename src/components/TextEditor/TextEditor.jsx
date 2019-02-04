@@ -97,11 +97,11 @@ class TextEditor extends Component {
         const { classes } = this.props;
         return (
             <React.Fragment>
-                {/* <FormatToolbar>
+                <FormatToolbar>
                     {this.renderMarkButton('bold', 'format_bold')}
                     {this.renderMarkButton('italic', 'format_italic')}
                     {this.renderMarkButton('underlined', 'format_underlined')}
-                </FormatToolbar> */}
+                </FormatToolbar>
                 <Editor
                     spellCheck
                     autoFocus
