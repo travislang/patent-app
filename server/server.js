@@ -14,6 +14,7 @@ const applicationRouter = require('./routes/application.router');
 const officeActionRouter = require('./routes/officeAction.router');
 const issueRouter = require('./routes/issue.router');
 const statusRouter = require('./routes/status.router');
+const templateRouter = require('./routes/template.router');
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -32,6 +33,7 @@ app.use('/api/application', applicationRouter);
 app.use('/api/office_action', officeActionRouter);
 app.use('api/issue', issueRouter);
 app.use('api/status', statusRouter);
+app.use('api/template', templateRouter);
 
 // Serve static files
 app.use(express.static('build'));
