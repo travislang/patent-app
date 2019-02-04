@@ -14,7 +14,7 @@ import Fab from '@material-ui/core/Fab';
 import CloudDownload from '@material-ui/icons/CloudDownload';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import Add from '@material-ui/icons/Add';
-
+import LensIcon from '@material-ui/icons/Lens';
 
 import PreviewDoc from '../PreviewPage/PreviewDoc';
 import StatusSelector from '../PreviewPage/StatusSelector';
@@ -37,6 +37,15 @@ const styles = theme => ({
     },
     issuesHeading: {
         marginTop: 10
+    },
+    titleButton: {
+        padding: 0
+    },
+    legand: {
+        margin: theme.spacing.unit,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     content: {
         flexGrow: 1,
@@ -81,7 +90,7 @@ function AppDrawer(props) {
                         <ListItemIcon style={{ margin: 0 }}>
                             <ChevronLeft fontSize='large' />
                         </ListItemIcon>
-                        <ListItemText primaryTypographyProps={primaryTypographyStyles} primary='Application # 58729540' />
+                        <ListItemText className={classes.titleButton} primaryTypographyProps={primaryTypographyStyles} primary='Application # 58729540' />
                     </ListItem>
                 </div>
                 <Divider />
