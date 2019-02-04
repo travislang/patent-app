@@ -32,3 +32,41 @@ describe('Login API', function () {
         }
     );
 });
+
+// try authenticated tests
+var server = testServer.agent('http://localhost:5000');
+describe('GET /api/user/list', function () {
+    test('login', loginUser());
+    it('uri that requires user to be logged in', function (done) {
+        server
+            .get('/api/user/list')
+            .expect(200)
+            .end(function (err, res) {
+                if (err) return done(err);
+                console.log(res.body);
+                done()
+            });
+    });
+});
+
+function loginUser() {
+    return function (done) {
+        server
+            .post('/api/user/login')
+            .set('Accept', 'application/json')
+            .set('Content-Type', 'application/json')
+            .send({ username: 'dpm', password: 'dpm' })
+            .then(resp => {
+                expect(resp.statusCode).toEqual(200);
+                done();
+            });
+        //     .expect(200)
+        //     // .expect('Location', '/')
+        //     .end(onResponse);
+
+        // function onResponse(err, res) {
+        //     if (err) return done(err);
+        //     return done();
+        // }
+    };
+};
