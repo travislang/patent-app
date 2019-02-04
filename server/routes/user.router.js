@@ -32,28 +32,26 @@ router.get('/list', rejectUnauthenticated, (req, res) => {
 // The only thing different from this and every other post we've seen
 // is that the password gets encrypted before being inserted
 router.post('/register', rejectUnauthenticated, (req, res) => { 
-  const { user_name, role } = req.body;
+  const { username, password } = req.body;
   const hashedPassword = encryptLib.encryptPassword(req.body.password);
-  const queryText = 
+  const query = 
     `INSERT INTO "user" (
-      "user_name", "password", "role", "is_admin", "signature_name", 
+      "user_name", "password", "is_admin", "signature_name", 
       "registration_number", "phone_number", "firm_name", 
-      "uspto_customer_number", "deposit_account_number", "active"
+      "uspto_customer_number", "deposit_account_number"
       )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
     RETURNING id;`;
   pool.query(query, [
-      userData.user_name,
+      req.body.user_name,
       hashedPassword,
-      userData.role,
-      userData.is_admin,
-      userData.signature_name,
-      userData.registration_number,
-      userData.phone_number,
-      userData.firm_name,
-      userData.uspto_customer_number,
-      userData.deposit_account_number,
-      userData.active,
+      req.body.is_admin,
+      req.body.signature_name,
+      req.body.registration_number,
+      req.body.phone_number,
+      req.body.firm_name,
+      req.body.uspto_customer_number,
+      req.body.deposit_account_number,
     ]).then( (results) => {
       res.sendStatus(201);
     }).catch( (err) => {
