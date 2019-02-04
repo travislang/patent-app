@@ -18,15 +18,15 @@ router.post('/', rejectUnauthenticated, (req, res) => {
         "start": "0"
     }
     axios.post(
+        'https://ped.uspto.gov/api/queries',
+        requestData,
         {
-            url: 'posturl',
-            body: JSON.stringify(requestData),
             headers: { "content-type": "application/json" }
         }
-    ).then(response =>{
-
+    ).then(response => {
+        console.log('have response', response);
     }).catch(error => {
-
+        console.log('have error', error);
     });
 });
 
