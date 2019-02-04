@@ -13,25 +13,23 @@ router.get('/', rejectUnauthenticated, (req, res) => {
   res.send(req.user);
 });
 
-router.get('/list', rejectUnauthenticated, (req, res) => {
-  if (!req.user.is_admin) {
-    res.sendStatus(403);
-  } else {
-    const query = `SELECT * FROM "user" ORDER BY "user_name";`;
-    pool.query(query)
-      .then( (results) => {
-        res.send(results.rows);
-      }).catch( (err) => {
-        res.sendStatus(500);
-        console.error('Error in /user/list', err);
-      })
-  }
+router.get('/list', rejectIfNotAdmin, (req, res) => {
+  const query = `SELECT * FROM "user" ORDER BY "user_name";`;
+  pool.query(query)
+    .then( (results) => {
+      res.send(results.rows);
+    })
+    .catch( (err) => {
+      res.sendStatus(500);
+      console.error('Error in /user/list', err);
+    }
+  );
 });
 
 // Handles POST request with new user data
 // The only thing different from this and every other post we've seen
 // is that the password gets encrypted before being inserted
-router.post('/register', rejectUnauthenticated, (req, res) => { 
+router.post('/register', rejectIfNotAdmin, (req, res) => { 
   const { username, password } = req.body;
   const hashedPassword = encryptLib.encryptPassword(req.body.password);
   const query = 

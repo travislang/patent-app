@@ -4,16 +4,40 @@ const adminCredentials = { username: 'admin', password: 'admin' };
 const user1Credentials = { username: 'user', password: 'user' };
 const user2Credentials = { username: 'user2', password: 'user2' };
 
+const apiRoutes = [
+    { route: `/api/user`, method: `get`, auth: `user`, successCode: 403 },
+    { route: `/api/user/list`, method: `get`, auth: `admin`, successCode: 403 },
+    { route: `/api/user/register`, method: `post`, auth: `admin`, successCode: 403 },
+    { route: `/api/user/login`, method: `post`, auth: `all`, successCode: 400 },
+    { route: `/api/user/logout`, method: `post`, auth: `all`, successCode: 200 },
+    { route: `/api/user/edit/1`, method: `put`, auth: `admin`, successCode: 403 },
+    // { route: `/api/`, method: ``, auth: ``, successCode:  },
+];
+
 describe('GET routes return 403 when not logged in', () => {
-    const apiRoutes = [
-        `user`,
-    ];
     for (let route of apiRoutes) {
-        console.log(`route=/api/${route}`);
-        test(`/api/${route} route requires authentication`, (done) => {
-            testServer(app).get(`/api/${route}`)
+        console.log(`route=${route.route}`);
+        test(`${route.route} route requires authentication`, (done) => {
+            let request;
+            switch (route.method) {
+                case 'get':
+                    request = testServer(app).get(`${route.route}`);
+                    break;
+                case 'post':                    
+                    request = testServer(app).post(`${route.route}`);
+                    break;
+                case 'put':
+                    request = testServer(app).put(`${route.route}`);
+                    break;
+                case 'delete':
+                    request = testServer(app).delete(`${route.route}`);
+                    break;
+                default:
+                    console.warn('in method default');
+            }
+            request
                 .then((resp) => {
-                    expect(resp.statusCode).toEqual(403);
+                    expect(resp.statusCode).toEqual(route.successCode);
                     done();
                 }
             );

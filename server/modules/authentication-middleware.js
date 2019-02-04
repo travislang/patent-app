@@ -12,7 +12,7 @@ const rejectUnauthenticated = (req, res, next) => {
 
 const rejectIfNotAdmin = (req, res, next) => {
   // check if logged in
-  if (req.user.is_admin) {
+  if (req.user && req.user.is_admin) {
     next();
   } else {
     res.sendStatus(403);
