@@ -4,22 +4,6 @@ const adminCredentials = { username: 'admin', password: 'admin' };
 const user1Credentials = { username: 'user', password: 'user' };
 const user2Credentials = { username: 'user2', password: 'user2' };
 const noCredentials = { username: '', password: '' };
-let testRegistrationBody = {
-    user_name: `fromTestSuite${Math.floor((Math.random() * 1000) + 1)}`,
-    password: '123'
-};
-const testEditBody = {
-    user_name: 'alsoFromTestSuite',
-    password: '123',
-    is_admin: true,
-    signature_name: 'sig name',
-    registration_number: 'reg number',
-    phone_number: '123-456-7890',
-    firm_name: 'the firm',
-    uspto_customer_number: '13579',
-    deposit_account_number: 'ACCT999',
-    active: false,
-};
 
 const applicationLoggedInRoutes = [
     { route: `/api/application/1`, method: `get`, loginAs: `none`, successCode: 403 },
@@ -58,12 +42,10 @@ describe('Routes should require correct login type', function () {
                 case 'post':
                     request = server
                         .post(`${route.route}`)
-                        .send(testRegistrationBody);
                     break;
                 case 'put':
                     request = server
                         .put(`${route.route}`)
-                        .send(testEditBody);
                     break;
                 case 'delete':
                     request = server.delete(`${route.route}`);

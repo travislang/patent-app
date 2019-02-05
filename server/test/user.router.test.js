@@ -19,45 +19,6 @@ const testEditBody = {
     deposit_account_number: 'ACCT999',
     active: false,
 };
-// const userRoutes = [
-//     { route: `/api/user`, method: `get`, passingResult: 403 },
-//     { route: `/api/user/list`, method: `get`, passingResult: 403 },
-//     { route: `/api/user/register`, method: `post`, passingResult: 403 },
-//     { route: `/api/user/login`, method: `post`, passingResult: 400 },
-//     { route: `/api/user/logout`, method: `post`, passingResult: 200 },
-//     { route: `/api/user/edit/1`, method: `put`, passingResult: 403 },
-// ];
-
-// describe('User routes without login', () => {
-//     for (let route of userRoutes) {
-//         console.log(`route=${route.route}`);
-//         test(`${route.route} route requires authentication`, (done) => {
-//             let request;
-//             switch (route.method) {
-//                 case 'get':
-//                     request = testServer(app).get(`${route.route}`);
-//                     break;
-//                 case 'post':                    
-//                     request = testServer(app).post(`${route.route}`);
-//                     break;
-//                 case 'put':
-//                     request = testServer(app).put(`${route.route}`);
-//                     break;
-//                 case 'delete':
-//                     request = testServer(app).delete(`${route.route}`);
-//                     break;
-//                 default:
-//                     console.warn('in method default');
-//             }
-//             request
-//                 .then((resp) => {
-//                     expect(resp.statusCode).toEqual(route.passingResult);
-//                     done();
-//                 }
-//             );
-//         });
-//     }
-// });
 
 const userLoggedInRoutes = [
     { route: `/api/user`, method: `get`, loginAs: `none`, successCode: 403 },
@@ -79,23 +40,6 @@ const userLoggedInRoutes = [
     { route: `/api/user/logout`, method: `post`, loginAs: `admin`, successCode: 200 },
 ];
 
-// describe('Login API', function () {
-//     test('Success if credential is valid', done => {
-//         testServer(app)
-//             .post('/api/user/login')
-//             .set('Accept', 'application/json')
-//             .set('Content-Type', 'application/json')
-//             .send(user1Credentials)
-//             .then( resp => {
-//                 expect(resp.statusCode).toEqual(200);
-//                 done();
-//             });
-//         }
-//     );
-// });
-
-// Use .agent method to keep single session to reuse authorization
-// const server = testServer.agent('http://localhost:5000');
 describe('Routes should require correct login type', function () {
     for (let route of userLoggedInRoutes) {
         let credentials;

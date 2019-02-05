@@ -36,6 +36,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "testServer": "jest server/test/*.test.js --forceExit",
+    "testApplicationRoute": "jest server/test/application.router.test.js --forceExit",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
