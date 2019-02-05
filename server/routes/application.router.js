@@ -3,6 +3,7 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 const pool = require('../modules/pool');
 const router = express.Router();
 
+// /api/application/status
 // Results are all applications left-joined to office_action row 
 // with most recent response due date.
 // Office action table is joined to status table so that the
