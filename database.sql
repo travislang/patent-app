@@ -25,7 +25,7 @@ CREATE TABLE "application" (
     "inactive" BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE "status_table" (
+CREATE TABLE "status" (
     "id" SERIAL PRIMARY KEY,
     "status" VARCHAR(30),
     "color" VARCHAR(10)
@@ -36,7 +36,7 @@ CREATE TABLE "office_action" (
     "application_id" INTEGER REFERENCES "application",
     "uspto_mailing_date" DATE,
     "response_sent_date" DATE,
-    "status_id" INTEGER REFERENCES "status_table"
+    "status_id" INTEGER REFERENCES "status"
 );
 
 CREATE TABLE "template_type" (
