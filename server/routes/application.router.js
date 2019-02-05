@@ -3,6 +3,27 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 const pool = require('../modules/pool');
 const router = express.Router();
 
+router.get('/:id', rejectUnauthenticated, (req, res) => {
+    const { id } = req.params;
+    const userId = req.user ? req.user.id : 0;
+    console.log('userId:', userId);
+    let query = `SELECT * FROM "application" `;
+    if (req.user && req.user.is_admin) {
+        query += 'WHERE "id" = $1;';
+    } else {
+        query += `WHERE "application"."user_id"=${userId} AND "id" = $1;`;
+    }
+    console.log('query:', query);
+    pool.query(query, [id])
+        .then((results) => {
+            res.send(results.rows);
+        }).catch((err) => {
+            res.sendStatus(500);
+            console.error('Error in GET /application', err);
+        }
+        );
+});
+
 router.get('/', rejectUnauthenticated, (req, res) => {
     const query = `SELECT * FROM "application" ORDER BY "id" DESC;`;
     pool.query(query)
@@ -20,6 +41,7 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 // Office action table is joined to status table so that the
 // status is available.
 router.get('/status', rejectUnauthenticated, (req, res) => {
+    const orderClause = 'ORDER BY "max_dates"."uspto_mailing_date" DESC NULLS LAST;'
     const query = 
         `WITH "max_dates" AS (
             SELECT DISTINCT ON ("application_id") * FROM "office_action"
@@ -27,27 +49,19 @@ router.get('/status', rejectUnauthenticated, (req, res) => {
             ORDER BY "application_id", "uspto_mailing_date" DESC
         )
         SELECT *, "application"."id" AS "app_table_id" FROM "application"
-        LEFT JOIN "max_dates" ON "application"."id"="max_dates"."application_id"
-        ORDER BY "max_dates"."uspto_mailing_date" DESC NULLS LAST;`;
+        LEFT JOIN "max_dates" ON "application"."id"="max_dates"."application_id" 
+        `;
+    if (req.user && req.user.is_admin) { 
+        query += orderClause;
+    } else {
+        query += `WHERE "application"."user_id"=${req.user.id} ${orderClause}`;
+    }
     pool.query(query)
         .then((results) => {
             res.send(results.rows);
         }).catch((err) => {
             res.sendStatus(500);
             console.error('Error in GET /application/status', err);
-        }
-    );
-});
-
-router.get('/:id', rejectUnauthenticated, (req, res) => {
-    const { id } = req.param;
-    const query = `SELECT * FROM "application" WHERE "id"=$1;`;
-    pool.query(query, [id])
-        .then((results) => {
-            res.send(results.rows);
-        }).catch((err) => {
-            res.sendStatus(500);
-            console.error('Error in GET /application', err);
         }
     );
 });
