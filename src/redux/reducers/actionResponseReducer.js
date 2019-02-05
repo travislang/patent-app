@@ -5,6 +5,8 @@ const actionResponseReducer = (state = {responseText:[], sections:[]}, action) =
             return {... state, responseText: action.payload}
         case 'SET_SECTIONS':
             return {... state, section: action.payload}
+        default:
+            return state;
     }
     
 }
