@@ -13,7 +13,6 @@ const applicationLoggedInRoutes = [
     { route: `/api/application`, method: `get`, loginAs: `none`, successCode: 403 },
     { route: `/api/application`, method: `get`, loginAs: `user`, successCode: 200 },
     { route: `/api/application`, method: `get`, loginAs: `admin`, successCode: 200 },
-    
 ];
 
 describe('Routes should require correct login type', function () {
