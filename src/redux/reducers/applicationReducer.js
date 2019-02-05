@@ -1,14 +1,15 @@
-// Reducer responsible for providing access to all applications 
-const applicationReducer = (state = [], action) => {
-    switch (action.type) {
-      case 'SET_APPLICATIONS':
-        return action.payload;
-      case 'UNSET_APPLICATIONS':
-        return [];
-      default:
-        return state;
+// Reducer responsible for providing access to all information of an application, including action responses
+const applicationReducer = (state = {application:{}, actionResponses:[]}, action) => {
+    switch(action.type){
+        case 'SET_APPLICATION':
+            return {application: action.payload, actionResponses:[]}
+        case 'UNSET_APPLICATION':
+            return {application: [], actionResponses:[]}
+        case 'SET_RESPONSES':
+            return {... state, actionResponses: action.payload}
+        default:
+            return state;
     }
-  };
+}
 
-  export default applicationReducer;
-  
+export default applicationReducer;
