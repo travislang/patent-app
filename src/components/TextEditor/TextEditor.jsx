@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 
 import { Editor } from 'slate-react';
 
@@ -28,11 +29,22 @@ const styles = theme => ({
 
 });
 
+function TitleNode(props) {
+    return (
+        <div {...props.attributes}>
+            <Typography variant='h6' align='center' >
+                {props.children}
+            </Typography>
+            <br />
+        </div>
+    )
+}
 
 class TextEditor extends Component {
     state = {
-        value: initialValue,
-        activeButton: -1
+        value: this.props.initialVal,
+        activeButton: -1,
+        showToolbar: false
     }
 
     ref = editor => {
@@ -47,6 +59,7 @@ class TextEditor extends Component {
     onChange = ({value}) => {
         this.setState({value})
     }
+
 
     onKeyDown = (e, editor, next) => {
         let mark;
@@ -93,6 +106,15 @@ class TextEditor extends Component {
         )
     }
 
+    renderNode = (props, editor, next) => {
+        switch (props.node.type) {
+            case 'title':
+                return <TitleNode {...props} />
+            default:
+                return next()
+        }
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -103,14 +125,13 @@ class TextEditor extends Component {
                     {this.renderMarkButton('underlined', 'format_underlined')}
                 </FormatToolbar>
                 <Editor
-                    // spellCheck
-                    autoFocus
+                    spellCheck={false}
                     className={'mainEditor'}
-                    ref={this.ref}
                     value={this.state.value}
                     onChange={this.onChange}
                     onKeyDown={this.onKeyDown}
                     renderMark={this.renderMark}
+                    renderNode={this.renderNode}
                 />
             </React.Fragment>
         )

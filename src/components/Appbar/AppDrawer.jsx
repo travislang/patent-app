@@ -19,6 +19,8 @@ import LensIcon from '@material-ui/icons/Lens';
 import PreviewDoc from '../PreviewPage/PreviewDoc';
 import StatusSelector from '../PreviewPage/StatusSelector';
 
+import { HashLink as Link } from 'react-router-hash-link';
+
 const drawerWidth = 300;
 
 const styles = theme => ({
@@ -104,13 +106,14 @@ function AppDrawer(props) {
                 <List>
                     {['Coversheet Introduction', 'Header', 'Specification Amendments', 'Claims Amendments', 'Drawings Amendments', 'Interview Summary', 'Remarks Introduction', 'Issues 1-5, 8, 37 USC 101', 'Issues 6, 7, 37 USC 102', 'Issues 11-14, 37 USC 112', 'Issues 9-10, 15-17 37 USC 103', 'Conclusion', 'Conclusion', 'Conclusion', 'Conclusion', 'Conclusion'].map((text, index) => (
                         index === 2 || index === 7 || index === 8 ? 
-                        <ListItem  button key={text}>
-                            <ListItemIcon style={{margin: 0}}>
-                                    <CheckIcon 
-                                        style={{color: 'green'}}/>
-                            </ListItemIcon>
-                                <ListItemText primaryTypographyProps={{style:{color: 'green'} }} primary={text} />
-                        </ListItem>
+                            <ListItem component={Link} to='#2' button key={text}>
+                                <ListItemIcon style={{ margin: 0 }}>
+                                    <CheckIcon
+                                        style={{ color: 'green' }} />
+                                </ListItemIcon>
+                                <ListItemText primaryTypographyProps={{ style: { color: 'green' } }} primary={text} />
+                            </ListItem>
+                        
                         :
                         <ListItem button key={text}>
                                 <ListItemText primaryTypographyProps={{color: 'textSecondary'}} primary={text} />
@@ -130,7 +133,6 @@ function AppDrawer(props) {
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 <PreviewDoc />
-                
             </main>
             <Fab variant="extended" className={classes.fab}>
                 <CloudDownload className={classes.extendedIcon} />
