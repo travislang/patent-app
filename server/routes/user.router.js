@@ -9,7 +9,6 @@ const router = express.Router();
 // Handles Ajax request for user information if user is authenticated
 router.get('/', rejectUnauthenticated, (req, res) => {
   // Send back user object from the session (previously queried from the database)
-  console.log('in user GET. req.body:', req.body);
   res.send(req.user);
 });
 
@@ -74,30 +73,29 @@ router.post('/logout', (req, res) => {
 });
 
 router.put('/edit/:id', rejectIfNotAdmin, (req, res) => {
-  const { id } = req.param;
+  const { id } = req.params;
   const userData = req.body;
   const hashedPassword = encryptLib.encryptPassword(req.body.password);
   const query = 
     `UPDATE "user" SET (
-      "user_name"=$2, 
-      "password"=$3,
-      "role"=$4,
-      "is_admin"=$5,
-      "signature_name"=$6, 
-      "registration_number"=$7, 
-      "phone_number"=$8,
-      "firm_name"=$9,
-      "uspto_customer_number"=$10,
-      "deposit_account_number"=$11,
-      "active"=$12
-    )
+      "user_name",
+      "password",
+      "is_admin",
+      "signature_name",
+      "registration_number",
+      "phone_number",
+      "firm_name",
+      "uspto_customer_number",
+      "deposit_account_number",
+      "active"
+      ) = 
+      ($2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
     WHERE "user"."id"=$1;
   `;
   pool.query(query, [
       id,
       userData.user_name,
       hashedPassword,
-      userData.role,
       userData.is_admin,
       userData.signature_name,
       userData.registration_number,
