@@ -12,7 +12,7 @@ router.get('/status', rejectUnauthenticated, (req, res) => {
     let query = 
         `WITH "max_dates" AS (
             SELECT DISTINCT ON ("application_id") * FROM "office_action"
-            JOIN "status_table" ON "status_id"="status_table"."id"
+            LEFT JOIN "status" ON "status_id"="status"."id"
             ORDER BY "application_id", "uspto_mailing_date" DESC
         )
         SELECT *, "application"."id" AS "app_table_id" FROM "application"
