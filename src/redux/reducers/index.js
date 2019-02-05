@@ -1,12 +1,16 @@
+
 import { combineReducers } from 'redux';
+
+// *----------* Login *----------*
 import errors from './errorsReducer';
 import loginMode from './loginModeReducer';
 import user from './userReducer';
 
-// *----------* Patent app *----------*
-import applicationList from './applicationListReducer'
-import application from './applicationReducer'
-import template from '../reducers/templateReducer'
+// *----------* Applications *----------*
+import applicationList from './applicationListReducer';
+import application from './applicationReducer';
+import template from '../reducers/templateReducer';
+import actionResponse from '../reducers/actionResponseReducer';
 
 
 // rootReducer is the primary reducer for our entire project
@@ -20,7 +24,8 @@ const rootReducer = combineReducers({
   loginMode, // will have a value of 'login' or 'registration' to control which screen is shown
   user, // will have an id and username if someone is logged in
   applicationList, // Reducer responsible for providing access to all applications 
-  application, // Reducer responsible for providing access to all applications
+  application, // Reducer responsible for providing access to application data indluding action responses,
+  actionResponse, // Reducer responsible for providiing access to action response 
   template, // Reducer responsible for providing access to all templates
 });
 
