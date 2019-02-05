@@ -10,8 +10,8 @@ function* fetchApplication(action){
         const response = yield axios.get('api/uspto', {applId: action.payload});
 
         // send response to reducer
-        yield put({ type: 'SET USPTO_APP_DATA', payload: response});
-        
+        yield put({ type: 'SET_USPTO_APP_DATA', payload: response});
+
     } catch(error) {
         console.log('Fail to get application', error)
     }
