@@ -9,6 +9,7 @@ class LoginPage extends Component {
 
   login = (event) => {
     event.preventDefault();
+    console.log('got here');
 
     if (this.state.username && this.state.password) {
       this.props.dispatch({

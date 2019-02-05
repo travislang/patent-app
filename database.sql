@@ -46,6 +46,7 @@ CREATE TABLE "template_type" (
 
 CREATE TABLE "template" (
     "id" SERIAL PRIMARY KEY,
+    "type_id" INTEGER REFERENCES "template_type",
     "template_name" VARCHAR(60),
     "content" VARCHAR(1000),
     "user_id" INTEGER REFERENCES "user"
@@ -64,3 +65,10 @@ CREATE TABLE "field_code" (
     "code" VARCHAR(20),
     "description" VARCHAR(100)
 );
+
+
+INSERT INTO "user" ("user_name", "password", "is_admin")
+VALUES
+('admin', '$2b$10$jGgyR6x7KyoQwowqxJHGlujj2KpUssCzzIjmKIAzJ3itZ8P55MOE.', 'true'), --pw admin
+('user', '$2b$10$doyOvwDhPKKLO/ZiRKDg0eEPXfoAhf13zFQ5r0vJEE/W76V72TDQK', 'false'), --pw user
+('user2', '$2b$10$ZKcBbq.B2tDia.2QLWFe7e4nP0CxgkqGfeWh8bN/T3WM4V1TvCrjy', 'false'); --pw user2
