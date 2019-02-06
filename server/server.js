@@ -37,10 +37,10 @@ app.use('/api/user', userRouter);
 app.use('/api/uspto', usptoRouter);
 app.use('/api/application', applicationRouter);
 app.use('/api/office_action', officeActionRouter);
-app.use('api/issue', issueRouter);
-app.use('api/status', statusRouter);
-app.use('api/template', templateRouter);
-app.use('api/response', responseRouter);
+app.use('/api/issue', issueRouter);
+app.use('/api/status', statusRouter);
+app.use('/api/template', templateRouter);
+app.use('/api/response', responseRouter);
 
 // Serve static files
 app.use(express.static('build'));
