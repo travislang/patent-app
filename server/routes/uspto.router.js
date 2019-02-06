@@ -8,12 +8,13 @@ const axios = require('axios');
 
 // GET ROUTE
 router.get('/', rejectUnauthenticated, (req, res) => {
+    const filterId = req.body.applId
 
     // ---- USING USPTO API  ---- 
     axios.post( // USPTO use POST route to grab information
         'https://ped.uspto.gov/api/queries', // api route
         {
-            "searchText": `applId:${req.body.applId}`, // search for this information / applId is the application id
+            "searchText": `applId:${filterId}`, // search for this information / applId is the application id
             "qf": "applId", // where it is searching, in this case just the application Id of the patent
         }
         // {
