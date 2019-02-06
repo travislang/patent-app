@@ -9,26 +9,24 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
 
-const templateInfo = [
-    {
-        issue: '102',
-        name: 'template 1',
-    },
-    {
-        issue: '102',
-        name: 'template 2',
-    },
-    {
-        issue: '101',
-        name: 'template 12',
-    },
-    {
-        issue: '103',
-        name: 'template 122',
-    },
-]; // to be change to reducer name
+const templateInfo = this.props.state.templateReducer
 
 class TemplatePage extends React.Component {
+
+    // ---- handle delete function ----
+    // handleDelete = (id) => {
+
+    // }
+    // ---- end of delete ----
+
+    // ---- handle add function (need add modal) ----
+    // handleAdd = () => {
+
+    // }
+    // ---- end of add ----
+
+
+    // NEED TO ADD STYLE/LAYOUT
     render() {
         return (
             <Paper>
