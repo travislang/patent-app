@@ -12,7 +12,7 @@ function* fetchApplications(){
     try {
 
         // Request all applications 
-        const applicationReponseData = yield axios.get('/api/application');
+        const applicationReponseData = yield axios.get('/api/application/status');
 
         // Update redux with application
         yield dispatch({
@@ -77,7 +77,7 @@ function* postApplication(action){
     }
 }
 
-// Worker saga responsivle for handling UPDATE_APPLICATION actions
+// Worker saga responsible for handling UPDATE_APPLICATION actions
 function* updateApplication(action){
     try {
 
