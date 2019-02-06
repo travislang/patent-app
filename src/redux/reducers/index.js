@@ -5,6 +5,7 @@ import { combineReducers } from 'redux';
 import errors from './errorsReducer';
 import loginMode from './loginModeReducer';
 import user from './userReducer';
+import uspto from './usptoReducer';
 
 // *----------* Applications *----------*
 import applicationList from './applicationListReducer';
@@ -23,10 +24,12 @@ const rootReducer = combineReducers({
   errors, // contains registrationMessage and loginMessage
   loginMode, // will have a value of 'login' or 'registration' to control which screen is shown
   user, // will have an id and username if someone is logged in
+  uspto, // handle state for USPTO api for the application information
   applicationList, // Reducer responsible for providing access to all applications 
   application, // Reducer responsible for providing access to application data indluding action responses,
   actionResponse, // Reducer responsible for providiing access to action response 
   template, // Reducer responsible for providing access to all templates
+
 });
 
 export default rootReducer;

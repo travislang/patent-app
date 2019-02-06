@@ -21,9 +21,7 @@ const styles = theme => ({
 });
 
 const PreviewPage = (props) => (
-    <div>
-        <AppDrawer />
-    </div>
+    <AppDrawer />
 );
 
 

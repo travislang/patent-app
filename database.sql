@@ -60,13 +60,20 @@ CREATE TABLE "issue" (
     "template_id" INTEGER REFERENCES "template"
 );
 
+CREATE TABLE "response_text" (
+    "id" SERIAL PRIMARY KEY,
+    "issue_id" INTEGER REFERENCES "issue",
+    "text" VARCHAR(2500)
+);
+
 CREATE TABLE "field_code" (
     "id" SERIAL PRIMARY KEY,
     "code" VARCHAR(20),
     "description" VARCHAR(100)
 );
 
-
+-- The following will make users to test with.
+-- This is convenient because the register route is protected.
 INSERT INTO "user" ("user_name", "password", "is_admin")
 VALUES
 ('admin', '$2b$10$jGgyR6x7KyoQwowqxJHGlujj2KpUssCzzIjmKIAzJ3itZ8P55MOE.', 'true'), --pw admin

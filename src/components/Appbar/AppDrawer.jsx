@@ -2,8 +2,6 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
@@ -14,11 +12,17 @@ import CheckIcon from '@material-ui/icons/Check';
 
 import Fab from '@material-ui/core/Fab';
 import CloudDownload from '@material-ui/icons/CloudDownload';
-import Appbar from './Appbar';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import Add from '@material-ui/icons/Add';
+import LensIcon from '@material-ui/icons/Lens';
+
 
 import PreviewDoc from '../PreviewPage/PreviewDoc';
+import StatusSelector from '../PreviewPage/StatusSelector';
 
-const drawerWidth = 240;
+import { HashLink as Link } from 'react-router-hash-link';
+
+const drawerWidth = 300;
 
 const styles = theme => ({
     root: {
@@ -31,11 +35,20 @@ const styles = theme => ({
     drawerPaper: {
         width: drawerWidth,
     },
-    drawerTitle: {
-        padding: theme.spacing.unit * 2
-    },
     toolbar: {
         ...theme.mixins.toolbar,
+    },
+    issuesHeading: {
+        marginTop: 10
+    },
+    titleButton: {
+        padding: 0
+    },
+    legand: {
+        margin: theme.spacing.unit,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     content: {
         flexGrow: 1,
@@ -58,11 +71,13 @@ const styles = theme => ({
 
 function AppDrawer(props) {
     const { classes } = props;
-
+    const primaryTypographyStyles = {
+        variant: "h5",
+        align: 'center'
+    }
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <AppBar />
             <Drawer
                 className={classes.drawer}
                 variant="permanent"
@@ -73,35 +88,52 @@ function AppDrawer(props) {
             >
                 <div className={classes.toolbar} />
                 <Divider />
-                <Typography className={classes.drawerTitle} variant='button'>
-                    Current Issues for Patent Application # 58729540
-                </Typography>
+                <div>
+                    <ListItem button>
+                        <ListItemIcon style={{ margin: 0 }}>
+                            <ChevronLeft fontSize='large' />
+                        </ListItemIcon>
+                        <ListItemText className={classes.titleButton} primaryTypographyProps={primaryTypographyStyles} primary='Application # 58729540' />
+                    </ListItem>
+                </div>
                 <Divider />
+                <div>
+                    <StatusSelector />
+                </div>
+                <Divider />
+                <Typography className={classes.issuesHeading} variant='h6' align='center'>
+                    Office Action Issues
+                </Typography>
                 <List>
-                    {['Issues 1-5, 8, 37 USC 101', 'Issues 6, 7, 37 USC 102', 'Issues 11-14, 37 USC 112', 'Issues 9-10, 15-17 37 USC 103'].map((text, index) => (
-                        index === 2 ? 
-                            <ListItem  button key={text}>
-                            <ListItemIcon style={{margin: 0}}>
-                                    <CheckIcon 
-                                        style={{color: 'green'}}/>
-                            </ListItemIcon>
-                                <ListItemText primaryTypographyProps={{style:{color: 'green'} }} primary={text} />
-                        </ListItem>
+                    {['Coversheet Introduction', 'Header', 'Specification Amendments', 'Claims Amendments', 'Drawings Amendments', 'Interview Summary', 'Remarks Introduction', 'Issues 1-5, 8, 37 USC 101', 'Issues 6, 7, 37 USC 102', 'Issues 11-14, 37 USC 112', 'Issues 9-10, 15-17 37 USC 103', 'Conclusion', 'Conclusion', 'Conclusion', 'Conclusion', 'Conclusion'].map((text, index) => (
+                        index === 2 || index === 7 || index === 8 ? 
+                            <ListItem component={Link} to='#2' button key={text}>
+                                <ListItemIcon style={{ margin: 0 }}>
+                                    <CheckIcon
+                                        style={{ color: 'green' }} />
+                                </ListItemIcon>
+                                <ListItemText primaryTypographyProps={{ style: { color: 'green' } }} primary={text} />
+                            </ListItem>
+                        
                         :
-                            <ListItem button key={text}>
+                        <ListItem button key={text}>
                                 <ListItemText primaryTypographyProps={{color: 'textSecondary'}} primary={text} />
                         </ListItem>
                     ))}
                 </List>
                 <Divider />
-                <Typography className={classes.drawerTitle} variant='button'>
-                    Add New Issue +
-                </Typography>
+                <div>
+                    <ListItem button>
+                        <ListItemIcon style={{ margin: 0 }}>
+                            <Add fontSize='large' />
+                        </ListItemIcon>
+                        <ListItemText primaryTypographyProps={primaryTypographyStyles} primary='Add New Item' />
+                    </ListItem>
+                </div>
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 <PreviewDoc />
-                
             </main>
             <Fab variant="extended" className={classes.fab}>
                 <CloudDownload className={classes.extendedIcon} />
