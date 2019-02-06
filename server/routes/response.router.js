@@ -30,24 +30,17 @@ router.get('/:issueId', rejectUnauthenticated, (req, res) => {
     );
 });
 
-router.post('/', rejectUnauthenticated, (req, res) => {
+router.post('/add', rejectUnauthenticated, (req, res) => {
     const query = 
-        `DO $$
-        BEGIN
-            IF (SELECT "user_id" FROM "application"
-                JOIN "office_action" ON "application"."id"="office_action"."application_id"
-                JOIN "issue" ON "issue"."office_action_id"="office_action"."id"
-                WHERE "issue"."id"=11)=${req.user_id}
-                OR ${req.user.is_admin}
-            THEN
-                INSERT INTO "response_text" ("issue_id", "text")
-                VALUES ($1, $2);
-            ELSE
-                RAISE NOTICE 'attempted insert into response_text';
-            END IF;
-        END $$;
-    `;
-    pool.query(query, [req.body.issue_id, req.body.text])
+        `INSERT INTO "response_text" ("issue_id", "text") 
+        SELECT $1, $2
+        WHERE EXISTS
+            (SELECT * FROM "application"
+            JOIN "office_action" ON "application"."id"="office_action"."application_id"
+            JOIN "issue" ON "issue"."office_action_id"="office_action"."id"
+            WHERE "application"."user_id"=$3 AND "issue"."id"=$1)
+            OR $4;`;
+    pool.query(query, [req.body.issue_id, req.body.text, req.user.id, req.user.is_admin])
         .then((results) => {
             res.sendStatus(201);
         }).catch((err) => {
@@ -57,30 +50,55 @@ router.post('/', rejectUnauthenticated, (req, res) => {
     );
 });
 
-router.put('/', rejectUnauthenticated, (req, res) => {
-    `DO $$
-        BEGIN
-            IF (SELECT "user_id" FROM "application"
-                JOIN "office_action" ON "application"."id"="office_action"."application_id"
-                JOIN "issue" ON "issue"."office_action_id"="office_action"."id"
-                WHERE "issue"."id"=11)=${req.user_id}
-                OR ${req.user.is_admin}
-            THEN
-                UPDATE "response_text" SET 
-                "issue_id"=$1, "text"=$2;
-            ELSE
-                RAISE NOTICE 'attempted update of response_text';
-            END IF;
-        END $$;
-    `;
-    pool.query(query, [req.body.issue_id, req.body.text])
-        .then((results) => {
+router.put('/edit/:responseId', rejectUnauthenticated, (req, res) => {
+    `UPDATE "response_text" SET "issue_id"=$1, "text"=$2 
+        WHERE "response_text"."id"=$5
+            AND EXISTS
+            (SELECT * FROM "application"
+            JOIN "office_action" ON "application"."id"="office_action"."application_id"
+            JOIN "issue" ON "issue"."office_action_id"="office_action"."id"
+            WHERE "application"."user_id"=$3 AND "issue"."id"=$1)
+            OR $4;`;
+    pool.query(
+        query,
+        [
+            req.body.issue_id, 
+            req.body.text, 
+            req.user.id, 
+            req.user.is_admin,
+            req.params.queryId
+        ]).then((results) => {
             res.sendStatus(201);
         }).catch((err) => {
             res.sendStatus(500);
-            console.error('Error in POST /response_text', err);
+            console.error('Error in PUT /response_text', err);
         }
     );
+});
+
+router.delete('/delete/:responseId', rejectUnauthenticated, (req, res) => {
+    `DELETE FROM "response_text"
+        WHERE "response_text"."id"=$1
+            AND EXISTS
+            (SELECT * FROM "application"
+            JOIN "office_action" ON "application"."id"="office_action"."application_id"
+            JOIN "issue" ON "issue"."office_action_id"="office_action"."id"
+            WHERE "application"."user_id"=$2 AND "issue"."id"=$3)
+            OR $4;`;
+    pool.query(
+        query,
+        [
+            req.params.queryId,
+            req.user.id,
+            req.body.issue_id,
+            req.user.is_admin,
+        ]).then((results) => {
+            res.sendStatus(201);
+        }).catch((err) => {
+            res.sendStatus(500);
+            console.error('Error in DELETE /response_text', err);
+        }
+        );
 });
 
 module.exports = router;
