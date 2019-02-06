@@ -1,4 +1,3 @@
-
 // *----------*  *----------*
 import { put as dispatch, takeLatest } from 'redux-saga/effects';
 
@@ -12,12 +11,11 @@ function* fetchApplications(){
     try {
 
         // Request all applications 
-        const applicationReponseData = yield axios.get('/api/application/status');
-
+        const applicationResponseData = yield axios.get('api/application/status');
         // Update redux with application
         yield dispatch({
             type:'SET_APPLICATIONS',
-            payload: applicationReponseData
+            payload: applicationResponseData.data
         })
 
     } catch (error) {
@@ -30,13 +28,13 @@ function* fetchApplications(){
 // worker saga responsible for handling FETCH_APPLICATION actions
 function* fetchApplication(action){
     try {
-        // Request an application by id
+        // Request an application by id (sent as payload)
         const applicationResponseData = yield axios.get(`/api/application/${action.payload}`);
 
         // Update redux with application
         yield dispatch({
             type: 'SET_APPLICATION',
-            payload: applicationResponseData
+            payload: applicationResponseData.data
         })
 
     } catch (error) {
@@ -121,7 +119,9 @@ function* deleteApplication(action){
     try {
 
         // deconstruct payload
-        const {id} = action.payload;
+        const id = action.payload;
+
+        console.log(`Deleting application ${id}`);
 
         // Send request to api to delete an application by id
         yield axios.delete(`api/application/delete/${id}`);
