@@ -8,8 +8,8 @@ const axios = require('axios');
 
 // GET ROUTE
 router.get('/', rejectUnauthenticated, (req, res) => {
-    const filterId = req.body.applId
 
+    const filterId = +req.body.applId.replace(/[^0-9.]/g, "")
     // ---- USING USPTO API  ---- 
     axios.post( // USPTO use POST route to grab information
         'https://ped.uspto.gov/api/queries', // api route
