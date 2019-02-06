@@ -9,7 +9,7 @@ const applicationLoggedInRoutes = [
     { route: `/api/application/1`, method: `get`, loginAs: `none`, successCode: 403 },
     { route: `/api/application/1`, method: `get`, loginAs: `user`, successCode: 200 },
     { route: `/api/application/1`, method: `get`, loginAs: `admin`, successCode: 200 },
-    { route: `/api/user/logout`, method: `post`, loginAs: 'admin', successCode: 200 },
+    { route: `/api/user/logout`, method: `post`, loginAs: 'admin', successCode: 200 }, 
     { route: `/api/application`, method: `get`, loginAs: `none`, successCode: 403 },
     { route: `/api/application`, method: `get`, loginAs: `user`, successCode: 200 },
     { route: `/api/application`, method: `get`, loginAs: `admin`, successCode: 200 },
