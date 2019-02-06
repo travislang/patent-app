@@ -17,6 +17,10 @@ const statusRouter = require('./routes/status.router');
 const templateRouter = require('./routes/template.router');
 const responseRouter = require('./routes/response.router');
 
+// ---- api route ----
+const usptoRouter = require('./routes/uspto.router');
+// ---- end of api route ----
+
 // Body parser middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,6 +34,7 @@ app.use(passport.session());
 
 /* Routes */
 app.use('/api/user', userRouter);
+app.use('/api/uspto', usptoRouter);
 app.use('/api/application', applicationRouter);
 app.use('/api/office_action', officeActionRouter);
 app.use('/api/issue', issueRouter);
