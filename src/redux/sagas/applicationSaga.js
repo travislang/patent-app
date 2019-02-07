@@ -4,7 +4,7 @@ import { put as dispatch, takeLatest } from 'redux-saga/effects';
 // *----------*  *----------*
 import axios from 'axios';
 
-// *----------* Application List *----------*
+// *----------* ApplicationList Sagas *----------*
 
 // Worker saga responsible for handling FETCH_APPLICATIONS actions
 function* fetchApplications(){
@@ -23,7 +23,7 @@ function* fetchApplications(){
     }
 }
 
-// *----------* Application *----------*
+// *----------* Application Sagas *----------*
 
 // worker saga responsible for handling FETCH_APPLICATION actions
 function* fetchApplication(action){
