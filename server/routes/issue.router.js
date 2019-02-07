@@ -3,8 +3,8 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 const pool = require('../modules/pool');
 const router = express.Router();
 
-router.get('/by_app/:app_id', rejectUnauthenticated, (req, res) => {
-    const { app_id } = req.params;
+router.get('/by_office_action/:officeActionId', rejectUnauthenticated, (req, res) => {
+    const { officeActionId } = req.params;
     const query = 
         `SELECT "issue".* FROM "issue" 
         JOIN "office_action" ON "office_action"."id"="issue"."office_action_id"
@@ -15,7 +15,7 @@ router.get('/by_app/:app_id', rejectUnauthenticated, (req, res) => {
             res.send(results.rows);
         }).catch((err) => {
             res.sendStatus(500);
-            console.error('Error in GET /issue/by_app', err);
+            console.error('Error in GET /issue/by_office_action err);
         }
     );
 });
