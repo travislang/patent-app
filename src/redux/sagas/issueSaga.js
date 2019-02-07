@@ -27,8 +27,7 @@ function* postIssue(action){
         })
 
         // Now that database has update, we must make a fetch again to update redux
-        yield dispatch({type:'FETCH_ISSUES'})
-
+        yield dispatch({type:'FETCH_ISSUES'}) 
     } catch (error) {
         console.log(`Error in postIssue: ${error}`);
     }
@@ -77,7 +76,7 @@ function* updateIssue(action){
         })
 
         // Now that database has been updated, we need to relect this in redux
-        yield dispatch({type: 'FETCH_ISSUES'})
+        yield dispatch({type: 'FETCH_ISSUES'}) 
 
     } catch (error) {
         console.log(`Error in updateIssue: ${error}`);

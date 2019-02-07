@@ -31,18 +31,12 @@ function* fetchApplication(action){
     try {
 
         // Request an application by id (sent as payload) ->
-        const applicationResponseData = yield axios.get(`/api/application/${action.payload}`);
-
-        // Request office actions by application id ->
-
-        // request issues by office action id ->
-
-        // request responses by office action id
+        const { data : applicationResponseData } = yield axios.get(`/api/application/${action.payload}`);
 
         // Update redux with application
         yield dispatch({
             type: 'SET_APPLICATION',
-            payload: applicationResponseData.data
+            payload: applicationResponseData[0]
         })
 
     } catch (error) {
