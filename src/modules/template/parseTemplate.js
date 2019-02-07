@@ -1,14 +1,23 @@
 import { open } from "inspector";
 
 const templateIsLegal = (template) => {
+    return (
+        templateHasCharacters(template) 
+        && bracketsMatch(template)
+        && fieldCodesLegal(template)
+    );
+}
+
+const templateHasCharacters = (template) => {
     if (!template || template === '') {
         console.error('Template is null, undefined, or empty');
         return false;
-    }
-    if (!template.includes('{') && !template.includes('}')) {
+    } else {
         return true;
     }
-    // check for matching brackets
+}
+
+const bracketsMatch = (template) => {
     let openBracketFound = false;
     for (let ch of template.split('')) {
         if (openBracketFound) {
@@ -28,6 +37,25 @@ const templateIsLegal = (template) => {
         }
     }
     return true;
+}
+
+const fieldCodesLegal = (template, codes=['field1','field2']) => {
+    // routine assumes that template has been checked for matching brackets
+    let currentPosition = 0;
+    let start = 0;
+    while (template.indexOf('{', currentPosition) !== -1 ) {
+        start = template.indexOf('{', currentPosition);
+        currentPosition = template.indexOf('}', start);
+        let codeFound = template.slice(start+1, currentPosition);
+        if (!isLegalCode(codeFound, codes) ) {
+            return false;
+        }
+    }
+    return true;
+}
+
+const isLegalCode = (code, codes) => {
+    return codes.includes(code);
 }
 
 export default templateIsLegal;
