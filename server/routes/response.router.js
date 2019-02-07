@@ -10,7 +10,7 @@ router.get('/by_office_action/:officeActionId', rejectUnauthenticated, (req, res
         query = 
             `SELECT "response_text".* FROM "response_text"
             JOIN "issue" ON "issue"."id"="response_text"."issue_id"
-            WHERE "issue".office_action_id"=$1
+            WHERE "issue"."office_action_id"=$1
             ORDER BY "response_text"."id";`;
     } else {
         query =
