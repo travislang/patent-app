@@ -1,11 +1,12 @@
 const express = require('express');
-const { rejectUnauthenticated, rejectIdNotAdmin } = require('../modules/authentication-middleware');
+const { rejectUnauthenticated, rejectIfNotAdmin } = require('../modules/authentication-middleware');
 const pool = require('../modules/pool');
 const router = express.Router();
 
-router.get('/', rejectUnauthenticated, (req, res) => {
-    const query = `SELECT * FROM "office_action" ORDER BY "id" DESC;`;
-    pool.query(query)
+router.get('/:id', rejectUnauthenticated, (req, res) => {
+    const { id } = req.params;
+    const query = `SELECT * FROM "office_action" WHERE "id"=$1;`;
+    pool.query(query, [id])
         .then((results) => {
             res.send(results.rows);
         }).catch((err) => {
@@ -15,17 +16,17 @@ router.get('/', rejectUnauthenticated, (req, res) => {
     );
 });
 
-router.get('/:id', rejectUnauthenticated, (req, res) => {
-    const { id } = req.params;
-    const query = `SELECT * FROM "office_action" WHERE id"=$1;`;
-    pool.query(query, [id])
+router.get('/by_app/:app_id', rejectUnauthenticated, (req, res) => {
+    const { app_id } = req.params;
+    const query = `SELECT * FROM "office_action" WHERE "application_id"=$1 ORDER BY "uspto_mailing_date" NULLS FIRST DESC;`;
+    pool.query(query, [app_id])
         .then((results) => {
             res.send(results.rows);
         }).catch((err) => {
             res.sendStatus(500);
-            console.error('Error in GET /office_action', err);
+            console.error('Error in GET /office_action/by_app', err);
         }
-        );
+    );
 });
 
 router.post('/add', rejectUnauthenticated, (req, res) => {
