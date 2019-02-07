@@ -12,6 +12,7 @@ function* fetchApplications(){
 
         // Request all applications 
         const applicationResponseData = yield axios.get('api/application/status');
+
         // Update redux with application
         yield dispatch({
             type:'SET_APPLICATIONS',
@@ -28,8 +29,15 @@ function* fetchApplications(){
 // worker saga responsible for handling FETCH_APPLICATION actions
 function* fetchApplication(action){
     try {
-        // Request an application by id (sent as payload)
+
+        // Request an application by id (sent as payload) ->
         const applicationResponseData = yield axios.get(`/api/application/${action.payload}`);
+
+        // Request office actions by application id ->
+
+        // request issues by office action id ->
+
+        // request responses by office action id
 
         // Update redux with application
         yield dispatch({
