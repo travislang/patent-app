@@ -1,10 +1,18 @@
 const legalCodes = [
-    'field1',
-    'field2',
+    'firstInventor',
+    'filedDate',
+    'applNumber'
 ];
 
 const keys = [
-
+    'inventor_name',
+    'filed_date',
+    'application_number'
 ];
 
-export default legalCodes;
+const fieldCodes = {
+    legalCodes,
+    keys,
+};
+
+export default fieldCodes;

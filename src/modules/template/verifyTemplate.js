@@ -1,14 +1,15 @@
-import legalCodes from '../template/legalCodes';
+import fieldCodes from './legalCodes';
+const { legalCodes } = fieldCodes;
 
 const templateIsLegal = (template) => {
     return (
-        templateHasCharacters(template) 
+        templateNotEmpty(template) 
         && bracketsMatch(template)
         && fieldCodesLegal(template)
     );
 }
 
-const templateHasCharacters = (template) => {
+const templateNotEmpty = (template) => {
     if (!template || template === '') {
         console.error('Template is null, undefined, or empty');
         return false;
@@ -57,6 +58,6 @@ const fieldCodesLegal = (template) => {
 
 const isLegalCode = (code, codes) => {
     return codes.includes(code);
-}
+};
 
 export default templateIsLegal;
