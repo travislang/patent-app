@@ -1,4 +1,4 @@
-import { open } from "inspector";
+import legalCodes from '../template/legalCodes';
 
 const templateIsLegal = (template) => {
     return (
@@ -39,7 +39,7 @@ const bracketsMatch = (template) => {
     return true;
 }
 
-const fieldCodesLegal = (template, codes=['field1','field2']) => {
+const fieldCodesLegal = (template) => {
     // routine assumes that template has been checked for matching brackets
     let currentPosition = 0;
     let start = 0;
@@ -47,7 +47,8 @@ const fieldCodesLegal = (template, codes=['field1','field2']) => {
         start = template.indexOf('{', currentPosition);
         currentPosition = template.indexOf('}', start);
         let codeFound = template.slice(start+1, currentPosition);
-        if (!isLegalCode(codeFound, codes) ) {
+        if (!isLegalCode(codeFound, legalCodes) ) {
+            console.error('Not a legal field code:', codeFound);
             return false;
         }
     }
