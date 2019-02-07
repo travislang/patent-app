@@ -4,6 +4,7 @@ import registrationSaga from './registrationSaga';
 import userSaga from './userSaga';
 import applicationSaga from './applicationSaga';
 import issueSaga from './issueSaga';
+import officeAction from './officeActionSaga';
 import usptoSaga from './usptoSaga';
 
 
@@ -21,6 +22,7 @@ export default function* rootSaga() {
     userSaga(),
     applicationSaga(),
     issueSaga(),
+    officeAction(),
     usptoSaga(),
   ]);
 }
