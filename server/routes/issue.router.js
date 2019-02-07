@@ -15,7 +15,7 @@ router.get('/by_office_action/:officeActionId', rejectUnauthenticated, (req, res
             res.send(results.rows);
         }).catch((err) => {
             res.sendStatus(500);
-            console.error('Error in GET /issue/by_office_action err);
+            console.error('Error in GET /issue/by_office_action err');
         }
     );
 });
