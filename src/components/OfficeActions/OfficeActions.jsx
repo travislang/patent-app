@@ -17,9 +17,8 @@ const styles = theme => ({
 
     },
     paper: {
-        marginTop: theme.spacing.unit * 15,
+        margin: theme.spacing.unit * 15,
         minWidth: 1040,
-        height: 500
     },
     title: {
         padding: `${theme.spacing.unit * 2}px 0 0`
@@ -84,31 +83,31 @@ class OfficeActions extends Component {
                             <Grid container justify='space-between' item className={classes.titleInfo}>
                                 <Grid item className={classes.infoLeft}>
                                     <Grid container direction='column'>
-                                        <Typography gutterBottom color='textPrimary' variant='h5'>
+                                        <Typography gutterBottom color='textPrimary' variant='h6'>
                                             First Named Inv: 
                                             <span className={classes.infoHeading}>
                                                 test
                                             </span>
                                         </Typography>
-                                        <Typography gutterBottom color='textPrimary' variant='h5'>
+                                        <Typography gutterBottom color='textPrimary' variant='h6'>
                                             Serial Number: 
                                             <span className={classes.infoHeading}>
                                                 test
                                             </span>
                                         </Typography>
-                                        <Typography gutterBottom color='textPrimary' variant='h5'>
+                                        <Typography gutterBottom color='textPrimary' variant='h6'>
                                             Filed: 
                                             <span className={classes.infoHeading}>
                                                 test
                                             </span>
                                         </Typography>
-                                        <Typography gutterBottom color='textPrimary' variant='h5'>
+                                        <Typography gutterBottom color='textPrimary' variant='h6'>
                                             Customer Number: 
                                             <span className={classes.infoHeading}>
                                                 test
                                             </span>
                                         </Typography>
-                                        <Typography gutterBottom color='textPrimary' variant='h5'>
+                                        <Typography gutterBottom color='textPrimary' variant='h6'>
                                             Title:
                                             <span className={classes.infoHeading}>
                                                 test
@@ -118,25 +117,25 @@ class OfficeActions extends Component {
                                 </Grid>
                                 <Grid item className={classes.infoRight}>
                                     <Grid container direction='column'>
-                                        <Typography gutterBottom color='textPrimary' variant='h5'>
+                                        <Typography gutterBottom color='textPrimary' variant='h6'>
                                             Examiner:
                                             <span className={classes.infoHeading}>
                                                 test
                                             </span>
                                         </Typography>
-                                        <Typography gutterBottom color='textPrimary' variant='h5'>
+                                        <Typography gutterBottom color='textPrimary' variant='h6'>
                                             Group Art Unit: 
                                             <span className={classes.infoHeading}>
                                                 test
                                             </span>
                                         </Typography>
-                                        <Typography gutterBottom color='textPrimary' variant='h5'>
+                                        <Typography gutterBottom color='textPrimary' variant='h6'>
                                             Docket Number: 
                                             <span className={classes.infoHeading}>
                                                 test
                                             </span>
                                         </Typography>
-                                        <Typography gutterBottom color='textPrimary' variant='h5'>
+                                        <Typography gutterBottom color='textPrimary' variant='h6'>
                                             Conference Number:
                                             <span className={classes.infoHeading}>
                                                 test
@@ -155,7 +154,7 @@ class OfficeActions extends Component {
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <Button variant='contained'>
+                            <Button color='primary' variant='contained'>
                                 New Response
                             </Button>
                         </Grid>

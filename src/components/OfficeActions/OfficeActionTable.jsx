@@ -12,9 +12,9 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 
 let counter = 0;
-function createData(owner, title, client, mailingDate, decision, status) {
+function createData(date, decision, status) {
     counter += 1;
-    return { id: counter, owner, title, client, mailingDate, decision, status };
+    return { id: counter, date, decision, status };
 }
 
 function desc(a, b, orderBy) {
@@ -42,10 +42,7 @@ function getSorting(order, orderBy) {
 }
 
 const rows = [
-    { id: 'owner', numeric: false, label: 'Owner' },
-    { id: 'title', numeric: false, label: 'Title' },
-    { id: 'client', numeric: false, label: 'Client' },
-    { id: 'mailingDate', numeric: false, label: 'Mailing Date' },
+    { id: 'date', numeric: false, label: 'Date' },
     { id: 'decision', numeric: false, label: 'Decision' },
     { id: 'status', numeric: false, label: 'Status' },
 ];
@@ -109,23 +106,24 @@ class OfficeActionTable extends React.Component {
         order: 'asc',
         orderBy: 'mailingDate',
         data: [
-            createData('Travis', 'the widget', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 2', 'ABC Org', '02/05/2019', 'non final', 'pending'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
+            createData('02/05/2019', 'final', 'inactive'),
+            createData('02/07/2019', 'final', 'active'),
+            createData('01/25/2019', 'nonfinal', 'pending'),
+            createData('02/05/2019', 'final', 'inactive'),
+            createData('02/07/2019', 'final', 'active'),
+            createData('01/25/2019', 'nonfinal', 'pending'),
+            createData('02/05/2019', 'final', 'inactive'),
+            createData('02/07/2019', 'final', 'active'),
+            createData('01/25/2019', 'nonfinal', 'pending'),
+            createData('02/05/2019', 'final', 'inactive'),
+            createData('02/07/2019', 'final', 'active'),
+            createData('01/25/2019', 'nonfinal', 'pending'),
+            createData('02/05/2019', 'final', 'inactive'),
+            createData('02/07/2019', 'final', 'active'),
+            createData('01/25/2019', 'nonfinal', 'pending'),
+            createData('02/05/2019', 'final', 'inactive'),
+            createData('02/07/2019', 'final', 'active'),
+            createData('01/25/2019', 'nonfinal', 'pending'),
         ],
         page: 0,
         rowsPerPage: 10,
@@ -177,13 +175,10 @@ class OfficeActionTable extends React.Component {
                                             key={n.id}
                                         >
                                             <TableCell component="th" scope="row" align="left">
-                                                {n.owner}
+                                                {n.date}
                                             </TableCell>
-                                            <TableCell align="left">{n.title}</TableCell>
-                                            <TableCell align="left">{n.client}</TableCell>
-                                            <TableCell align="left">{n.mailingDate}</TableCell>
-                                            <TableCell align="left">{n.decision}</TableCell>
-                                            <TableCell align="left">{n.status}</TableCell>
+                                            <TableCell align="left">            {n.decision}</TableCell>
+                                            <TableCell align="left">            {n.status}</TableCell>
                                         </TableRow>
                                     );
                                 })}
