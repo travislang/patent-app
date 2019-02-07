@@ -13,6 +13,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 import Appbar from '../Appbar/Appbar';
 import UserPage from '../UserPage/UserPage';
 import PreviewPage from '../PreviewPage/PreviewPage';
+import Dashboard from '../Dashboard/Dashboard';
 
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -40,6 +41,10 @@ class App extends Component {
                             <Route
                                 path="/preview"
                                 component={PreviewPage}
+                            />
+                            <Route
+                                path="/dashboard"
+                                component={Dashboard}
                             />
                             <Route render={() => <h1>404</h1>} />
                         </Switch>
