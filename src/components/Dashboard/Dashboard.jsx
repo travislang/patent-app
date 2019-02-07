@@ -16,6 +16,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
 import ApplicationTable from './ApplicationTable';
+import NewAppDialog from './NewAppDialog';
 
 const styles = theme => ({
     root: {
@@ -58,12 +59,21 @@ const styles = theme => ({
 
 class Dashboard extends Component {
     state = {
+        dialogOpen: false,
         displayAllApps: 'false',
     };
 
     handleChange = event => {
         this.setState({ displayAllApps: event.target.value });
     };
+
+    handleClose = () => {
+        this.setState({ dialogOpen: false });
+    };
+
+    handleNewApp = () => {
+        this.setState({ dialogOpen: true})
+    }
 
     render() {
         const {classes} = this.props;
@@ -106,6 +116,7 @@ class Dashboard extends Component {
                                             <Button 
                                                 color='primary' variant="contained" 
                                                 size='large'
+                                                onClick={this.handleNewApp}
                                                 className={classes.button}>
                                                 Add Application
                                             </Button>
@@ -116,6 +127,7 @@ class Dashboard extends Component {
                         </Grid>
                     </Grid>
                     <ApplicationTable />
+                    <NewAppDialog open={this.state.dialogOpen} handleClose={this.handleClose} />
                 </Paper>
             </div>
         )

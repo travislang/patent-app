@@ -3,20 +3,21 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 const pool = require('../modules/pool');
 const router = express.Router();
 
-router.get('/:id', rejectUnauthenticated, (req, res) => {
-    const { id } = req.params;
+router.get('/by_office_action/:officeActionId', rejectUnauthenticated, (req, res) => {
+    const { officeActionId } = req.params;
     const query = 
-        `SELECT * FROM "issue" 
-        WHERE "issue"."id"=$1
-        ORDER BY "uspto_mailing_date" DESC NULLS FIRST;`;
-    pool.query(query, [id])
+        `SELECT "issue".* FROM "issue" 
+        JOIN "office_action" ON "office_action"."id"="issue"."office_action_id"
+        WHERE "issue"."office_action_id"=$1
+        ORDER BY "issue"."id" ASC;`;
+    pool.query(query, [app_id])
         .then((results) => {
             res.send(results.rows);
         }).catch((err) => {
             res.sendStatus(500);
-            console.error('Error in GET /issue', err);
+            console.error('Error in GET /issue/by_office_action err');
         }
-        );
+    );
 });
 
 router.post('/add', rejectUnauthenticated, (req, res) => {
