@@ -4,7 +4,7 @@ const pool = require('../modules/pool');
 const router = express.Router();
 
 router.get('/:id', rejectUnauthenticated, (req, res) => {
-    const { id } = req.param;
+    const { id } = req.params;
     const query = 
         `SELECT * FROM "issue" 
         WHERE "issue"."id"=$1
@@ -20,7 +20,7 @@ router.get('/:id', rejectUnauthenticated, (req, res) => {
 });
 
 router.post('/add', rejectUnauthenticated, (req, res) => {
-    const queryText =
+    const query =
         `INSERT INTO "issue" (
             "office_action_id"=$1,
             "template_type_id"=$2,
@@ -42,7 +42,7 @@ router.post('/add', rejectUnauthenticated, (req, res) => {
 });
 
 router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
-    const { id } = req.param;
+    const { id } = req.params;
     const query =
         `UPDATE "issue" SET (
             "office_action_id"=$2,
@@ -67,9 +67,8 @@ router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
 });
 
 router.delete('/delete/:id', rejectUnauthenticated, (req, res) => {
-    const { id } = req.param;
-    const query = `DELETE FROM "issue" WHERE "issue"."id"=$1;
-    `;
+    const { id } = req.params;
+    const query = `DELETE FROM "issue" WHERE "issue"."id"=$1;`;
     pool.query(query, [id])
         .then(results => {
             res.sendStatus(200);
@@ -77,7 +76,7 @@ router.delete('/delete/:id', rejectUnauthenticated, (req, res) => {
             res.sendStatus(500);
             console.error('Error in /issue/delete', err);
         }
-        );
+    );
 });
 
 module.exports = router;
