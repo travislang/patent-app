@@ -18,7 +18,10 @@ router.get('/:id', rejectUnauthenticated, (req, res) => {
 
 router.get('/by_app/:app_id', rejectUnauthenticated, (req, res) => {
     const { app_id } = req.params;
-    const query = `SELECT * FROM "office_action" WHERE "application_id"=$1 ORDER BY "uspto_mailing_date" NULLS FIRST DESC;`;
+    const query = 
+        `SELECT * FROM "office_action" 
+        WHERE "application_id"=$1 
+        ORDER BY "uspto_mailing_date" DESC NULLS FIRST;`;
     pool.query(query, [app_id])
         .then((results) => {
             res.send(results.rows);
