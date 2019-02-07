@@ -10,7 +10,7 @@ router.get('/by_office_action/:officeActionId', rejectUnauthenticated, (req, res
         JOIN "office_action" ON "office_action"."id"="issue"."office_action_id"
         WHERE "issue"."office_action_id"=$1
         ORDER BY "issue"."id" ASC;`;
-    pool.query(query, [app_id])
+    pool.query(query, [officeActionId])
         .then((results) => {
             res.send(results.rows);
         }).catch((err) => {
