@@ -116,6 +116,9 @@ class NewAppDialog extends React.Component {
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
+                                            InputLabelProps={this.state.firstNamedInv && {
+                                                shrink: true,
+                                              }}
                                         />
                                         <TextField
                                             id="outlined-serialNum"
@@ -126,6 +129,9 @@ class NewAppDialog extends React.Component {
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
+                                            InputLabelProps={this.state.serialNum && {
+                                                shrink: true,
+                                              }}
                                         />
                                         <TextField
                                             id="outlined-filed"
@@ -136,6 +142,9 @@ class NewAppDialog extends React.Component {
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
+                                            InputLabelProps={this.state.filed && {
+                                                shrink: true,
+                                              }}
                                         />
                                         
                                     </Grid>
@@ -151,6 +160,9 @@ class NewAppDialog extends React.Component {
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
+                                            InputLabelProps={this.state.customerNum && {
+                                                shrink: true,
+                                              }}
                                         />
                                         <TextField
                                             id="outlined-title"
@@ -161,6 +173,9 @@ class NewAppDialog extends React.Component {
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
+                                            InputLabelProps={this.state.title && {
+                                                shrink: true,
+                                              }}
                                         />
                                         <TextField
                                             id="outlined-examiner"
@@ -171,6 +186,9 @@ class NewAppDialog extends React.Component {
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
+                                            InputLabelProps={this.state.examiner && {
+                                                shrink: true,
+                                              }}
                                         />
                                     </Grid>
                                 </Grid>
@@ -185,6 +203,9 @@ class NewAppDialog extends React.Component {
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
+                                            InputLabelProps={this.state.groupArtNum && {
+                                                shrink: true,
+                                              }}
                                         />
                                         <TextField
                                             id="outlined-docketNum"
@@ -195,6 +216,9 @@ class NewAppDialog extends React.Component {
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
+                                            InputLabelProps={this.state.docketNum && {
+                                                shrink: true,
+                                              }}
                                         />
                                         <TextField
                                             id="outlined-confNum"
@@ -205,6 +229,9 @@ class NewAppDialog extends React.Component {
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
+                                            InputLabelProps={this.state.confNum && {
+                                                shrink: true,
+                                              }}
                                         />
                                     </Grid>
                                 </Grid>
