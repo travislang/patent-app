@@ -7,7 +7,7 @@ const axios = require('axios');
 // uspto routes
 
 // GET ROUTE
-router.get('/', rejectUnauthenticated, (req, res) => {
+router.post('/', rejectUnauthenticated, (req, res) => {
 
     const filterId = +req.body.applId.replace(/[^0-9.]/g, "")
     // ---- USING USPTO API  ---- 
