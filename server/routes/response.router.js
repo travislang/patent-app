@@ -3,29 +3,30 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 const pool = require('../modules/pool');
 const router = express.Router();
 
-router.get('/:issueId', rejectUnauthenticated, (req, res) => {
-    const { issueId } = req.params;
+router.get('/by_office_action/:officeActionId', rejectUnauthenticated, (req, res) => {
+    const { officeActionId } = req.params;
     let query;
     if (req.user && req.user.is_admin) {
         query = 
             `SELECT "response_text".* FROM "response_text"
-            WHERE "issue_id"=$1
-            ORDER BY "id";`;
+            JOIN "issue" ON "issue"."id"="response_text"."issue_id"
+            WHERE "issue".office_action_id"=$1
+            ORDER BY "response_text"."id";`;
     } else {
         query =
             `SELECT "response_text".* FROM "response_text"
             JOIN "issue" ON "issue"."id"="response_text"."issue_id"
             JOIN "office_action" ON "office_action"."id"="issue"."office_action_id"
             JOIN "application" ON "office_action"."application_id"="application"."id"
-            WHERE "issue_id"=$1 AND "application"."user_id"=${req.user.id}
+            WHERE "issue"."office_action_id"=$1 AND "application"."user_id"=${req.user.id}
             ORDER BY "id";`;
     }  
-    pool.query(query, [issueId])
+    pool.query(query, [officeActionId])
         .then((results) => {
             res.send(results.rows);
         }).catch((err) => {
             res.sendStatus(500);
-            console.error('Error in GET /response_text', err);
+            console.error('Error in GET /response_text/by_office_action', err);
         }
     );
 });
@@ -66,7 +67,6 @@ router.put('/edit/:responseId', rejectUnauthenticated, (req, res) => {
             req.body.text, 
             req.user.id, 
             req.user.is_admin,
-            req.params.queryId
         ]).then((results) => {
             res.sendStatus(201);
         }).catch((err) => {
@@ -88,7 +88,7 @@ router.delete('/delete/:responseId', rejectUnauthenticated, (req, res) => {
     pool.query(
         query,
         [
-            req.params.queryId,
+            req.params.responseId,
             req.user.id,
             req.body.issue_id,
             req.user.is_admin,
