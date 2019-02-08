@@ -11,7 +11,11 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import { connect } from 'react-redux';
+let counter = 0;
+function createData(date, decision, status) {
+    counter += 1;
+    return { id: counter, date, decision, status };
+}
 
 function desc(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -38,11 +42,8 @@ function getSorting(order, orderBy) {
 }
 
 const rows = [
-    { id: 'user_id', numeric: false, label: 'Owner' },
-    { id: 'title', numeric: false, label: 'Title' },
-    { id: 'applicant_name', numeric: false, label: 'Applicant' },
-    { id: 'uspto_mailing_date', numeric: false, label: 'Mailing Date' },
-    { id: 'uspto_status', numeric: false, label: 'Decision' },
+    { id: 'date', numeric: false, label: 'Date' },
+    { id: 'decision', numeric: false, label: 'Decision' },
     { id: 'status', numeric: false, label: 'Status' },
 ];
 
@@ -100,10 +101,30 @@ const styles = theme => ({
     },
 });
 
-class ApplicationTable extends React.Component {
+class OfficeActionTable extends React.Component {
     state = {
         order: 'asc',
-        orderBy: 'uspto_mailing_date',
+        orderBy: 'mailingDate',
+        data: [
+            createData('02/05/2019', 'final', 'inactive'),
+            createData('02/07/2019', 'final', 'active'),
+            createData('01/25/2019', 'nonfinal', 'pending'),
+            createData('02/05/2019', 'final', 'inactive'),
+            createData('02/07/2019', 'final', 'active'),
+            createData('01/25/2019', 'nonfinal', 'pending'),
+            createData('02/05/2019', 'final', 'inactive'),
+            createData('02/07/2019', 'final', 'active'),
+            createData('01/25/2019', 'nonfinal', 'pending'),
+            createData('02/05/2019', 'final', 'inactive'),
+            createData('02/07/2019', 'final', 'active'),
+            createData('01/25/2019', 'nonfinal', 'pending'),
+            createData('02/05/2019', 'final', 'inactive'),
+            createData('02/07/2019', 'final', 'active'),
+            createData('01/25/2019', 'nonfinal', 'pending'),
+            createData('02/05/2019', 'final', 'inactive'),
+            createData('02/07/2019', 'final', 'active'),
+            createData('01/25/2019', 'nonfinal', 'pending'),
+        ],
         page: 0,
         rowsPerPage: 10,
     };
@@ -127,32 +148,9 @@ class ApplicationTable extends React.Component {
         this.setState({ rowsPerPage: event.target.value });
     };
 
-    // app_table_id: 1
-    // applicant_name: "Spotify AB"
-    // application_id: 1
-    // application_number: "28740917223"
-    // color: null
-    // docket_number: "22507"
-    // examiner_name: "Shelby Smith"
-    // filed_date: "2018-10-15T05:00:00.000Z"
-    // group_art_unit: "artistry"
-    // id: 1
-    // inactive: false
-    // inventor_name: "John Doe"
-    // last_checked_date: "2019-02-01T06:00:00.000Z"
-    // response_sent_date: "2019-12-28T06:00:00.000Z"
-    // status: "pending"
-    // status_date: "2019-01-22T06:00:00.000Z"
-    // status_id: 1
-    // title: "Selecting songs"
-    // user_id: 1
-    // uspto_mailing_date: "2019-01-15T06:00:00.000Z"
-    // uspto_status: "nonfinal"
-
     render() {
         const { classes } = this.props;
-        const data = this.props.applicationList;
-        const { order, orderBy, rowsPerPage, page } = this.state;
+        const { data, order, orderBy, rowsPerPage, page } = this.state;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
         return (
@@ -174,16 +172,13 @@ class ApplicationTable extends React.Component {
                                             hover
                                             onClick={event => this.handleClick(event, n.id)}
                                             tabIndex={-1}
-                                            key={n.app_table_id}
+                                            key={n.id}
                                         >
                                             <TableCell component="th" scope="row" align="left">
-                                                {n.user_name}
+                                                {n.date}
                                             </TableCell>
-                                            <TableCell align="left">{n.title}</TableCell>
-                                            <TableCell align="left">{n.applicant_name}</TableCell>
-                                            <TableCell align="left">{n.uspto_mailing_date || 'NA'}</TableCell>
-                                            <TableCell align="left">{n.uspto_status || 'NA'}</TableCell>
-                                            <TableCell align="left">{n.status || 'NA'}</TableCell>
+                                            <TableCell align="left">            {n.decision}</TableCell>
+                                            <TableCell align="left">            {n.status}</TableCell>
                                         </TableRow>
                                     );
                                 })}
@@ -215,9 +210,4 @@ class ApplicationTable extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({
-    applicationList: state.application.applicationList,
-    user: state.user
-});
-
-export default connect(mapStateToProps)(withStyles(styles)(ApplicationTable));
+export default withStyles(styles)(OfficeActionTable);
