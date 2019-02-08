@@ -38,31 +38,56 @@ class NewAppDialog extends React.Component {
     };
 
     handleChange = name => event => {
-        this.setState({
-            [name]: event.target.value,
-        });
+        this.props.dispatch({
+            type: 'SET_USPTO_APP_DATA',
+            payload: { ...this.props.reduxState.uspto, [name]: event.target.value }
+          })
     };
-
+    handleId = (event) => {
+        this.setState({
+            appNum: event.target.value
+        })
+    }
     handleAppSearch = () => {
         this.props.dispatch({
             type: 'FETCH_USPTO_APP_DATA',
             payload: this.state.appNum
           });
-
-        setTimeout(this.handleSetStateFromSearch, 2000)
     }
-
-    handleSetStateFromSearch = () => {
-        this.setState({
-            firstNamedInv: this.props.reduxState.uspto.inventorName,
-            filed: this.props.reduxState.uspto.appFilingDate,
+    handleAdd = () => {
+        console.log('in handle add')
+        let applicationPayload = {
+            user_id: this.props.reduxState.user.id,
+            applicant_name: this.props.reduxState.uspto.applicantName,
+            filed_date: this.props.reduxState.uspto.appFilingDate,
+            last_checked_date: this.props.reduxState.uspto.LAST_MOD_TS,
+            status_date: new Date().toLocaleDateString(), // grabbing today day and format it into '8/3/2018'
+            application_number: this.state.appNum,
             title: this.props.reduxState.uspto.patentTitle,
-            examiner: this.props.reduxState.uspto.appExamName,
-            groupArtNum: this.props.reduxState.uspto.appGrpArtNumber,
-            docketNum: this.props.reduxState.uspto.appAttrDockNumber,
-            confNum: this.props.reduxState.uspto.appConfrNumber,
-        })
-    }   
+            inventor_name: this.props.reduxState.uspto.inventorName,
+            examiner_name: this.props.reduxState.uspto.appExamName,
+            group_art_unit: this.props.reduxState.uspto.appGrpArtNumber,
+            docket_number: this.props.reduxState.uspto.appAttrDockNumber,
+            comfirmation_number: this.props.reduxState.uspto.appConfrNumber
+        }
+        this.props.dispatch({
+            type: 'POST_APPLICATION',
+            payload: applicationPayload
+        });
+    }
+    /*
+        user id
+        applicant name x    a
+        date filed  x   a
+        group art number    x   a
+        docket number   x   a
+        title   x   a
+        examiner    x   a
+        confirmation number x   a
+        inventor name   x   a
+        // last check data // not use for adding application    x   a
+
+    */
 
     render() {
         const {classes} = this.props;
@@ -88,7 +113,7 @@ class NewAppDialog extends React.Component {
                                     label="Application Number"
                                     className={classes.appNumTextField}
                                     value={this.state.appNum}
-                                    onChange={this.handleChange('appNum')}
+                                    onChange={this.handleId}
                                     margin="normal"
                                     variant="outlined"
                                     margin='dense'
@@ -105,44 +130,61 @@ class NewAppDialog extends React.Component {
                         </Grid>
                         <Grid item className={classes.inputFieldsContainer}>
                             <Grid container justify='space-between'>
-                                <Grid item>
+                            <Grid item>
                                     <Grid container direction='column'>
                                         <TextField
-                                            id="outlined-firstName"
-                                            label="First Named Inv."
+                                            id="outlined-applicantName"
+                                            label="Applicant Name"
                                             className={classes.appNumTextField}
-                                            value={this.state.firstNamedInv}
-                                            onChange={this.handleChange('firstNamedInv')}
+                                            value={this.props.reduxState.uspto.applicantName}
+                                            onChange={this.handleChange('applicantName')}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.state.firstNamedInv && {
+                                            InputLabelProps={this.props.reduxState.uspto.applicantName && {
                                                 shrink: true,
                                               }}
                                         />
                                         <TextField
-                                            id="outlined-serialNum"
-                                            label="Serial Number"
+                                            id="outlined-lastDateCheck"
+                                            label="Last Checked Date"
                                             className={classes.appNumTextField}
-                                            value={this.state.serialNum}
-                                            onChange={this.handleChange('serialNum')}
+                                            value={this.props.reduxState.uspto.LAST_MOD_TS}
+                                            onChange={this.handleChange('LAST_MOD_TS')}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.state.serialNum && {
+                                            InputLabelProps={this.props.reduxState.uspto.LAST_MOD_TS && {
+                                                shrink: true,
+                                              }}
+                                        />
+                                    </Grid>
+                                </Grid>
+                                <Grid item>
+                                    <Grid container direction='column'>
+                                        <TextField
+                                            id="outlined-inventorName"
+                                            label="Inventor Name"
+                                            className={classes.appNumTextField}
+                                            value={this.props.reduxState.uspto.inventorName}
+                                            onChange={this.handleChange('inventorName')}
+                                            margin="normal"
+                                            variant="outlined"
+                                            margin='dense'
+                                            InputLabelProps={this.props.reduxState.uspto.inventorName && {
                                                 shrink: true,
                                               }}
                                         />
                                         <TextField
                                             id="outlined-filed"
-                                            label="Filed"
+                                            label="Date Filed"
                                             className={classes.appNumTextField}
-                                            value={this.state.filed}
-                                            onChange={this.handleChange('filed')}
+                                            value={this.props.reduxState.uspto.appFilingDate}
+                                            onChange={this.handleChange('appFilingDate')}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.state.filed && {
+                                            InputLabelProps={this.props.reduxState.uspto.appFilingDate && {
                                                 shrink: true,
                                               }}
                                         />
@@ -155,12 +197,12 @@ class NewAppDialog extends React.Component {
                                             id="outlined-customerNumb"
                                             label="Customer Number"
                                             className={classes.appNumTextField}
-                                            value={this.state.customerNum}
+                                            value={this.props.reduxState.uspto.customerNum}
                                             onChange={this.handleChange('customerNum')}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.state.customerNum && {
+                                            InputLabelProps={this.props.reduxState.uspto.customerNum && {
                                                 shrink: true,
                                               }}
                                         />
@@ -168,12 +210,12 @@ class NewAppDialog extends React.Component {
                                             id="outlined-title"
                                             label="Title"
                                             className={classes.appNumTextField}
-                                            value={this.state.title}
-                                            onChange={this.handleChange('title')}
+                                            value={this.props.reduxState.uspto.patentTitle}
+                                            onChange={this.handleChange('patentTitle')}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.state.title && {
+                                            InputLabelProps={this.props.reduxState.uspto.patentTitle && {
                                                 shrink: true,
                                               }}
                                         />
@@ -181,12 +223,12 @@ class NewAppDialog extends React.Component {
                                             id="outlined-examiner"
                                             label="Examiner"
                                             className={classes.appNumTextField}
-                                            value={this.state.examiner}
-                                            onChange={this.handleChange('examiner')}
+                                            value={this.props.reduxState.uspto.appExamName}
+                                            onChange={this.handleChange('appExamName')}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.state.examiner && {
+                                            InputLabelProps={this.props.reduxState.uspto.appExamName && {
                                                 shrink: true,
                                               }}
                                         />
@@ -198,12 +240,12 @@ class NewAppDialog extends React.Component {
                                             id="outlined-groupArtNum"
                                             label="Group Art Number"
                                             className={classes.appNumTextField}
-                                            value={this.state.groupArtNum}
-                                            onChange={this.handleChange('groupArtNum')}
+                                            value={this.props.reduxState.uspto.appGrpArtNumber}
+                                            onChange={this.handleChange('appGrpArtNumber')}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.state.groupArtNum && {
+                                            InputLabelProps={this.props.reduxState.uspto.appGrpArtNumber && {
                                                 shrink: true,
                                               }}
                                         />
@@ -211,25 +253,25 @@ class NewAppDialog extends React.Component {
                                             id="outlined-docketNum"
                                             label="Docket Number"
                                             className={classes.appNumTextField}
-                                            value={this.state.docketNum}
-                                            onChange={this.handleChange('docketNum')}
+                                            value={this.props.reduxState.uspto.appAttrDockNumber}
+                                            onChange={this.handleChange('appAttrDockNumber')}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.state.docketNum && {
+                                            InputLabelProps={this.props.reduxState.uspto.appAttrDockNumber && {
                                                 shrink: true,
                                               }}
                                         />
                                         <TextField
                                             id="outlined-confNum"
-                                            label="Conference Number"
+                                            label="Confirmation Number"
                                             className={classes.appNumTextField}
-                                            value={this.state.confNum}
-                                            onChange={this.handleChange('confNum')}
+                                            value={this.props.reduxState.uspto.appConfrNumber}
+                                            onChange={this.handleChange('appConfrNumber')}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.state.confNum && {
+                                            InputLabelProps={this.props.reduxState.uspto.appConfrNumber && {
                                                 shrink: true,
                                               }}
                                         />
@@ -243,7 +285,7 @@ class NewAppDialog extends React.Component {
                     <Button onClick={this.props.handleClose} variant='contained' color="default">
                         Cancel
                     </Button>
-                    <Button onClick={this.handleClose} variant='contained' color="primary">
+                    <Button onClick={this.handleAdd} variant='contained' color="primary">
                         Add Application
                     </Button>
                 </DialogActions>

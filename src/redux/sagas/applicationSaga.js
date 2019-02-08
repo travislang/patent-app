@@ -46,7 +46,6 @@ function* fetchApplication(action) {
 
 // Worker saga responsible for handling POST_APPLICATION actions
 function* postApplication(action) {
-
     try {
 
         // Deconstruct payload 
