@@ -56,13 +56,41 @@ class NewAppDialog extends React.Component {
     }
     handleAdd = () => {
         this.props.dispatch({
-            type: '',
+            type: 'POST_APPLICATION',
             payload: {
 
             }
         });
         // this.handleClose
     }
+
+    // const {
+    //     user_id,
+    //     applicant_name,
+    //     status,
+    //     last_checked_date,
+    //     application_number,
+    //     title,
+    //     inventor_name
+    // } = action.payload;
+
+    /*
+        user id
+        applicant name
+        date filed
+        group art number
+        docket number
+        title
+        examiner
+        conformation number
+        inventor name
+
+        // application number // for user
+        // status date // not when adding
+        // last check data // not use for adding application
+        // applicant name // user add or get from uspto
+
+    */
 
     render() {
         const {classes} = this.props;
@@ -222,7 +250,7 @@ class NewAppDialog extends React.Component {
                                         />
                                         <TextField
                                             id="outlined-confNum"
-                                            label="Conference Number"
+                                            label="Conformation Number"
                                             className={classes.appNumTextField}
                                             value={this.props.reduxState.uspto.appConfrNumber}
                                             onChange={this.handleChange('appConfrNumber')}
