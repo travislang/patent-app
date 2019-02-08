@@ -16,7 +16,7 @@ function* fetchOfficeActions(action){
         } = action.payload;
 
         // Request all office actions by id
-        const officeActionResponse = yield axios.get(`/api/office_action//by_app/${application_id}`);
+        const officeActionResponse = yield axios.get(`/api/office_action/by_app/${application_id}`);
     
         // Update redux
         yield dispatch({
@@ -26,6 +26,29 @@ function* fetchOfficeActions(action){
 
     } catch (error) {
         console.log(`Error in fetchOfficeActions: ${error}`);
+    }
+}
+
+// Worker saga responsible for handling FETCH_OFFICE_ACTION actions
+function* fetchOfficeAction(action){
+    try {
+        
+        // Deconstruct payload
+        const {
+            officeActionResponseId
+        } = action.payload;
+
+        // Request office action by id
+        const officeActionResponse = yield axios.get(`/api/office_action/${officeActionResponseId}`);
+    
+        // Update redux
+        yield dispatch({
+            type: 'SET_OFFICE_ACTION',
+            payload: officeActionResponse.data
+        })
+
+    } catch (error) {
+        console.log(`Error in fetchOfficeAction: ${error}`);
     }
 }
 
@@ -116,7 +139,8 @@ function* officeActionSaga (){
 // yield takeLatest('FETCH_OFFICE_ACTIONS',fetchOfficeActions);
 
 // Office action
-yield takeLatest('FETCH_OFFICE_ACTIONS',fetchOfficeActions); // <-- assumes office actions are fetched by
+yield takeLatest('FETCH_OFFICE_ACTIONS',fetchOfficeActions); // <-- assumes office actions are fetched by application id
+yield takeLatest('FETCH_OFFICE_ACTION',fetchOfficeAction); // <-- assumes office actions are fetched by office_action_id
 yield takeLatest('POST_OFFICE_ACTION',postOfficeAction);
 yield takeLatest('UPDATE_OFFICE_ACTION',updateOfficeAction);
 yield takeLatest('DELETE_OFFICE_ACTION',deleteOfficeAction);
