@@ -50,9 +50,6 @@ const styles = theme => ({
     group: {
         margin: `${theme.spacing.unit}px 0`,
     },
-    alignLegend: {
-        
-    }
 })
 
 
@@ -61,6 +58,10 @@ class Dashboard extends Component {
         dialogOpen: false,
         displayAllApps: 'false',
     };
+
+    componentDidMount() {
+        this.props.dispatch({ type: 'FETCH_APPLICATIONS' })
+    }
 
     handleChange = event => {
         this.setState({ displayAllApps: event.target.value });
@@ -134,7 +135,8 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = state => ({
-    
+    applicationList: state.applicationList,
+    user: state.user
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(Dashboard));
