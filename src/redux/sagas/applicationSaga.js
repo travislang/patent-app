@@ -7,7 +7,7 @@ import axios from 'axios';
 // *----------* ApplicationList Sagas *----------*
 
 // Worker saga responsible for handling FETCH_APPLICATIONS actions
-function* fetchApplications(){
+function* fetchApplications() {
     try {
 
         // Request all applications 
@@ -15,7 +15,7 @@ function* fetchApplications(){
 
         // Update redux with application
         yield dispatch({
-            type:'SET_APPLICATIONS',
+            type: 'SET_APPLICATIONS',
             payload: applicationResponseData.data
         })
 
@@ -27,11 +27,11 @@ function* fetchApplications(){
 // *----------* Application Sagas *----------*
 
 // worker saga responsible for handling FETCH_APPLICATION actions
-function* fetchApplication(action){
+function* fetchApplication(action) {
     try {
 
         // Request an application by id (sent as payload) ->
-        const { data : applicationResponseData } = yield axios.get(`/api/application/${action.payload}`);
+        const { data: applicationResponseData } = yield axios.get(`/api/application/${action.payload}`);
 
         // Update redux with application
         yield dispatch({
@@ -45,40 +45,51 @@ function* fetchApplication(action){
 }
 
 // Worker saga responsible for handling POST_APPLICATION actions
-function* postApplication(action){
+function* postApplication(action) {
+
     try {
 
         // Deconstruct payload 
         const {
             user_id,
             applicant_name,
-            status,
+            filed_date,
             last_checked_date,
+            status_date,
             application_number,
             title,
-            inventor_name
+            inventor_name,
+            examiner_name,
+            group_art_unit,
+            docket_number,
+            comfirmation_number
         } = action.payload;
 
         // Send a request to our API to have application posted in database
-        yield axios.post('/api/application/add',{
+        yield axios.post('/api/application/add', {
             user_id,
             applicant_name,
-            status,
+            filed_date,
             last_checked_date,
+            status_date,
             application_number,
             title,
-            inventor_name
+            inventor_name,
+            examiner_name,
+            group_art_unit,
+            docket_number,
+            comfirmation_number
         })
 
         // Now that our applications table has been updated, we need to reflect this in our redux state
-        yield dispatch({type: 'FETCH_APPLICATIONS'})
+        yield dispatch({ type: 'FETCH_APPLICATIONS' })
     } catch (error) {
         console.log(`Error in postApplication: ${error}`);
     }
 }
 
 // Worker saga responsible for handling UPDATE_APPLICATION actions
-function* updateApplication(action){
+function* updateApplication(action) {
     try {
 
         // Deconstruct payload
@@ -86,28 +97,34 @@ function* updateApplication(action){
             id,
             user_id,
             applicant_name,
-            status,
+            filed_date,
             last_checked_date,
+            status_date,
             application_number,
             title,
             inventor_name,
-            inactive
+            examiner_name,
+            group_art_unit,
+            docket_number
         } = action.payload;
 
         // Send request to api to update an application by id, and to update its contents 
-        yield axios.put(`/api/application/edit/${id}`,{
+        yield axios.put(`/api/application/edit/${id}`, {
             user_id,
             applicant_name,
-            status,
+            filed_date,
             last_checked_date,
+            status_date,
             application_number,
             title,
             inventor_name,
-            inactive
+            examiner_name,
+            group_art_unit,
+            docket_number
         });
 
         // Now that our applications table has been updated, we need to reflect this in our redux state
-        yield dispatch({type:'FETCH_APPLICATIONS'})
+        yield dispatch({ type: 'FETCH_APPLICATIONS' })
 
 
     } catch (error) {
@@ -116,7 +133,7 @@ function* updateApplication(action){
 }
 
 // Worker saga responsible for handling DELETE_APPLICATION actions
-function* deleteApplication(action){
+function* deleteApplication(action) {
 
     try {
 
@@ -129,7 +146,7 @@ function* deleteApplication(action){
         yield axios.delete(`api/application/delete/${id}`);
 
         // Since our database has been updated, we need also update redux
-        yield dispatch({type: 'FETCH_APPLICATIONS'});
+        yield dispatch({ type: 'FETCH_APPLICATIONS' });
 
     } catch (error) {
         console.log(`Error in deleteApplication: ${error}`);
