@@ -14,15 +14,20 @@ const testTemplate = [
         'Hello world no brackets.'    
     },
     { description: 
-        'Brackets in matching pairs and legal fields return true', 
+        'Multiple legal fields replace correctly', 
       template: 
         'These are legal field names: {firstInventor} hello world {applNumber}.', 
       expectedResult:
         `These are legal field names: ${testFieldValues.inventor_name} hello world ${testFieldValues.application_number}.`,
     },
-    // { description: 'Nested brackets not allowed', template: 'Hello world {field {field} }', expectedResult: false },
-    // { description: 'Illegal fields not allowed', template: 'This is not a legal field name: {notafield}', expectedResult: false },
-    // { description: '', template: , expectedResult:  },
+    {
+        description:
+            'Fields at beginning and end are replaced correctly',
+        template:
+            '{firstInventor} hello world {applNumber}',
+        expectedResult:
+            `${testFieldValues.inventor_name} hello world ${testFieldValues.application_number}`,
+    },
 ];
 
 for (let testCase of testTemplate) {
@@ -30,7 +35,3 @@ for (let testCase of testTemplate) {
         expect(replaceTemplateFields(testCase.template, testFieldValues)).toBe(testCase.expectedResult);
     });
 }
-
-// test('test', () => {
-//     expect(replaceFieldsInTemplate('hello world', legalCodes, keys).toBe('hello world'))
-// });
