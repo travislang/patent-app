@@ -1,8 +1,11 @@
 import replaceTemplateFields from '../template/replaceTemplateFields';
+import fieldCodes from '../template/legalCodes';
+const { defaultValue } = fieldCodes;
 
 const testFieldValues = {
     inventor_name: 'John Doe',
     application_number: '14/123456789',
+    title: '',
 };
 
 const testTemplate = [
@@ -28,10 +31,19 @@ const testTemplate = [
         expectedResult:
             `${testFieldValues.inventor_name} hello world ${testFieldValues.application_number}`,
     },
+    {
+        description:
+            'Fields with blank values are replaced by default value.',
+        template:
+            'The default value of {title} replaces empty values.',
+        expectedResult:
+            `The default value of ${defaultValue} replaces empty values.`,
+    },
 ];
 
 for (let testCase of testTemplate) {
     test(`${testCase.description}`, () => {
-        expect(replaceTemplateFields(testCase.template, testFieldValues)).toBe(testCase.expectedResult);
+        expect(replaceTemplateFields(testCase.template, testFieldValues))
+            .toBe(testCase.expectedResult);
     });
 }
