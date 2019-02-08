@@ -38,31 +38,31 @@ class NewAppDialog extends React.Component {
     };
 
     handleChange = name => event => {
-        this.setState({
-            [name]: event.target.value,
-        });
+        this.props.dispatch({
+            type: 'SET_USPTO_APP_DATA',
+            payload: { ...this.props.reduxState.uspto, [name]: event.target.value }
+          })
     };
-
+    handleId = (event) => {
+        this.setState({
+            appNum: event.target.value
+        })
+    }
     handleAppSearch = () => {
         this.props.dispatch({
             type: 'FETCH_USPTO_APP_DATA',
             payload: this.state.appNum
           });
-
-        setTimeout(this.handleSetStateFromSearch, 2000)
     }
+    handleAdd = () => {
+        this.props.dispatch({
+            type: '',
+            payload: {
 
-    handleSetStateFromSearch = () => {
-        this.setState({
-            firstNamedInv: this.props.reduxState.uspto.inventorName,
-            filed: this.props.reduxState.uspto.appFilingDate,
-            title: this.props.reduxState.uspto.patentTitle,
-            examiner: this.props.reduxState.uspto.appExamName,
-            groupArtNum: this.props.reduxState.uspto.appGrpArtNumber,
-            docketNum: this.props.reduxState.uspto.appAttrDockNumber,
-            confNum: this.props.reduxState.uspto.appConfrNumber,
-        })
-    }   
+            }
+        });
+        // this.handleClose
+    }
 
     render() {
         const {classes} = this.props;
@@ -88,7 +88,7 @@ class NewAppDialog extends React.Component {
                                     label="Application Number"
                                     className={classes.appNumTextField}
                                     value={this.state.appNum}
-                                    onChange={this.handleChange('appNum')}
+                                    onChange={this.handleId}
                                     margin="normal"
                                     variant="outlined"
                                     margin='dense'
@@ -108,15 +108,15 @@ class NewAppDialog extends React.Component {
                                 <Grid item>
                                     <Grid container direction='column'>
                                         <TextField
-                                            id="outlined-firstName"
-                                            label="First Named Inv."
+                                            id="outlined-inventorName"
+                                            label="Inventor Name"
                                             className={classes.appNumTextField}
-                                            value={this.state.firstNamedInv}
-                                            onChange={this.handleChange('firstNamedInv')}
+                                            value={this.props.reduxState.uspto.inventorName}
+                                            onChange={this.handleChange('inventorName')}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.state.firstNamedInv && {
+                                            InputLabelProps={this.props.reduxState.uspto.inventorName && {
                                                 shrink: true,
                                               }}
                                         />
@@ -124,25 +124,25 @@ class NewAppDialog extends React.Component {
                                             id="outlined-serialNum"
                                             label="Serial Number"
                                             className={classes.appNumTextField}
-                                            value={this.state.serialNum}
-                                            onChange={this.handleChange('serialNum')}
+                                            value={this.props.reduxState.uspto.appSerialNumber}
+                                            onChange={this.handleChange('appSerialNumber')}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.state.serialNum && {
+                                            InputLabelProps={this.props.reduxState.uspto.appSerialNumber && {
                                                 shrink: true,
                                               }}
                                         />
                                         <TextField
                                             id="outlined-filed"
-                                            label="Filed"
+                                            label="Date Filed"
                                             className={classes.appNumTextField}
-                                            value={this.state.filed}
-                                            onChange={this.handleChange('filed')}
+                                            value={this.props.reduxState.uspto.appFilingDate}
+                                            onChange={this.handleChange('appFilingDate')}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.state.filed && {
+                                            InputLabelProps={this.props.reduxState.uspto.appFilingDate && {
                                                 shrink: true,
                                               }}
                                         />
@@ -155,12 +155,12 @@ class NewAppDialog extends React.Component {
                                             id="outlined-customerNumb"
                                             label="Customer Number"
                                             className={classes.appNumTextField}
-                                            value={this.state.customerNum}
+                                            value={this.props.reduxState.uspto.customerNum}
                                             onChange={this.handleChange('customerNum')}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.state.customerNum && {
+                                            InputLabelProps={this.props.reduxState.uspto.customerNum && {
                                                 shrink: true,
                                               }}
                                         />
@@ -168,12 +168,12 @@ class NewAppDialog extends React.Component {
                                             id="outlined-title"
                                             label="Title"
                                             className={classes.appNumTextField}
-                                            value={this.state.title}
-                                            onChange={this.handleChange('title')}
+                                            value={this.props.reduxState.uspto.patentTitle}
+                                            onChange={this.handleChange('patentTitle')}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.state.title && {
+                                            InputLabelProps={this.props.reduxState.uspto.patentTitle && {
                                                 shrink: true,
                                               }}
                                         />
@@ -181,12 +181,12 @@ class NewAppDialog extends React.Component {
                                             id="outlined-examiner"
                                             label="Examiner"
                                             className={classes.appNumTextField}
-                                            value={this.state.examiner}
-                                            onChange={this.handleChange('examiner')}
+                                            value={this.props.reduxState.uspto.appExamName}
+                                            onChange={this.handleChange('appExamName')}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.state.examiner && {
+                                            InputLabelProps={this.props.reduxState.uspto.appExamName && {
                                                 shrink: true,
                                               }}
                                         />
@@ -198,12 +198,12 @@ class NewAppDialog extends React.Component {
                                             id="outlined-groupArtNum"
                                             label="Group Art Number"
                                             className={classes.appNumTextField}
-                                            value={this.state.groupArtNum}
-                                            onChange={this.handleChange('groupArtNum')}
+                                            value={this.props.reduxState.uspto.appGrpArtNumber}
+                                            onChange={this.handleChange('appGrpArtNumber')}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.state.groupArtNum && {
+                                            InputLabelProps={this.props.reduxState.uspto.appGrpArtNumber && {
                                                 shrink: true,
                                               }}
                                         />
@@ -211,12 +211,12 @@ class NewAppDialog extends React.Component {
                                             id="outlined-docketNum"
                                             label="Docket Number"
                                             className={classes.appNumTextField}
-                                            value={this.state.docketNum}
-                                            onChange={this.handleChange('docketNum')}
+                                            value={this.props.reduxState.uspto.appAttrDockNumber}
+                                            onChange={this.handleChange('appAttrDockNumber')}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.state.docketNum && {
+                                            InputLabelProps={this.props.reduxState.uspto.appAttrDockNumber && {
                                                 shrink: true,
                                               }}
                                         />
@@ -224,12 +224,12 @@ class NewAppDialog extends React.Component {
                                             id="outlined-confNum"
                                             label="Conference Number"
                                             className={classes.appNumTextField}
-                                            value={this.state.confNum}
-                                            onChange={this.handleChange('confNum')}
+                                            value={this.props.reduxState.uspto.appConfrNumber}
+                                            onChange={this.handleChange('appConfrNumber')}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.state.confNum && {
+                                            InputLabelProps={this.props.reduxState.uspto.appConfrNumber && {
                                                 shrink: true,
                                               }}
                                         />
@@ -243,7 +243,7 @@ class NewAppDialog extends React.Component {
                     <Button onClick={this.props.handleClose} variant='contained' color="default">
                         Cancel
                     </Button>
-                    <Button onClick={this.handleClose} variant='contained' color="primary">
+                    <Button onClick={this.handleAdd} variant='contained' color="primary">
                         Add Application
                     </Button>
                 </DialogActions>
