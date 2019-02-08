@@ -1,10 +1,10 @@
 // Reducer responsible for providing access to all templates
-const templateReducer = (state = [], action) => {
+const templateReducer = (state = { templates:[], types: []}, action) => {
     switch (action.type) {
         case 'SET_TEMPLATES':
-            return action.payload;
-        case 'UNSET_TEMPLATES':
-            return [];
+            return {... state, templates: action.payload};
+        case 'SET_TEMPLATE_TYPES':
+            return {... state, types: action.payload};
         default:
             return state;
     }
