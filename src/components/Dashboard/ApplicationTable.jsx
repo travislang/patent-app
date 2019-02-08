@@ -13,13 +13,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import { connect } from 'react-redux';
 
-
-let counter = 0;
-function createData(owner, title, client, mailingDate, decision, status) {
-    counter += 1;
-    return { id: counter, owner, title, client, mailingDate, decision, status };
-}
-
 function desc(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
         return -1;
@@ -45,11 +38,11 @@ function getSorting(order, orderBy) {
 }
 
 const rows = [
-    { id: 'owner', numeric: false, label: 'Owner' },
+    { id: 'user_id', numeric: false, label: 'Owner' },
     { id: 'title', numeric: false, label: 'Title' },
-    { id: 'Applicant', numeric: false, label: 'Applicant' },
-    { id: 'mailingDate', numeric: false, label: 'Mailing Date' },
-    { id: 'decision', numeric: false, label: 'Decision' },
+    { id: 'applicant_name', numeric: false, label: 'Applicant' },
+    { id: 'uspto_mailing_date', numeric: false, label: 'Mailing Date' },
+    { id: 'uspto_status', numeric: false, label: 'Decision' },
     { id: 'status', numeric: false, label: 'Status' },
 ];
 
@@ -110,7 +103,7 @@ const styles = theme => ({
 class ApplicationTable extends React.Component {
     state = {
         order: 'asc',
-        orderBy: 'mailingDate',
+        orderBy: 'uspto_mailing_date',
         page: 0,
         rowsPerPage: 10,
     };
@@ -181,16 +174,16 @@ class ApplicationTable extends React.Component {
                                             hover
                                             onClick={event => this.handleClick(event, n.id)}
                                             tabIndex={-1}
-                                            key={n.id}
+                                            key={n.app_table_id}
                                         >
                                             <TableCell component="th" scope="row" align="left">
                                                 {n.user_id}
                                             </TableCell>
                                             <TableCell align="left">{n.title}</TableCell>
                                             <TableCell align="left">{n.applicant_name}</TableCell>
-                                            <TableCell align="left">{n.uspto_mailing_date}</TableCell>
-                                            <TableCell align="left">{n.uspto_status}</TableCell>
-                                            <TableCell align="left">{n.status}</TableCell>
+                                            <TableCell align="left">{n.uspto_mailing_date || 'NA'}</TableCell>
+                                            <TableCell align="left">{n.uspto_status || 'NA'}</TableCell>
+                                            <TableCell align="left">{n.status || 'NA'}</TableCell>
                                         </TableRow>
                                     );
                                 })}
