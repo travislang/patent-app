@@ -26,6 +26,7 @@ function* fetchStatuses(){
 
 function* statusSaga (){
     yield takeLatest('FETCH_STATUSES', fetchStatuses);
+    
 }
 
 export default statusSaga;

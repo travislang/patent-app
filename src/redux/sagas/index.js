@@ -7,6 +7,7 @@ import issueSaga from './issueSaga';
 import officeActionSaga from './officeActionSaga';
 import responseSaga from './responseSaga';
 import statusSaga from './statusSaga';
+import templateSaga from './templateSaga';
 import usptoSaga from './usptoSaga';
 
 
@@ -27,6 +28,7 @@ export default function* rootSaga() {
     officeActionSaga(),
     responseSaga(),
     statusSaga(),
+    templateSaga(),
     usptoSaga(),
   ]);
 }
