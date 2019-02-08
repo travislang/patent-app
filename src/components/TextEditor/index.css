@@ -4,7 +4,7 @@
 }
 
 .format-toolbar {
-    display: 'flex';
+    display: flex;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
     padding: 8px;
 }

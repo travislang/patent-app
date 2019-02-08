@@ -22,6 +22,7 @@
     "react-icons-kit": "^1.2.1",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
+    "react-router-hash-link": "^1.2.1",
     "react-scripts": "^2.0.3",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
@@ -36,6 +37,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "testServer": "jest server/test/*.test.js --forceExit",
+    "testApplicationRoute": "jest server/test/application.router.test.js --forceExit",
     "eject": "react-scripts eject"
   },
   "devDependencies": {

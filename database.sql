@@ -1,3 +1,5 @@
+CREATE DATABASE "patent_app";
+
 CREATE TABLE "user" (
     "id" SERIAL PRIMARY KEY,
     "user_name" VARCHAR (20) UNIQUE NOT NULL,
@@ -16,12 +18,15 @@ CREATE TABLE "application" (
     "id" SERIAL PRIMARY KEY,
     "user_id" INTEGER REFERENCES "user",
     "applicant_name" VARCHAR(60),
-    "status" VARCHAR(50),
+    "filed_date" DATE,
     "last_checked_date" DATE,
     "status_date" DATE,
     "application_number" VARCHAR(20),
     "title" VARCHAR(100),
     "inventor_name" VARCHAR(60),
+    "examiner_name" VARCHAR(60),
+    "group_art_unit" VARCHAR(10),
+    "docket_number" VARCHAR(20),
     "inactive" BOOLEAN DEFAULT FALSE
 );
 
@@ -36,6 +41,7 @@ CREATE TABLE "office_action" (
     "application_id" INTEGER REFERENCES "application",
     "uspto_mailing_date" DATE,
     "response_sent_date" DATE,
+    "uspto_status" VARCHAR(50),
     "status_id" INTEGER REFERENCES "status"
 );
 
@@ -60,13 +66,20 @@ CREATE TABLE "issue" (
     "template_id" INTEGER REFERENCES "template"
 );
 
+CREATE TABLE "response_text" (
+    "id" SERIAL PRIMARY KEY,
+    "issue_id" INTEGER REFERENCES "issue",
+    "text" VARCHAR(2500)
+);
+
 CREATE TABLE "field_code" (
     "id" SERIAL PRIMARY KEY,
     "code" VARCHAR(20),
     "description" VARCHAR(100)
 );
 
-
+-- The following will make users to test with.
+-- This is convenient because the register route is protected.
 INSERT INTO "user" ("user_name", "password", "is_admin")
 VALUES
 ('admin', '$2b$10$jGgyR6x7KyoQwowqxJHGlujj2KpUssCzzIjmKIAzJ3itZ8P55MOE.', 'true'), --pw admin

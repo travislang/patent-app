@@ -13,10 +13,12 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 import Appbar from '../Appbar/Appbar';
 import UserPage from '../UserPage/UserPage';
 import PreviewPage from '../PreviewPage/PreviewPage';
+import Dashboard from '../Dashboard/Dashboard';
 
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppTheme from '../MuiTheme';
+import OfficeActions from '../OfficeActions/OfficeActions';
 
 class App extends Component {
     componentDidMount() {
@@ -40,6 +42,14 @@ class App extends Component {
                             <Route
                                 path="/preview"
                                 component={PreviewPage}
+                            />
+                            <Route
+                                path="/dashboard"
+                                component={Dashboard}
+                            />
+                            <Route
+                                path="/office-actions"
+                                component={OfficeActions}
                             />
                             <Route render={() => <h1>404</h1>} />
                         </Switch>

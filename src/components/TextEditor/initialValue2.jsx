@@ -1,6 +1,6 @@
 import { Value } from 'slate';
 
-const initialValue = Value.fromJSON({
+const initialValue2 = Value.fromJSON({
     document: {
         nodes: [
             {
@@ -11,7 +11,7 @@ const initialValue = Value.fromJSON({
                         object: 'text',
                         leaves: [
                             {
-                                text: 'Issues 1-5, 8, 37 USC 101'
+                                text: 'Issues 6,7, 37 USC 101'
                             }
                         ]
                     }
@@ -49,4 +49,4 @@ const initialValue = Value.fromJSON({
     }
 })
 
-export default initialValue;
+export default initialValue2;
