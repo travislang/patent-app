@@ -10,7 +10,7 @@ router.get('/by_office_action/:officeActionId', rejectUnauthenticated, (req, res
         query = 
             `SELECT "response_text".* FROM "response_text"
             JOIN "issue" ON "issue"."id"="response_text"."issue_id"
-            WHERE "issue".office_action_id"=$1
+            WHERE "issue"."office_action_id"=$1
             ORDER BY "response_text"."id";`;
     } else {
         query =
@@ -52,21 +52,23 @@ router.post('/add', rejectUnauthenticated, (req, res) => {
 });
 
 router.put('/edit/:responseId', rejectUnauthenticated, (req, res) => {
-    `UPDATE "response_text" SET "issue_id"=$1, "text"=$2 
+    const { responseId } = req.params;
+    const query =
+        `UPDATE "response_text" SET "issue_id"=$1, "text"=$2 
         WHERE "response_text"."id"=$5
             AND EXISTS
             (SELECT * FROM "application"
             JOIN "office_action" ON "application"."id"="office_action"."application_id"
             JOIN "issue" ON "issue"."office_action_id"="office_action"."id"
-            WHERE "application"."user_id"=$3 AND "issue"."id"=$1)
+            WHERE "application"."user_id"=$3 AND "response_text"."id"=$5)
             OR $4;`;
     pool.query(
-        query,
-        [
+        query, [
             req.body.issue_id, 
             req.body.text, 
             req.user.id, 
             req.user.is_admin,
+            responseId,
         ]).then((results) => {
             res.sendStatus(201);
         }).catch((err) => {
@@ -77,20 +79,20 @@ router.put('/edit/:responseId', rejectUnauthenticated, (req, res) => {
 });
 
 router.delete('/delete/:responseId', rejectUnauthenticated, (req, res) => {
-    `DELETE FROM "response_text"
+    const query =
+        `DELETE FROM "response_text"
         WHERE "response_text"."id"=$1
             AND EXISTS
-            (SELECT * FROM "application"
-            JOIN "office_action" ON "application"."id"="office_action"."application_id"
-            JOIN "issue" ON "issue"."office_action_id"="office_action"."id"
-            WHERE "application"."user_id"=$2 AND "issue"."id"=$3)
-            OR $4;`;
+                (SELECT * FROM "application"
+                JOIN "office_action" ON "application"."id"="office_action"."application_id"
+                JOIN "issue" ON "issue"."office_action_id"="office_action"."id"
+                JOIN "response_text" ON "response_text"."issue_id" = "issue"."id"
+                WHERE ("application"."user_id"=$2 AND "response_text"."id" = $1))
+            OR $3;`;
     pool.query(
-        query,
-        [
+        query, [
             req.params.responseId,
             req.user.id,
-            req.body.issue_id,
             req.user.is_admin,
         ]).then((results) => {
             res.sendStatus(201);

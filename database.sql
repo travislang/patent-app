@@ -27,6 +27,7 @@ CREATE TABLE "application" (
     "examiner_name" VARCHAR(60),
     "group_art_unit" VARCHAR(10),
     "docket_number" VARCHAR(20),
+    "confirmation_number" VARCHAR(5),
     "inactive" BOOLEAN DEFAULT FALSE
 );
 
@@ -85,3 +86,12 @@ VALUES
 ('admin', '$2b$10$jGgyR6x7KyoQwowqxJHGlujj2KpUssCzzIjmKIAzJ3itZ8P55MOE.', 'true'), --pw admin
 ('user', '$2b$10$doyOvwDhPKKLO/ZiRKDg0eEPXfoAhf13zFQ5r0vJEE/W76V72TDQK', 'false'), --pw user
 ('user2', '$2b$10$ZKcBbq.B2tDia.2QLWFe7e4nP0CxgkqGfeWh8bN/T3WM4V1TvCrjy', 'false'); --pw user2
+
+
+-- The following gives test applications to display on dashboard
+INSERT INTO "application" ("user_id", "applicant_name", "filed_date", "last_checked_date", "status_date", "application_number", "title", "inventor_name", "examiner_name", "group_art_unit", "docket_number")
+VALUES
+('1', 'Spotify AB', '10/15/2018', '02/01/2019', '01/22/2019', '28740917223', 'Selecting songs', 'John Doe', 'Shelby Smith', 'artistry', '22507'),
+('1', 'Spotify AB', '08/10/2018', '02/05/2019', '01/04/2019', '3980917223', 'using playlists', 'John Doe', 'Jackson Real', 'artistry', '00489'),
+('1', 'Adidas', '4/15/2018', '01/19/2019', '12/22/2018', '280047299', 'running shoes with lights', 'John Doe', 'Shelby Smith', 'fashion', '11873'),
+('1', 'Reebok', '11/27/2018', '01/02/2019', '12/04/2018', '9133000278', 'flexible jump rope', 'Casey Jumps', 'Wesley West', 'Outdoors', '88445');

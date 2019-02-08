@@ -5,12 +5,11 @@ function* fetchApplication(action){
     try {
         // clear the Application reducer
         yield put({ type: 'CLEAR_USPTO_APP_DATA'}); 
-
         // set variable response from route
-        const response = yield axios.get('api/uspto', {applId: action.payload});
+        const response = yield axios.post('api/uspto', {applId: action.payload});
 
         // send response to reducer
-        yield put({ type: 'SET_USPTO_APP_DATA', payload: response});
+        yield put({ type: 'SET_USPTO_APP_DATA', payload: response.data});
 
     } catch(error) {
         console.log('Fail to get application', error)
