@@ -61,7 +61,7 @@ class NewAppDialog extends React.Component {
             applicant_name: this.props.reduxState.uspto.applicantName,
             filed_date: this.props.reduxState.uspto.appFilingDate,
             last_checked_date: this.props.reduxState.uspto.LAST_MOD_TS,
-            status_date: '',
+            status_date: new Date().toLocaleDateString(), // grabbing today day and format it into '8/3/2018'
             application_number: this.state.appNum,
             title: this.props.reduxState.uspto.patentTitle,
             inventor_name: this.props.reduxState.uspto.inventorName,
