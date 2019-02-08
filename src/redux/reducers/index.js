@@ -9,7 +9,8 @@ import uspto from './usptoReducer';
 
 // *----------* Applications *----------*
 import application from './applicationReducer';
-import template from '../reducers/templateReducer';
+import template from './templateReducer';
+import userList from './userListReducer'
 
 
 // rootReducer is the primary reducer for our entire project
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   uspto, // handle state for USPTO api for the application information
   application, // Reducer responsible for providing access to application data indluding action responses,
   template, // Reducer responsible for providing access to all templates
+  userList, // Responsible for providing admin access to all users
 });
 
 export default rootReducer;
