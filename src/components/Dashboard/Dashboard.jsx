@@ -25,9 +25,8 @@ const styles = theme => ({
 
     },
     paper: {
-        marginTop: theme.spacing.unit * 15,
+        margin: theme.spacing.unit * 15,
         minWidth: 1040,
-        height: 500
     },
     title: {
         padding: `${theme.spacing.unit * 2}px 0 0`
