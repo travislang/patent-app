@@ -16,15 +16,15 @@ router.get('/status', rejectUnauthenticated, (req, res) => {
             LEFT JOIN "status" ON "status_id"="status"."id"
             ORDER BY "application_id", "uspto_mailing_date" DESC
         )
-        SELECT *, "application"."id" AS "app_table_id" FROM "application"
+        SELECT "application".*, "application"."id" AS "app_table_id", "user"."user_name" FROM "application"
         LEFT JOIN "max_dates" ON "application"."id"="max_dates"."application_id"
+        JOIN "user" ON "application"."user_id"="user"."id"
     `;
     if (req.user && req.user.is_admin) { 
         query += orderClause;
     } else {
         query += `WHERE "application"."user_id"=${req.user.id} ${orderClause}`;
     }
-    console.log('query:', query);
     pool.query(query)
         .then((results) => {
             res.send(results.rows);
@@ -76,7 +76,6 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 });
 
 router.post('/add', rejectUnauthenticated, (req, res) => {
-    console.log('user:', req.user, req.body.user_id)
     if (!req.user.isAdmin && +req.body.user_id !== req.user.id) {
         res.sendStatus(403);
     } else {
@@ -92,9 +91,10 @@ router.post('/add', rejectUnauthenticated, (req, res) => {
                 "inventor_name",
                 "examiner_name",
                 "group_art_unit",
-                "docket_number"
+                "docket_number",
+                "confirmation_number"
             )
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);`;
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);`;
         pool.query(query, [
             req.body.user_id,
             req.body.applicant_name,
@@ -107,6 +107,7 @@ router.post('/add', rejectUnauthenticated, (req, res) => {
             req.body.examiner_name,
             req.body.group_art_unit,
             req.body.docket_number,
+            req.body.confirmation_number,
         ]).then((results) => {
             res.sendStatus(201);
         }).catch((err) => {
@@ -134,7 +135,8 @@ router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
             "examiner_name"=$10,
             "group_art_unit"=$11,
             "docket_number"=$12,
-            "inactive"=$13
+            "confirmation_number"=$13,
+            "inactive"=$14
             )
             WHERE "application"."id"=$1;
         `;
@@ -151,6 +153,7 @@ router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
             req.body.examiner_name,
             req.body.group_art_unit,
             req.body.docket_number,
+            req.body.confirmation_number,
             req.body.inactive,
         ]).then(results => {
             res.sendStatus(200);

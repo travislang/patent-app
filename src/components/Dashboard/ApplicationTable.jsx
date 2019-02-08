@@ -11,11 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 
-let counter = 0;
-function createData(owner, title, client, mailingDate, decision, status) {
-    counter += 1;
-    return { id: counter, owner, title, client, mailingDate, decision, status };
-}
+import { connect } from 'react-redux';
 
 function desc(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -42,11 +38,11 @@ function getSorting(order, orderBy) {
 }
 
 const rows = [
-    { id: 'owner', numeric: false, label: 'Owner' },
+    { id: 'user_id', numeric: false, label: 'Owner' },
     { id: 'title', numeric: false, label: 'Title' },
-    { id: 'client', numeric: false, label: 'Client' },
-    { id: 'mailingDate', numeric: false, label: 'Mailing Date' },
-    { id: 'decision', numeric: false, label: 'Decision' },
+    { id: 'applicant_name', numeric: false, label: 'Applicant' },
+    { id: 'uspto_mailing_date', numeric: false, label: 'Mailing Date' },
+    { id: 'uspto_status', numeric: false, label: 'Decision' },
     { id: 'status', numeric: false, label: 'Status' },
 ];
 
@@ -107,26 +103,7 @@ const styles = theme => ({
 class ApplicationTable extends React.Component {
     state = {
         order: 'asc',
-        orderBy: 'mailingDate',
-        data: [
-            createData('Travis', 'the widget', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 2', 'ABC Org', '02/05/2019', 'non final', 'pending'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-            createData('Travis', 'the widget 3', 'ABC Org', '02/05/2019', 'final', 'inactive'),
-        ],
+        orderBy: 'uspto_mailing_date',
         page: 0,
         rowsPerPage: 10,
     };
@@ -150,9 +127,32 @@ class ApplicationTable extends React.Component {
         this.setState({ rowsPerPage: event.target.value });
     };
 
+    // app_table_id: 1
+    // applicant_name: "Spotify AB"
+    // application_id: 1
+    // application_number: "28740917223"
+    // color: null
+    // docket_number: "22507"
+    // examiner_name: "Shelby Smith"
+    // filed_date: "2018-10-15T05:00:00.000Z"
+    // group_art_unit: "artistry"
+    // id: 1
+    // inactive: false
+    // inventor_name: "John Doe"
+    // last_checked_date: "2019-02-01T06:00:00.000Z"
+    // response_sent_date: "2019-12-28T06:00:00.000Z"
+    // status: "pending"
+    // status_date: "2019-01-22T06:00:00.000Z"
+    // status_id: 1
+    // title: "Selecting songs"
+    // user_id: 1
+    // uspto_mailing_date: "2019-01-15T06:00:00.000Z"
+    // uspto_status: "nonfinal"
+
     render() {
         const { classes } = this.props;
-        const { data, order, orderBy, rowsPerPage, page } = this.state;
+        const data = this.props.applicationList;
+        const { order, orderBy, rowsPerPage, page } = this.state;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
         return (
@@ -174,16 +174,16 @@ class ApplicationTable extends React.Component {
                                             hover
                                             onClick={event => this.handleClick(event, n.id)}
                                             tabIndex={-1}
-                                            key={n.id}
+                                            key={n.app_table_id}
                                         >
                                             <TableCell component="th" scope="row" align="left">
-                                                {n.owner}
+                                                {n.user_name}
                                             </TableCell>
                                             <TableCell align="left">{n.title}</TableCell>
-                                            <TableCell align="left">{n.client}</TableCell>
-                                            <TableCell align="left">{n.mailingDate}</TableCell>
-                                            <TableCell align="left">{n.decision}</TableCell>
-                                            <TableCell align="left">{n.status}</TableCell>
+                                            <TableCell align="left">{n.applicant_name}</TableCell>
+                                            <TableCell align="left">{n.uspto_mailing_date || 'NA'}</TableCell>
+                                            <TableCell align="left">{n.uspto_status || 'NA'}</TableCell>
+                                            <TableCell align="left">{n.status || 'NA'}</TableCell>
                                         </TableRow>
                                     );
                                 })}
@@ -215,4 +215,9 @@ class ApplicationTable extends React.Component {
     }
 }
 
-export default withStyles(styles)(ApplicationTable);
+const mapStateToProps = state => ({
+    applicationList: state.application.applicationList,
+    user: state.user
+});
+
+export default connect(mapStateToProps)(withStyles(styles)(ApplicationTable));

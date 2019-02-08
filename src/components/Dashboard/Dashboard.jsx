@@ -135,7 +135,7 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = state => ({
-    applicationList: state.applicationList,
+    applicationList: state.application.applicationList,
     user: state.user
 });
 

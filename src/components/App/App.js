@@ -39,7 +39,7 @@ class App extends Component {
                                 path="/home"
                                 component={UserPage}
                             />
-                            <ProtectedRoute
+                            <Route
                                 path="/preview"
                                 component={PreviewPage}
                             />
