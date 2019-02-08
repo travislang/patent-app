@@ -41,7 +41,7 @@ class NewAppDialog extends React.Component {
         this.props.dispatch({
             type: 'SET_USPTO_APP_DATA',
             payload: { ...this.props.reduxState.uspto, [name]: event.target.value }
-          })
+        })
     };
     handleId = (event) => {
         this.setState({
@@ -52,10 +52,18 @@ class NewAppDialog extends React.Component {
         this.props.dispatch({
             type: 'FETCH_USPTO_APP_DATA',
             payload: this.state.appNum
-          });
+        });
     }
-    handleAdd = () => {
+    handleAdd = (applicationPayload) => {
         console.log('in handle add')
+        this.props.dispatch({
+            type: 'POST_APPLICATION',
+            payload: applicationPayload
+        });
+    }
+    render() {
+        const { classes } = this.props;
+
         let applicationPayload = {
             user_id: this.props.reduxState.user.id,
             applicant_name: this.props.reduxState.uspto.applicantName,
@@ -68,29 +76,9 @@ class NewAppDialog extends React.Component {
             examiner_name: this.props.reduxState.uspto.appExamName,
             group_art_unit: this.props.reduxState.uspto.appGrpArtNumber,
             docket_number: this.props.reduxState.uspto.appAttrDockNumber,
-            comfirmation_number: this.props.reduxState.uspto.appConfrNumber
+            confirmation_number: this.props.reduxState.uspto.appConfrNumber
         }
-        this.props.dispatch({
-            type: 'POST_APPLICATION',
-            payload: applicationPayload
-        });
-    }
-    /*
-        user id
-        applicant name x    a
-        date filed  x   a
-        group art number    x   a
-        docket number   x   a
-        title   x   a
-        examiner    x   a
-        confirmation number x   a
-        inventor name   x   a
-        // last check data // not use for adding application    x   a
 
-    */
-
-    render() {
-        const {classes} = this.props;
         return (
             <Dialog
                 maxWidth='lg'
@@ -119,8 +107,8 @@ class NewAppDialog extends React.Component {
                                     margin='dense'
                                 />
                                 <div>
-                                    <Button 
-                                        onClick={this.handleAppSearch}        color="primary"
+                                    <Button
+                                        onClick={this.handleAppSearch} color="primary"
                                         variant='contained'
                                         size='large'>
                                         Search
@@ -130,7 +118,7 @@ class NewAppDialog extends React.Component {
                         </Grid>
                         <Grid item className={classes.inputFieldsContainer}>
                             <Grid container justify='space-between'>
-                            <Grid item>
+                                <Grid item>
                                     <Grid container direction='column'>
                                         <TextField
                                             id="outlined-applicantName"
@@ -143,7 +131,7 @@ class NewAppDialog extends React.Component {
                                             margin='dense'
                                             InputLabelProps={this.props.reduxState.uspto.applicantName && {
                                                 shrink: true,
-                                              }}
+                                            }}
                                         />
                                         <TextField
                                             id="outlined-lastDateCheck"
@@ -156,7 +144,7 @@ class NewAppDialog extends React.Component {
                                             margin='dense'
                                             InputLabelProps={this.props.reduxState.uspto.LAST_MOD_TS && {
                                                 shrink: true,
-                                              }}
+                                            }}
                                         />
                                     </Grid>
                                 </Grid>
@@ -173,7 +161,7 @@ class NewAppDialog extends React.Component {
                                             margin='dense'
                                             InputLabelProps={this.props.reduxState.uspto.inventorName && {
                                                 shrink: true,
-                                              }}
+                                            }}
                                         />
                                         <TextField
                                             id="outlined-filed"
@@ -186,9 +174,9 @@ class NewAppDialog extends React.Component {
                                             margin='dense'
                                             InputLabelProps={this.props.reduxState.uspto.appFilingDate && {
                                                 shrink: true,
-                                              }}
+                                            }}
                                         />
-                                        
+
                                     </Grid>
                                 </Grid>
                                 <Grid item>
@@ -204,7 +192,7 @@ class NewAppDialog extends React.Component {
                                             margin='dense'
                                             InputLabelProps={this.props.reduxState.uspto.customerNum && {
                                                 shrink: true,
-                                              }}
+                                            }}
                                         />
                                         <TextField
                                             id="outlined-title"
@@ -217,7 +205,7 @@ class NewAppDialog extends React.Component {
                                             margin='dense'
                                             InputLabelProps={this.props.reduxState.uspto.patentTitle && {
                                                 shrink: true,
-                                              }}
+                                            }}
                                         />
                                         <TextField
                                             id="outlined-examiner"
@@ -230,7 +218,7 @@ class NewAppDialog extends React.Component {
                                             margin='dense'
                                             InputLabelProps={this.props.reduxState.uspto.appExamName && {
                                                 shrink: true,
-                                              }}
+                                            }}
                                         />
                                     </Grid>
                                 </Grid>
@@ -247,7 +235,7 @@ class NewAppDialog extends React.Component {
                                             margin='dense'
                                             InputLabelProps={this.props.reduxState.uspto.appGrpArtNumber && {
                                                 shrink: true,
-                                              }}
+                                            }}
                                         />
                                         <TextField
                                             id="outlined-docketNum"
@@ -260,7 +248,7 @@ class NewAppDialog extends React.Component {
                                             margin='dense'
                                             InputLabelProps={this.props.reduxState.uspto.appAttrDockNumber && {
                                                 shrink: true,
-                                              }}
+                                            }}
                                         />
                                         <TextField
                                             id="outlined-confNum"
@@ -273,7 +261,7 @@ class NewAppDialog extends React.Component {
                                             margin='dense'
                                             InputLabelProps={this.props.reduxState.uspto.appConfrNumber && {
                                                 shrink: true,
-                                              }}
+                                            }}
                                         />
                                     </Grid>
                                 </Grid>
@@ -285,7 +273,7 @@ class NewAppDialog extends React.Component {
                     <Button onClick={this.props.handleClose} variant='contained' color="default">
                         Cancel
                     </Button>
-                    <Button onClick={this.handleAdd} variant='contained' color="primary">
+                    <Button onClick={()=>this.handleAdd(applicationPayload)} variant='contained' color="primary">
                         Add Application
                     </Button>
                 </DialogActions>
@@ -296,6 +284,6 @@ class NewAppDialog extends React.Component {
 
 const mapStateToProps = reduxState => ({
     reduxState,
-  });
+});
 
 export default connect(mapStateToProps)(withStyles(styles)(NewAppDialog));
