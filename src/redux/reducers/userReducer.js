@@ -1,11 +1,9 @@
-const userReducer = (state = {user:{}, userList:[]}, action) => {
+const userReducer = (state = {}, action) => {
   switch (action.type) {
     case 'SET_USER':
-      return {... state, user: action.payload};
+      return action.payload;
     case 'UNSET_USER':
       return {};
-    case 'SET_USERS':
-      return {... state, userList: action.payload}
     default:
       return state;
   }
