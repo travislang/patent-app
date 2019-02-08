@@ -177,7 +177,7 @@ class ApplicationTable extends React.Component {
                                             key={n.app_table_id}
                                         >
                                             <TableCell component="th" scope="row" align="left">
-                                                {n.username}
+                                                {n.user_name}
                                             </TableCell>
                                             <TableCell align="left">{n.title}</TableCell>
                                             <TableCell align="left">{n.applicant_name}</TableCell>
