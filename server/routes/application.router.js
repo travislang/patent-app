@@ -16,7 +16,7 @@ router.get('/status', rejectUnauthenticated, (req, res) => {
             LEFT JOIN "status" ON "status_id"="status"."id"
             ORDER BY "application_id", "uspto_mailing_date" DESC
         )
-        SELECT "application".*, "application"."id" AS "app_table_id", "user"."user_name" FROM "application"
+        SELECT "application".*, "max_dates".*, "application"."id" AS "app_table_id", "user"."user_name" FROM "application"
         LEFT JOIN "max_dates" ON "application"."id"="max_dates"."application_id"
         JOIN "user" ON "application"."user_id"="user"."id"
     `;

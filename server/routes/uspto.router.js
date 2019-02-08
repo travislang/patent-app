@@ -4,12 +4,16 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 const router = express.Router();
 const axios = require('axios');
 
+
+const changeToNumber = (str) => {
+    let num = +str.replace(/[^0-9.]/g,"");
+    return num
+}
+
 // uspto routes
-
-// GET ROUTE
+// POST ROUTE
 router.post('/', rejectUnauthenticated, (req, res) => {
-
-    const filterId = +req.body.applId.replace(/[^0-9.]/g, "")
+    const filterId = changeToNumber(req.body.applId);
     // ---- USING USPTO API  ---- 
     axios.post( // USPTO use POST route to grab information
         'https://ped.uspto.gov/api/queries', // api route
