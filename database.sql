@@ -27,6 +27,7 @@ CREATE TABLE "application" (
     "examiner_name" VARCHAR(60),
     "group_art_unit" VARCHAR(10),
     "docket_number" VARCHAR(20),
+    "confirmation_number" VARCHAR(5),
     "inactive" BOOLEAN DEFAULT FALSE
 );
 
