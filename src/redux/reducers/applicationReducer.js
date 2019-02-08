@@ -1,7 +1,7 @@
 // Reducer responsible for providing access to all information of an application, including action responses
 const applicationReducer = (state = {
     applicationList: [], // List of all applications
-    currentApplication:{}, // Information about the selected application (Applicant, file date, examiner, etc.)
+    currentApplication: -1, // Information about the selected application (Applicant, file date, examiner, etc.)
     CurrentApplicationOfficeActionResponseList: [], // List of all O.A.Rs for the selected application
     CurrentOfficeActionResponse: {}, // Information about the O.A.R (dates & status) 
     CurrentOficeActionIssueList: [], // List of issues for selected office action
