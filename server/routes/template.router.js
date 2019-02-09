@@ -34,3 +34,11 @@ router.get('/types', rejectUnauthenticated, (req, res) => {
 });
 
 module.exports = router;
+
+/* fields
+ "id" SERIAL PRIMARY KEY,
+    "type_id" INTEGER REFERENCES "template_type",
+    "template_name" VARCHAR(60),
+    "content" VARCHAR(1000),
+    "user_id" INTEGER REFERENCES "user"
+*/
