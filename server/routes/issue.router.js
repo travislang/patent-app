@@ -18,11 +18,6 @@ router.get('/by_office_action/:officeActionId', rejectUnauthenticated, (req, res
                 "application"."user_id"=${req.user.id} 
                 ${orderClause}`;
     }
-    // const query = 
-    //     `SELECT "issue".* FROM "issue" 
-    //     JOIN "office_action" ON "office_action"."id"="issue"."office_action_id"
-    //     WHERE "issue"."office_action_id"=$1
-    //     ORDER BY "issue"."id" ASC;`;
     pool.query(query, [officeActionId])
         .then((results) => {
             res.send(results.rows);
@@ -36,17 +31,25 @@ router.get('/by_office_action/:officeActionId', rejectUnauthenticated, (req, res
 router.post('/add', rejectUnauthenticated, (req, res) => {
     const query =
         `INSERT INTO "issue" (
-            "office_action_id"=$1,
-            "template_type_id"=$2,
-            "claims"=$3,
-            "template_id"=$4
+            "office_action_id",
+            "template_type_id",
+            "claims",
+            "template_id"
         )
-        VALUES ($1, $2, $3, $4);`;
+        SELECT $1, $2, $3, $4
+        WHERE EXISTS
+            (SELECT * FROM "application"
+            JOIN "office_action" ON "office_action"."application_id"="application"."id"
+            JOIN "issue" ON "issue"."office_action_id"="office_action"."id"
+            WHERE "application"."user_id"=$5 AND "office_action"."id"=$1)
+            OR $6;`;
     pool.query(query, [
         req.body.office_action_id,
         req.body.template_type_id,
         req.body.claims,
         req.body.template_id,
+        req.user.id,
+        req.user.is_admin,
     ]).then((results) => {
         res.sendStatus(201);
     }).catch((err) => {
