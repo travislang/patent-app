@@ -48,7 +48,8 @@ CREATE TABLE "office_action" (
 
 CREATE TABLE "template_type" (
     "id" SERIAL PRIMARY KEY,
-    "type" VARCHAR(30)
+    "type" VARCHAR(80),
+    "section" VARCHAR(50)
 );
 
 CREATE TABLE "template" (

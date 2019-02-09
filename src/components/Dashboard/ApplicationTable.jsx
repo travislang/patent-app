@@ -12,6 +12,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 function desc(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -98,6 +99,9 @@ const styles = theme => ({
     tableWrapper: {
         overflowX: 'auto',
     },
+    tableRow: {
+        cursor: 'pointer'
+    }
 });
 
 class ApplicationTable extends React.Component {
@@ -127,27 +131,12 @@ class ApplicationTable extends React.Component {
         this.setState({ rowsPerPage: event.target.value });
     };
 
-    // app_table_id: 1
-    // applicant_name: "Spotify AB"
-    // application_id: 1
-    // application_number: "28740917223"
-    // color: null
-    // docket_number: "22507"
-    // examiner_name: "Shelby Smith"
-    // filed_date: "2018-10-15T05:00:00.000Z"
-    // group_art_unit: "artistry"
-    // id: 1
-    // inactive: false
-    // inventor_name: "John Doe"
-    // last_checked_date: "2019-02-01T06:00:00.000Z"
-    // response_sent_date: "2019-12-28T06:00:00.000Z"
-    // status: "pending"
-    // status_date: "2019-01-22T06:00:00.000Z"
-    // status_id: 1
-    // title: "Selecting songs"
-    // user_id: 1
-    // uspto_mailing_date: "2019-01-15T06:00:00.000Z"
-    // uspto_status: "nonfinal"
+    handleClick = (event, appId) => {
+        console.log(this.props.history.push(`/application/${appId}`));
+        
+    }
+
+    
 
     render() {
         const { classes } = this.props;
@@ -172,7 +161,8 @@ class ApplicationTable extends React.Component {
                                     return (
                                         <TableRow
                                             hover
-                                            onClick={event => this.handleClick(event, n.id)}
+                                            className={classes.tableRow}
+                                            onClick={event => this.handleClick(event, n.app_table_id)}
                                             tabIndex={-1}
                                             key={n.app_table_id}
                                         >
@@ -220,4 +210,4 @@ const mapStateToProps = state => ({
     user: state.user
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(ApplicationTable));
+export default connect(mapStateToProps)(withStyles(styles)(withRouter(ApplicationTable)));

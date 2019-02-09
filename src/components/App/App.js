@@ -39,17 +39,17 @@ class App extends Component {
                                 path="/home"
                                 component={UserPage}
                             />
-                            <Route
-                                path="/preview"
-                                component={PreviewPage}
-                            />
-                            <Route
+                            <ProtectedRoute
                                 path="/dashboard"
                                 component={Dashboard}
                             />
-                            <Route
-                                path="/office-actions"
+                            <ProtectedRoute
+                                path="/application/:id"
                                 component={OfficeActions}
+                            />
+                            <ProtectedRoute
+                                path="/office-action/:appId/:oaId"
+                                component={PreviewPage}
                             />
                             <Route render={() => <h1>404</h1>} />
                         </Switch>
