@@ -5,11 +5,24 @@ const router = express.Router();
 
 router.get('/by_office_action/:officeActionId', rejectUnauthenticated, (req, res) => {
     const { officeActionId } = req.params;
-    const query = 
-        `SELECT "issue".* FROM "issue" 
-        JOIN "office_action" ON "office_action"."id"="issue"."office_action_id"
-        WHERE "issue"."office_action_id"=$1
-        ORDER BY "issue"."id" ASC;`;
+    const orderClause = 'ORDER BY "issue"."id" ASC;';
+    let query = 'SELECT "issue".* FROM "issue" ';
+    if (req.user && req.user.is_admin) {
+        query += `WHERE "office_action_id"=$1 ${orderClause}`;
+    } else {
+        query +=
+            `JOIN "office_action" ON "issue"."office_action_id"="office_action"."id"
+            JOIN "application" ON "application"."id"="office_action"."application_id"
+            WHERE 
+                "office_action_id"=$1 AND
+                "application"."user_id"=${req.user.id} 
+                ${orderClause}`;
+    }
+    // const query = 
+    //     `SELECT "issue".* FROM "issue" 
+    //     JOIN "office_action" ON "office_action"."id"="issue"."office_action_id"
+    //     WHERE "issue"."office_action_id"=$1
+    //     ORDER BY "issue"."id" ASC;`;
     pool.query(query, [officeActionId])
         .then((results) => {
             res.send(results.rows);
