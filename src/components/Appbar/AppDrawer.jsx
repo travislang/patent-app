@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -69,78 +69,88 @@ const styles = theme => ({
     },
 });
 
-function AppDrawer(props) {
-    const { classes } = props;
-    const primaryTypographyStyles = {
-        variant: "h5",
-        align: 'center'
+const primaryTypographyStyles = {
+    variant: "h5",
+    align: 'center'
+}
+
+class AppDrawer extends Component {
+    componentDidMount() {
+        const appId = this.props.match.params.appId;
+        const oaId = this.props.match.params.oaId;
     }
-    return (
-        <div className={classes.root}>
-            <CssBaseline />
-            <Drawer
-                className={classes.drawer}
-                variant="permanent"
-                classes={{
-                    paper: classes.drawerPaper,
-                }}
-                anchor="left"
-            >
-                <div className={classes.toolbar} />
-                <Divider />
-                <div>
-                    <ListItem button>
-                        <ListItemIcon style={{ margin: 0 }}>
-                            <ChevronLeft fontSize='large' />
-                        </ListItemIcon>
-                        <ListItemText className={classes.titleButton} primaryTypographyProps={primaryTypographyStyles} primary='Application # 58729540' />
-                    </ListItem>
-                </div>
-                <Divider />
-                <div>
-                    <StatusSelector />
-                </div>
-                <Divider />
-                <Typography className={classes.issuesHeading} variant='h6' align='center'>
-                    Office Action Issues
-                </Typography>
-                <List>
-                    {['Coversheet Introduction', 'Header', 'Specification Amendments', 'Claims Amendments', 'Drawings Amendments', 'Interview Summary', 'Remarks Introduction', 'Issues 1-5, 8, 37 USC 101', 'Issues 6, 7, 37 USC 102', 'Issues 11-14, 37 USC 112', 'Issues 9-10, 15-17 37 USC 103', 'Conclusion', 'Conclusion', 'Conclusion', 'Conclusion', 'Conclusion'].map((text, index) => (
-                        index === 2 || index === 7 || index === 8 ? 
-                            <ListItem component={Link} to='#2' button key={text}>
-                                <ListItemIcon style={{ margin: 0 }}>
-                                    <CheckIcon
-                                        style={{ color: 'green' }} />
-                                </ListItemIcon>
-                                <ListItemText primaryTypographyProps={{ style: { color: 'green' } }} primary={text} />
-                            </ListItem>
-                        
-                        :
-                        <ListItem button key={text}>
-                                <ListItemText primaryTypographyProps={{color: 'textSecondary'}} primary={text} />
+
+    render() {
+        const { classes } = this.props;
+        
+
+        return (
+            <div className={classes.root}>
+                <CssBaseline />
+                <Drawer
+                    className={classes.drawer}
+                    variant="permanent"
+                    classes={{
+                        paper: classes.drawerPaper,
+                    }}
+                    anchor="left"
+                >
+                    <div className={classes.toolbar} />
+                    <Divider />
+                    <div>
+                        <ListItem button>
+                            <ListItemIcon style={{ margin: 0 }}>
+                                <ChevronLeft fontSize='large' />
+                            </ListItemIcon>
+                            <ListItemText className={classes.titleButton} primaryTypographyProps={primaryTypographyStyles} primary='Application # 58729540' />
                         </ListItem>
-                    ))}
-                </List>
-                <Divider />
-                <div>
-                    <ListItem button>
-                        <ListItemIcon style={{ margin: 0 }}>
-                            <Add fontSize='large' />
-                        </ListItemIcon>
-                        <ListItemText primaryTypographyProps={primaryTypographyStyles} primary='Add New Item' />
-                    </ListItem>
-                </div>
-            </Drawer>
-            <main className={classes.content}>
-                <div className={classes.toolbar} />
-                <PreviewDoc />
-            </main>
-            <Fab variant="extended" className={classes.fab}>
-                <CloudDownload className={classes.extendedIcon} />
-                Export as Docx
-            </Fab>
-        </div>
-    );
+                    </div>
+                    <Divider />
+                    <div>
+                        <StatusSelector />
+                    </div>
+                    <Divider />
+                    <Typography className={classes.issuesHeading} variant='h6' align='center'>
+                        Office Action Issues
+                    </Typography>
+                    <List>
+                        {['Coversheet Introduction', 'Header', 'Specification Amendments', 'Claims Amendments', 'Drawings Amendments', 'Interview Summary', 'Remarks Introduction', 'Issues 1-5, 8, 37 USC 101', 'Issues 6, 7, 37 USC 102', 'Issues 11-14, 37 USC 112', 'Issues 9-10, 15-17 37 USC 103', 'Conclusion', 'Conclusion', 'Conclusion', 'Conclusion', 'Conclusion'].map((text, index) => (
+                            index === 2 || index === 7 || index === 8 ?
+                                <ListItem component={Link} to='#2' button key={text}>
+                                    <ListItemIcon style={{ margin: 0 }}>
+                                        <CheckIcon
+                                            style={{ color: 'green' }} />
+                                    </ListItemIcon>
+                                    <ListItemText primaryTypographyProps={{ style: { color: 'green' } }} primary={text} />
+                                </ListItem>
+
+                                :
+                                <ListItem button key={text}>
+                                    <ListItemText primaryTypographyProps={{ color: 'textSecondary' }} primary={text} />
+                                </ListItem>
+                        ))}
+                    </List>
+                    <Divider />
+                    <div>
+                        <ListItem button>
+                            <ListItemIcon style={{ margin: 0 }}>
+                                <Add fontSize='large' />
+                            </ListItemIcon>
+                            <ListItemText primaryTypographyProps={primaryTypographyStyles} primary='Add New Item' />
+                        </ListItem>
+                    </div>
+                </Drawer>
+                <main className={classes.content}>
+                    <div className={classes.toolbar} />
+                    <PreviewDoc />
+                </main>
+                <Fab variant="extended" className={classes.fab}>
+                    <CloudDownload className={classes.extendedIcon} />
+                    Export as Docx
+                </Fab>
+            </div>
+        );
+    }
 }
 
 export default withStyles(styles)(AppDrawer);

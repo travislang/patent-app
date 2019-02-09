@@ -11,12 +11,6 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 
-let counter = 0;
-function createData(date, decision, status) {
-    counter += 1;
-    return { id: counter, date, decision, status };
-}
-
 function desc(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
         return -1;
@@ -42,9 +36,9 @@ function getSorting(order, orderBy) {
 }
 
 const rows = [
-    { id: 'date', numeric: false, label: 'Date' },
-    { id: 'decision', numeric: false, label: 'Decision' },
-    { id: 'status', numeric: false, label: 'Status' },
+    { id: 'uspto_mailing_date', numeric: false, label: 'Mailing Date' },
+    { id: 'uspto_status', numeric: false, label: 'Decision' },
+    { id: 'status_id', numeric: false, label: 'Status' },
 ];
 
 class EnhancedTableHead extends React.Component {
@@ -52,6 +46,8 @@ class EnhancedTableHead extends React.Component {
     createSortHandler = property => event => {
         this.props.onRequestSort(event, property);
     };
+
+
 
     render() {
         const { order, orderBy } = this.props;
@@ -104,27 +100,7 @@ const styles = theme => ({
 class OfficeActionTable extends React.Component {
     state = {
         order: 'asc',
-        orderBy: 'mailingDate',
-        data: [
-            createData('02/05/2019', 'final', 'inactive'),
-            createData('02/07/2019', 'final', 'active'),
-            createData('01/25/2019', 'nonfinal', 'pending'),
-            createData('02/05/2019', 'final', 'inactive'),
-            createData('02/07/2019', 'final', 'active'),
-            createData('01/25/2019', 'nonfinal', 'pending'),
-            createData('02/05/2019', 'final', 'inactive'),
-            createData('02/07/2019', 'final', 'active'),
-            createData('01/25/2019', 'nonfinal', 'pending'),
-            createData('02/05/2019', 'final', 'inactive'),
-            createData('02/07/2019', 'final', 'active'),
-            createData('01/25/2019', 'nonfinal', 'pending'),
-            createData('02/05/2019', 'final', 'inactive'),
-            createData('02/07/2019', 'final', 'active'),
-            createData('01/25/2019', 'nonfinal', 'pending'),
-            createData('02/05/2019', 'final', 'inactive'),
-            createData('02/07/2019', 'final', 'active'),
-            createData('01/25/2019', 'nonfinal', 'pending'),
-        ],
+        orderBy: 'uspto_mailing_date',
         page: 0,
         rowsPerPage: 10,
     };
@@ -150,7 +126,8 @@ class OfficeActionTable extends React.Component {
 
     render() {
         const { classes } = this.props;
-        const { data, order, orderBy, rowsPerPage, page } = this.state;
+        const data = this.props.officeActions;
+        const { order, orderBy, rowsPerPage, page } = this.state;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
         return (
@@ -170,15 +147,19 @@ class OfficeActionTable extends React.Component {
                                     return (
                                         <TableRow
                                             hover
-                                            onClick={event => this.handleClick(event, n.id)}
+                                            onClick={event => this.props.handleClick(event, n.id)}
                                             tabIndex={-1}
                                             key={n.id}
                                         >
                                             <TableCell component="th" scope="row" align="left">
-                                                {n.date}
+                                                {n.uspto_mailing_date}
                                             </TableCell>
-                                            <TableCell align="left">            {n.decision}</TableCell>
-                                            <TableCell align="left">            {n.status}</TableCell>
+                                            <TableCell align="left">
+                                                {n.uspto_status}
+                                            </TableCell>
+                                            <TableCell align="left">
+                                                {n.status}
+                                            </TableCell>
                                         </TableRow>
                                     );
                                 })}

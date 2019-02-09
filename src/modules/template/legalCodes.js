@@ -21,3 +21,4 @@ const fieldCodes = {
 };
 
 export default fieldCodes;
+
