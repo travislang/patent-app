@@ -53,21 +53,34 @@ router.get('/by_app/:app_id', rejectUnauthenticated, (req, res) => {
 });
 
 router.post('/add', rejectUnauthenticated, (req, res) => {
+//     "application_id" = $1,
+//         "uspto_mailing_date" = $2,
+//         "response_sent_date" = $3,
+//         "uspto_status" = $4,
+//         "status_id" = $5
+//         )
+// VALUES($1, $2, $3, $4, $5)
     const query =
         `INSERT INTO "office_action" (
-            "application_id"=$1,
-            "uspto_mailing_date"=$2,
-            "response_sent_date"=$3,
-            "uspto_status"=$4,
-            "status_id"=$5
-        )
-        VALUES ($1, $2, $3, $4, $5);`;
+            "application_id",
+            "uspto_mailing_date",
+            "response_sent_date",
+            "uspto_status",
+            "status_id"
+            )
+        SELECT $1, $2, $3, $4, $5
+        WHERE EXISTS
+            (SELECT * FROM "application"
+            WHERE "application"."user_id"=$6 AND "application"."id"=$1)
+            OR $7;`;
     pool.query(query, [
         req.body.application_id,
         req.body.response_due_date,
         req.body.response_sent_date,
         req.body.uspto_status,
         req.body.status_id,
+        req.user.id,
+        req.user.is_admin,
     ]).then((results) => {
         res.sendStatus(201);
     }).catch((err) => {

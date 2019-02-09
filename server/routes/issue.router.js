@@ -1,5 +1,5 @@
 const express = require('express');
-const { rejectUnauthenticated } = require('../modules/authentication-middleware');
+const { rejectUnauthenticated, rejectIfNotAdmin } = require('../modules/authentication-middleware');
 const pool = require('../modules/pool');
 const router = express.Router();
 
@@ -67,7 +67,7 @@ router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
     });
 });
 
-router.delete('/delete/:id', rejectUnauthenticated, (req, res) => {
+router.delete('/delete/:id', rejectIfNotAdmin, (req, res) => {
     const { id } = req.params;
     const query = `DELETE FROM "issue" WHERE "issue"."id"=$1;`;
     pool.query(query, [id])
