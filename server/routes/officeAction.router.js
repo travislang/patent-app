@@ -5,10 +5,21 @@ const router = express.Router();
 
 router.get('/:id', rejectUnauthenticated, (req, res) => {
     const { id } = req.params;
-    const query = 
-        `SELECT * FROM "office_action" 
-        LEFT JOIN "status" ON "office_action"."status_id"="status"."id"
-        WHERE "office_action"."id"=$1;`;
+    const userId = req.user ? req.user.id : 0;
+    let query = 
+        `SELECT * FROM "office_action"
+        LEFT JOIN "status" ON "office_action"."status_id" = "status"."id" `;
+    if (req.user && req.user.is_admin) {
+        query += 'WHERE "office_action"."id"=$1;';
+    } else {
+        query += 
+            `JOIN "application" ON "office_action"."application_id"="application"."id"
+            WHERE "application"."user_id"=${userId} AND "office_action"."id"=$1;`;
+    }
+    // const query = 
+    //     `SELECT * FROM "office_action" 
+    //     LEFT JOIN "status" ON "office_action"."status_id"="status"."id"
+    //     WHERE "office_action"."id"=$1;`;
     pool.query(query, [id])
         .then((results) => {
             res.send(results.rows);
