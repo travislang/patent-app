@@ -118,7 +118,7 @@ router.post('/add', rejectUnauthenticated, (req, res) => {
 });
 
 router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
-    if (!req.user.isAdmin && req.body.user_id !== req.body.user.id) {
+    if (!req.user.isAdmin && req.body.user_id !== req.user.id) {
         res.sendStatus(403);
     } else {
         const { id } = req.params;
