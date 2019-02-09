@@ -53,13 +53,6 @@ router.get('/by_app/:app_id', rejectUnauthenticated, (req, res) => {
 });
 
 router.post('/add', rejectUnauthenticated, (req, res) => {
-//     "application_id" = $1,
-//         "uspto_mailing_date" = $2,
-//         "response_sent_date" = $3,
-//         "uspto_status" = $4,
-//         "status_id" = $5
-//         )
-// VALUES($1, $2, $3, $4, $5)
     const query =
         `INSERT INTO "office_action" (
             "application_id",
