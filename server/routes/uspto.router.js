@@ -4,16 +4,21 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 const router = express.Router();
 const axios = require('axios');
 
+
+const changeToNumber = (str) => {
+    let num = +str.replace(/[^0-9.]/g,"");
+    return num
+}
+
 // uspto routes
-
-// GET ROUTE
-router.get('/', rejectUnauthenticated, (req, res) => {
-
+// POST ROUTE
+router.post('/', rejectUnauthenticated, (req, res) => {
+    const filterId = changeToNumber(req.body.applId);
     // ---- USING USPTO API  ---- 
     axios.post( // USPTO use POST route to grab information
         'https://ped.uspto.gov/api/queries', // api route
         {
-            "searchText": `applId:${req.body.applId}`, // search for this information / applId is the application id
+            "searchText": `applId:${filterId}`, // search for this information / applId is the application id
             "qf": "applId", // where it is searching, in this case just the application Id of the patent
         }
         // {

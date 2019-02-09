@@ -4,7 +4,7 @@ const pool = require('../modules/pool');
 const router = express.Router();
 
 router.get('/:typeId', rejectUnauthenticated, (req, res) => {
-    const { typeId } = req.param;
+    const { typeId } = req.params;
     const query =
         `SELECT * FROM "template"
         WHERE "type_id"=$1 AND ("user_id" IS NULL OR "user_id"=$2)
