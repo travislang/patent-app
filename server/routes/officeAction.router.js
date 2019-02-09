@@ -75,7 +75,7 @@ router.post('/add', rejectUnauthenticated, (req, res) => {
             OR $7;`;
     pool.query(query, [
         req.body.application_id,
-        req.body.response_due_date,
+        req.body.uspto_mailing_date,
         req.body.response_sent_date,
         req.body.uspto_status,
         req.body.status_id,
@@ -92,15 +92,17 @@ router.post('/add', rejectUnauthenticated, (req, res) => {
 router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
     const { id } = req.params;
     const query =
-        `UPDATE "office_action" SET (
+        `UPDATE "office_action" SET
             "application_id"=$2,
             "uspto_mailing_date"=$3,
-            "response_due_date"=$4,
-            "response_sent_date"=$5,
+            "response_sent_date"=$4,
+            "uspto_status"=$5,
             "status_id"=$6
-        )
-        WHERE "office_action"."id"=$1;
-    `;
+        WHERE "office_action"."id"=$1
+            AND (EXISTS
+            (SELECT * FROM "application"
+            WHERE "application"."user_id"=$7 AND "application"."id"=$2)
+            OR $8);`;
     pool.query(query, [
         id,
         req.body.application_id,
@@ -108,6 +110,8 @@ router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
         req.body.response_sent_date,
         req.body.uspto_status,
         req.body.status_id,
+        req.user.id,
+        req.user.is_admin,
     ]).then(results => {
         res.sendStatus(200);
     }).catch(err => {

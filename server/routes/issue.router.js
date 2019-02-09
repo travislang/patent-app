@@ -51,7 +51,7 @@ router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
             "claims"=$4,
             "template_id"=$5
         )
-        WHERE "issue"."id"=$1;
+        WHERE "issue"."id"=$1
     `;
     pool.query(query, [
         id,

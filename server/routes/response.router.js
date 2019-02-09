@@ -56,12 +56,12 @@ router.put('/edit/:responseId', rejectUnauthenticated, (req, res) => {
     const query =
         `UPDATE "response_text" SET "issue_id"=$1, "text"=$2 
         WHERE "response_text"."id"=$5
-            AND EXISTS
+            AND (EXISTS
             (SELECT * FROM "application"
             JOIN "office_action" ON "application"."id"="office_action"."application_id"
             JOIN "issue" ON "issue"."office_action_id"="office_action"."id"
             WHERE "application"."user_id"=$3 AND "response_text"."id"=$5)
-            OR $4;`;
+            OR $4);`;
     pool.query(
         query, [
             req.body.issue_id, 
