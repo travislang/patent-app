@@ -60,14 +60,20 @@ router.post('/add', rejectUnauthenticated, (req, res) => {
 
 router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
     const { id } = req.params;
+    console.log('in put', req.user, req.body);
     const query =
-        `UPDATE "issue" SET (
+        `UPDATE "issue" SET
             "office_action_id"=$2,
             "template_type_id"=$3,
             "claims"=$4,
             "template_id"=$5
-        )
         WHERE "issue"."id"=$1
+        AND (EXISTS
+            (SELECT * FROM "application"
+            JOIN "office_action" ON "office_action"."application_id"="application"."id"
+            JOIN "issue" ON "issue"."office_action_id"="office_action"."id"
+            WHERE "application"."user_id"=$6 AND "office_action"."id"=$2)
+            OR $7);
     `;
     pool.query(query, [
         id,
@@ -75,6 +81,8 @@ router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
         req.body.template_type_id,
         req.body.claims,
         req.body.template_id,
+        req.user.id,
+        req.user.is_admin,
     ]).then(results => {
         res.sendStatus(200);
     }).catch(err => {
