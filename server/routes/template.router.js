@@ -44,7 +44,7 @@ router.post('/add', rejectUnauthenticated, (req, res) => {
     }
     const query =
         `INSERT INTO "template"
-         ("type_id", "template_name", "content", "user_id")
+            ("type_id", "template_name", "content", "user_id")
          VALUES ($1, $2, $3, $4);`;
     pool.query(query, [
         req.body.type_id,
@@ -68,7 +68,7 @@ router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
         const { id } = req.params;
         const query =
             `UPDATE "template" SET
-            "type_id"=$2, "template_name"=$3, "content"=$4, "user_id"=$5
+                "type_id"=$2, "template_name"=$3, "content"=$4, "user_id"=$5
             WHERE "id"=$1;`;
         pool.query(query, [
             id,
