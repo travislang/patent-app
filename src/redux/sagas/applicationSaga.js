@@ -61,7 +61,7 @@ function* postApplication(action) {
             examiner_name,
             group_art_unit,
             docket_number,
-            comfirmation_number
+            confirmation_number
         } = action.payload;
 
         // Send a request to our API to have application posted in database
@@ -77,7 +77,7 @@ function* postApplication(action) {
             examiner_name,
             group_art_unit,
             docket_number,
-            comfirmation_number
+            confirmation_number
         })
 
         // Now that our applications table has been updated, we need to reflect this in our redux state
