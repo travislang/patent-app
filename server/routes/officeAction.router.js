@@ -16,10 +16,6 @@ router.get('/:id', rejectUnauthenticated, (req, res) => {
             `JOIN "application" ON "office_action"."application_id"="application"."id"
             WHERE "application"."user_id"=${userId} AND "office_action"."id"=$1;`;
     }
-    // const query = 
-    //     `SELECT * FROM "office_action" 
-    //     LEFT JOIN "status" ON "office_action"."status_id"="status"."id"
-    //     WHERE "office_action"."id"=$1;`;
     pool.query(query, [id])
         .then((results) => {
             res.send(results.rows);
@@ -32,11 +28,20 @@ router.get('/:id', rejectUnauthenticated, (req, res) => {
 
 router.get('/by_app/:app_id', rejectUnauthenticated, (req, res) => {
     const { app_id } = req.params;
-    const query = 
-        `SELECT * FROM "office_action"
-        LEFT JOIN "status" ON "office_action"."status_id"="status"."id"
-        WHERE "application_id"=$1 
-        ORDER BY "uspto_mailing_date" DESC NULLS FIRST;`;
+    const orderClause = 'ORDER BY "uspto_mailing_date" DESC NULLS FIRST;';
+    let query =
+        `SELECT "office_action".*, "status".* FROM "office_action"
+        LEFT JOIN "status" ON "office_action"."status_id"="status"."id"`;
+    if (req.user && req.user.is_admin) {
+        query += `WHERE "application_id"=$1 ${orderClause}`;
+    } else {
+        query += 
+            `JOIN "application" ON "application"."id"="office_action"."application_id"
+            WHERE 
+                "application_id"=$1 AND
+                "application"."user_id"=${req.user.id} 
+                ${orderClause}`;
+    }
     pool.query(query, [app_id])
         .then((results) => {
             res.send(results.rows);
