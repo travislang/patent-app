@@ -16,7 +16,8 @@ import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import Add from '@material-ui/icons/Add';
 import LensIcon from '@material-ui/icons/Lens';
 
-
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import PreviewDoc from '../PreviewPage/PreviewDoc';
 import StatusSelector from '../PreviewPage/StatusSelector';
 
@@ -75,13 +76,20 @@ const primaryTypographyStyles = {
 }
 
 class AppDrawer extends Component {
+
     componentDidMount() {
         const appId = this.props.match.params.appId;
         const oaId = this.props.match.params.oaId;
+        // get current application
+        this.props.dispatch({ type: 'FETCH_APPLICATION', payload: appId })
+        // get current office action
+        this.props.dispatch({ type: 'FETCH_OFFICE_ACTION', payload: {officeActionResponseId: oaId}})
+        // get current office action issues
+        this.props.dispatch({ type: 'FETCH_ISSUES', payload: { office_action_id: oaId } })
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes, currentApplication, officeActions, issuesList } = this.props;
         
 
         return (
@@ -102,7 +110,7 @@ class AppDrawer extends Component {
                             <ListItemIcon style={{ margin: 0 }}>
                                 <ChevronLeft fontSize='large' />
                             </ListItemIcon>
-                            <ListItemText className={classes.titleButton} primaryTypographyProps={primaryTypographyStyles} primary='Application # 58729540' />
+                            <ListItemText className={classes.titleButton} primaryTypographyProps={primaryTypographyStyles} primary={`Application # ${currentApplication && currentApplication.application_number}`} />
                         </ListItem>
                     </div>
                     <Divider />
@@ -153,4 +161,10 @@ class AppDrawer extends Component {
     }
 }
 
-export default withStyles(styles)(AppDrawer);
+const mapStateToProps = state => ({
+    currentApplication: state.application.currentApplication,
+    officeActions: state.application.currentApplicationOfficeActionResponseList,
+    issuesList: state.application.currentOficeActionIssueList
+});
+
+export default connect(mapStateToProps)(withStyles(styles)(withRouter(AppDrawer)));

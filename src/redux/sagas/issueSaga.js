@@ -41,7 +41,7 @@ function* fetchIssues(action){
         const {office_action_id} = action.payload;
 
         // Request issues from API
-        const issuesResponse = yield axios.get(`/api/issue/${office_action_id}`);
+        const issuesResponse = yield axios.get(`/api/issue/by_office_action/${office_action_id}`);
 
         // Update redux with data
         yield dispatch({
