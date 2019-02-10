@@ -8,6 +8,7 @@ const claimOrClaims = (claims) => {
 };
 
 const claimIsAre = (claims) => {
+    claims = claims || '';
     if (claimsArePlural(claims)) {
         return `s ${claims} are`;
     } else {
