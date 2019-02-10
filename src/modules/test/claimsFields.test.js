@@ -10,7 +10,6 @@ const testCases = [
 ]
 
 for (let testCase of testCases) {
-    console.log('just trying', claimsArePlural('1'));
     test(`${testCase.description}`, () => {
         expect(claimsArePlural(testCase.claim))
             .toBe(testCase.expectedResult);
