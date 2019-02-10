@@ -13,7 +13,7 @@ router.get('/by_office_action/:officeActionId', rejectUnauthenticated, (req, res
                 FROM "issue"
                 LEFT JOIN "template" ON "issue"."template_id"="template"."id"
                 LEFT JOIN "template_type" ON "template_type"."id"="template"."type_id"
-                JOIN "response_text" ON "response_text"."issue_id"="issue"."id" `;
+                LEFT JOIN "response_text" ON "response_text"."issue_id"="issue"."id" `;
     if (req.user && req.user.is_admin) {
         query += `WHERE "office_action_id"=$1 ${orderClause}`;
     } else {
