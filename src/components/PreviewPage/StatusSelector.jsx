@@ -23,7 +23,8 @@ const styles = theme => ({
 });
 
 const options = [
-    'Active',
+    '',
+    'Pending',
     'Inactive',
     'Pending',
 ];
@@ -31,7 +32,7 @@ const options = [
 class StatusSelector extends React.Component {
     state = {
         anchorEl: null,
-        selectedIndex: 1,
+        selectedIndex: this.props.status,
     };
     
 
@@ -48,14 +49,21 @@ class StatusSelector extends React.Component {
     };
 
     render() {
+        
+        
         const { classes } = this.props;
-        const { anchorEl, selectedIndex } = this.state;
+        const { anchorEl } = this.state;
+        const selectedIndex = this.props.status;
+        console.log(selectedIndex);
         let iconColor;
-        if(selectedIndex === 0) {
+        // active - blue
+        if(selectedIndex === 3) {
             iconColor = '#2196f3'
         }
-        else if (selectedIndex === 1) {
+        // inactive - red
+        else if (selectedIndex === 2) {
             iconColor = '#f44336'
+        // pending - yellow
         } else {
             iconColor = '#ffeb3b'
         }
@@ -66,13 +74,13 @@ class StatusSelector extends React.Component {
                         button
                         aria-haspopup="true"
                         aria-controls="lock-menu"
-                        aria-label="When device is locked"
+                        aria-label="office action status"
                         onClick={this.handleClickListItem}
                     >
                         <ArrowDropDown />
                         <ListItemText
                             primary="Office Action Status"
-                            secondary={options[this.state.selectedIndex]}
+                            secondary={options[selectedIndex]}
                         />
                         
                     </ListItem>

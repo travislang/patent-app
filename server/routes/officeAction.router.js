@@ -11,7 +11,7 @@ router.get('/:id', rejectUnauthenticated, (req, res) => {
         WHERE "office_action"."id"=$1;`;
     pool.query(query, [id])
         .then((results) => {
-            res.send(results.rows);
+            res.send(results.rows[0]);
         }).catch((err) => {
             res.sendStatus(500);
             console.error('Error in GET /office_action', err);

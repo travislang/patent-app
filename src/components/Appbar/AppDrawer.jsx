@@ -22,6 +22,7 @@ import PreviewDoc from '../PreviewPage/PreviewDoc';
 import StatusSelector from '../PreviewPage/StatusSelector';
 
 import { HashLink as Link } from 'react-router-hash-link';
+import AddIssueDialog from '../PreviewPage/AddIssueDialog';
 
 const drawerWidth = 300;
 
@@ -77,6 +78,10 @@ const primaryTypographyStyles = {
 
 class AppDrawer extends Component {
 
+    state = {
+        open: false
+    }
+
     componentDidMount() {
         const appId = this.props.match.params.appId;
         const oaId = this.props.match.params.oaId;
@@ -86,11 +91,16 @@ class AppDrawer extends Component {
         this.props.dispatch({ type: 'FETCH_OFFICE_ACTION', payload: {officeActionResponseId: oaId}})
         // get current office action issues
         this.props.dispatch({ type: 'FETCH_ISSUES', payload: { office_action_id: oaId } })
+        // get all template types for dialog
+        this.props.dispatch({ type: 'FETCH_TEMPLATE_TYPES' })
     }
 
+    handleNewIssueDialogOpen = () => {
+        this.setState({ open: true });
+    };
+
     render() {
-        const { classes, currentApplication, officeActions, issuesList } = this.props;
-        
+        const { classes, currentApplication, officeAction, issuesList, templates } = this.props;
 
         return (
             <div className={classes.root}>
@@ -115,38 +125,38 @@ class AppDrawer extends Component {
                     </div>
                     <Divider />
                     <div>
-                        <StatusSelector />
+                        <StatusSelector status={officeAction.status_id} />
                     </div>
                     <Divider />
                     <Typography className={classes.issuesHeading} variant='h6' align='center'>
                         Office Action Issues
                     </Typography>
                     <List>
-                        {['Coversheet Introduction', 'Header', 'Specification Amendments', 'Claims Amendments', 'Drawings Amendments', 'Interview Summary', 'Remarks Introduction', 'Issues 1-5, 8, 37 USC 101', 'Issues 6, 7, 37 USC 102', 'Issues 11-14, 37 USC 112', 'Issues 9-10, 15-17 37 USC 103', 'Conclusion', 'Conclusion', 'Conclusion', 'Conclusion', 'Conclusion'].map((text, index) => (
-                            index === 2 || index === 7 || index === 8 ?
-                                <ListItem component={Link} to='#2' button key={text}>
+                        {issuesList.map((issue) => (
+                            issue.template_id ?
+                                <ListItem component={Link} to='#2' button key={issue.id}>
                                     <ListItemIcon style={{ margin: 0 }}>
                                         <CheckIcon
                                             style={{ color: 'green' }} />
                                     </ListItemIcon>
-                                    <ListItemText primaryTypographyProps={{ style: { color: 'green' } }} primary={text} />
+                                    <ListItemText primaryTypographyProps={{ style: { color: 'green' } }} primary={`claims ${issue.claims}`} />
                                 </ListItem>
-
                                 :
-                                <ListItem button key={text}>
-                                    <ListItemText primaryTypographyProps={{ color: 'textSecondary' }} primary={text} />
+                                <ListItem button key={issue.id} style={{paddingLeft: 55}}>
+                                    <ListItemText primaryTypographyProps={{ color: 'textSecondary' }} primary={`claims ${issue.claims}`} />
                                 </ListItem>
                         ))}
                     </List>
                     <Divider />
                     <div>
-                        <ListItem button>
+                        <ListItem button onClick={this.handleNewIssueDialogOpen}>
                             <ListItemIcon style={{ margin: 0 }}>
                                 <Add fontSize='large' />
                             </ListItemIcon>
                             <ListItemText primaryTypographyProps={primaryTypographyStyles} primary='Add New Item' />
                         </ListItem>
                     </div>
+                    <AddIssueDialog open={this.state.open} templates={templates} handleDialogClose={this.handleDialogClose} />
                 </Drawer>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
@@ -163,8 +173,9 @@ class AppDrawer extends Component {
 
 const mapStateToProps = state => ({
     currentApplication: state.application.currentApplication,
-    officeActions: state.application.currentApplicationOfficeActionResponseList,
-    issuesList: state.application.currentOficeActionIssueList
+    officeAction: state.application.currentOfficeActionResponse,
+    issuesList: state.application.currentOficeActionIssueList,
+    templates: state.template.types
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(withRouter(AppDrawer)));
