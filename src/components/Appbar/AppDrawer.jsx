@@ -99,9 +99,13 @@ class AppDrawer extends Component {
         this.setState({ open: true });
     };
 
+    handleDialogClose = () => {
+        this.setState({ open: false });
+    }
+
     render() {
         const { classes, currentApplication, officeAction, issuesList, templates } = this.props;
-
+        const oaId = this.props.match.params.oaId;
         return (
             <div className={classes.root}>
                 <CssBaseline />
@@ -139,11 +143,11 @@ class AppDrawer extends Component {
                                         <CheckIcon
                                             style={{ color: 'green' }} />
                                     </ListItemIcon>
-                                    <ListItemText primaryTypographyProps={{ style: { color: 'green' } }} primary={`claims ${issue.claims}`} />
+                                    <ListItemText primaryTypographyProps={{ style: { color: 'green' } }} primary={`claims ${issue.claims} ${issue.type}`} />
                                 </ListItem>
                                 :
                                 <ListItem button key={issue.id} style={{paddingLeft: 55}}>
-                                    <ListItemText primaryTypographyProps={{ color: 'textSecondary' }} primary={`claims ${issue.claims}`} />
+                                    <ListItemText primaryTypographyProps={{ color: 'textSecondary' }} primary={`claims ${issue.claims} ${issue.type}`} />
                                 </ListItem>
                         ))}
                     </List>
@@ -156,7 +160,12 @@ class AppDrawer extends Component {
                             <ListItemText primaryTypographyProps={primaryTypographyStyles} primary='Add New Item' />
                         </ListItem>
                     </div>
-                    <AddIssueDialog open={this.state.open} templates={templates} handleDialogClose={this.handleDialogClose} />
+                    <AddIssueDialog 
+                        open={this.state.open} 
+                        templates={templates} 
+                        handleDialogClose={this.handleDialogClose} 
+                        oaId={oaId}
+                        />
                 </Drawer>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />

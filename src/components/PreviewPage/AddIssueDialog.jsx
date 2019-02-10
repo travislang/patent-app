@@ -19,14 +19,18 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
+import Grid from '@material-ui/core/Grid'
 
 const styles = theme => ({
     root: {
         display: 'flex',
         flexWrap: 'wrap',
+        flexDirection: 'column'
     },
     formControl: {
         margin: theme.spacing.unit,
+        marginLeft: theme.spacing.unit * 3,
+        marginRight: theme.spacing.unit * 3,
         minWidth: 250,
     },
     selectEmpty: {
@@ -35,61 +39,102 @@ const styles = theme => ({
     dialogContainer: {
         minWidth: 700
     },
+    textField: {
+        marginLeft: theme.spacing.unit * 3,
+        marginRight: theme.spacing.unit * 3,
+        width: 250,
+    },
 });
 
 class AddIssueDialog extends React.Component {
 
     state = {
-        template_type: ''
+        template_type: '',
+        claims: ''
     }
 
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
     };
 
+    handleInputChange = name => event => {
+        this.setState({ [name]: event.target.value });
+    };
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        const oaId = this.props.oaId;
+        const payloadObj = {
+            office_action_id: oaId,
+            template_type_id: this.state.template_type,
+            claims: this.state.claims,
+        }
+        console.log('state', payloadObj);
+        this.props.dispatch({ type: 'POST_ISSUE', payload: payloadObj})
+    }
+
     render() {
         const {classes, templates} = this.props;
         return (
             <div>
                 <Dialog
+                    maxWidth='lg'
                     open={this.props.open}
                     className={classes.dialogContainer}
                     onClose={this.props.handleDialogClose}
                     aria-labelledby="add-new-issue"
                 >
-                    <DialogTitle id="add-new-issue">In response to </DialogTitle>
+                    <DialogTitle id="add-new-issue">In response to...</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            Ple
+                            
                         </DialogContentText>
-                        <form className={classes.root} autoComplete="off">
-                            <FormControl className={classes.formControl}>
-                                <InputLabel htmlFor="template-type">Template Type</InputLabel>
-                                <Select
-                                    value={this.state.template_type}
-                                    onChange={this.handleChange}
-                                    inputProps={{
-                                        name: 'template_type',
-                                        id: 'template-type',
-                                    }}
-                                >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    {templates.map(template => {
-                                        return (
-                                            <MenuItem key={template.id} value={template.id}>{template.type}</MenuItem>
-                                        )
-                                    })}
-                                </Select>
-                            </FormControl>
-                        </form>
+                        <Grid container direction='column' justify='center' alignItems='center'>
+                            <Grid item>
+                                <form 
+                                    className={classes.root} 
+                                    autoComplete="off"
+                                    onSubmit={this.handleSubmit}
+                                    >
+                                    <FormControl className={classes.formControl}>
+                                        <InputLabel htmlFor="template-type">Template Type</InputLabel>
+                                        <Select
+                                            value={this.state.template_type}
+                                            onChange={this.handleChange}
+                                            inputProps={{
+                                                name: 'template_type',
+                                                id: 'template-type',
+                                            }}
+                                        >
+                                            <MenuItem value="">
+                                                <em>None</em>
+                                            </MenuItem>
+                                            {templates.map(template => {
+                                                return (
+                                                    <MenuItem key={template.id} value={template.id}>{template.type}</MenuItem>
+                                                )
+                                            })}
+                                        </Select>
+                                    </FormControl>
+                                    <TextField
+                                        id="standard-name"
+                                        label="Claims"
+                                        className={classes.textField}
+                                        value={this.state.claims}
+                                        onChange={this.handleInputChange('claims')}
+                                        margin="normal"
+                                        helperText="If there are any claims that this issue applies to enter them here"
+                                    />
+                                </form>
+                            </Grid>
+                        </Grid>
+                        
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.handleClose} color="primary">
+                        <Button onClick={this.props.handleDialogClose} color="primary">
                             Cancel
                         </Button>
-                        <Button onClick={this.props.handleDialogClose} color="primary">
+                        <Button onClick={this.handleSubmit} color="primary">
                             Add Template
                         </Button>
                     </DialogActions>
