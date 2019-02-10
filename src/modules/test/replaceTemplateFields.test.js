@@ -19,7 +19,7 @@ const testTemplate = [
     { description: 
         'Multiple legal fields replace correctly', 
       template: 
-        'These are legal field names: {firstInventor} hello world {applNumber}.', 
+        'These are legal field names: {inventorName} hello world {applNumber}.', 
       expectedResult:
         `These are legal field names: ${testFieldValues.inventor_name} hello world ${testFieldValues.application_number}.`,
     },
@@ -27,7 +27,7 @@ const testTemplate = [
         description:
             'Fields at beginning and end are replaced correctly',
         template:
-            '{firstInventor} hello world {applNumber}',
+            '{inventorName} hello world {applNumber}',
         expectedResult:
             `${testFieldValues.inventor_name} hello world ${testFieldValues.application_number}`,
     },
