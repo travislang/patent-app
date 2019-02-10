@@ -27,10 +27,13 @@ const styles = theme => ({
     },
     formControl: {
         margin: theme.spacing.unit,
-        minWidth: 120,
+        minWidth: 250,
     },
     selectEmpty: {
         marginTop: theme.spacing.unit * 2,
+    },
+    dialogContainer: {
+        minWidth: 700
     },
 });
 
@@ -54,6 +57,7 @@ class AddIssueDialog extends React.Component {
             <div>
                 <Dialog
                     open={this.props.open}
+                    className={classes.dialogContainer}
                     onClose={this.props.handleDialogClose}
                     aria-labelledby="add-new-issue"
                 >
