@@ -76,8 +76,6 @@ class OfficeActions extends Component {
 
     handleClick = (e, oaId) => {
         const appId = this.props.match.params.id;
-        console.log(this.props.history);
-        
         this.props.history.push(`/office-action/${appId}/${oaId}`);
     }
 
