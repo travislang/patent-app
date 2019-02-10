@@ -43,10 +43,6 @@ class AddIssueDialog extends React.Component {
         template_type: ''
     }
 
-    componentDidMount() {
-        this.props.dispatch({ type: 'FETCH_TEMPLATE_TYPES'})
-    }
-
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
     };

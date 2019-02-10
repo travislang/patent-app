@@ -49,12 +49,10 @@ class StatusSelector extends React.Component {
     };
 
     render() {
-        
-        
         const { classes } = this.props;
         const { anchorEl } = this.state;
         const selectedIndex = this.props.status;
-        console.log(selectedIndex);
+        
         let iconColor;
         // active - blue
         if(selectedIndex === 3) {
