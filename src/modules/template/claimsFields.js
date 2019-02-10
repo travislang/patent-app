@@ -1,5 +1,5 @@
 const claimOrClaims = (claims) => {
-    claims = claims || '';
+    claims = fixNullOrUndefined(claims);
     if (claimsArePlural(claims)) {
         return `s ${claims}`;
     } else {
@@ -8,7 +8,7 @@ const claimOrClaims = (claims) => {
 };
 
 const claimIsAre = (claims) => {
-    claims = claims || '';
+    claims = fixNullOrUndefined(claims);
     if (claimsArePlural(claims)) {
         return `s ${claims} are`;
     } else {
@@ -20,6 +20,10 @@ const claimsArePlural = (claims) => {
     // considered plural if any commas or dashes are present
     return /[,;:-]/.test(claims);
 };
+
+const fixNullOrUndefined = (str) => {
+    return str || '';
+}
 
 export {claimsArePlural};
 export {claimIsAre};
