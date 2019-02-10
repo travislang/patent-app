@@ -7,7 +7,7 @@ router.get('/:id', rejectUnauthenticated, (req, res) => {
     const { id } = req.params;
     const userId = req.user ? req.user.id : 0;
     let query = 
-        `SELECT * FROM "office_action"
+        `SELECT "office_action".*, "status".status FROM "office_action"
         LEFT JOIN "status" ON "office_action"."status_id" = "status"."id" `;
     if (req.user && req.user.is_admin) {
         query += 'WHERE "office_action"."id"=$1;';
@@ -30,7 +30,7 @@ router.get('/by_app/:app_id', rejectUnauthenticated, (req, res) => {
     const { app_id } = req.params;
     const orderClause = 'ORDER BY "uspto_mailing_date" DESC NULLS FIRST;';
     let query =
-        `SELECT "office_action".*, "status".* FROM "office_action"
+        `SELECT "office_action".*, "status".status FROM "office_action"
         LEFT JOIN "status" ON "office_action"."status_id"="status"."id"`;
     if (req.user && req.user.is_admin) {
         query += `WHERE "application_id"=$1 ${orderClause}`;

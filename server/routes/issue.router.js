@@ -5,8 +5,6 @@ const router = express.Router();
 
 router.get('/by_office_action/:officeActionId', rejectUnauthenticated, (req, res) => {
     const { officeActionId } = req.params;
-    console.log(officeActionId);
-    
     const orderClause = 'ORDER BY "issue"."id" ASC;';
     let query = `SELECT 
                     "issue".*, "template_type"."type", "template_type"."section", "response_text"."text"
@@ -25,12 +23,8 @@ router.get('/by_office_action/:officeActionId', rejectUnauthenticated, (req, res
                 "application"."user_id"=${req.user.id} 
                 ${orderClause}`;
     }
-    console.log(query);
-    
     pool.query(query, [officeActionId])
         .then((results) => {
-            console.log(results.rows);
-            
             res.send(results.rows);
         }).catch((err) => {
             res.sendStatus(500);

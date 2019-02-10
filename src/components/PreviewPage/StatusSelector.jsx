@@ -23,16 +23,14 @@ const styles = theme => ({
 });
 
 const options = [
-    '',
     'Pending',
     'Inactive',
-    'Pending',
+    'Active',
 ];
 
 class StatusSelector extends React.Component {
     state = {
         anchorEl: null,
-        selectedIndex: this.props.status,
     };
     
 
@@ -41,7 +39,8 @@ class StatusSelector extends React.Component {
     };
 
     handleMenuItemClick = (event, index) => {
-        this.setState({ selectedIndex: index, anchorEl: null });
+        this.setState({ anchorEl: null });
+        this.props.handleStatusChange(index);
     };
 
     handleClose = () => {
@@ -51,7 +50,7 @@ class StatusSelector extends React.Component {
     render() {
         const { classes } = this.props;
         const { anchorEl } = this.state;
-        const selectedIndex = this.props.status;
+        const selectedIndex = this.props.statusId;
         
         let iconColor;
         // active - blue
@@ -78,7 +77,7 @@ class StatusSelector extends React.Component {
                         <ArrowDropDown />
                         <ListItemText
                             primary="Office Action Status"
-                            secondary={options[selectedIndex]}
+                            secondary={options[selectedIndex - 1]}
                         />
                         
                     </ListItem>
@@ -92,9 +91,9 @@ class StatusSelector extends React.Component {
                 >
                     {options.map((option, index) => (
                         <MenuItem
-                            key={option}
-                            selected={index === this.state.selectedIndex}
-                            onClick={event => this.handleMenuItemClick(event, index)}
+                            key={index + 1}
+                            selected={(index + 1) === selectedIndex}
+                            onClick={event => this.handleMenuItemClick(event, index + 1)}
                         >
                             {option}
                         </MenuItem>

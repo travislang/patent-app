@@ -27,7 +27,7 @@ function* postIssue(action){
         })
 
         // Now that database has update, we must make a fetch again to update redux
-        yield dispatch({type:'FETCH_ISSUES'}) 
+        yield dispatch({ type: 'FETCH_ISSUES', payload: { office_action_id: office_action_id}}) 
     } catch (error) {
         console.log(`Error in postIssue: ${error}`);
     }

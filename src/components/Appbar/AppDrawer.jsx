@@ -79,7 +79,7 @@ const primaryTypographyStyles = {
 class AppDrawer extends Component {
 
     state = {
-        open: false
+        open: false,
     }
 
     componentDidMount() {
@@ -101,6 +101,18 @@ class AppDrawer extends Component {
 
     handleDialogClose = () => {
         this.setState({ open: false });
+    }
+
+    handleStatusChange = (statusId) => {
+        const appId = this.props.match.params.appId;
+        const oaId = this.props.match.params.oaId;
+        console.log('statusId', statusId);
+        
+        this.props.dispatch({ type: 'UPDATE_OFFICE_ACTION', payload: {
+            id: oaId,
+            application_id: appId,
+            status_id: statusId
+        }})
     }
 
     render() {
@@ -129,7 +141,11 @@ class AppDrawer extends Component {
                     </div>
                     <Divider />
                     <div>
-                        <StatusSelector status={officeAction.status_id} />
+                        <StatusSelector 
+                            handleStatusChange={this.handleStatusChange} 
+                            statusId={officeAction.status_id} 
+                            status={officeAction.status}
+                            />
                     </div>
                     <Divider />
                     <Typography className={classes.issuesHeading} variant='h6' align='center'>
