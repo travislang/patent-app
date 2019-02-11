@@ -19,6 +19,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppTheme from '../MuiTheme';
 import OfficeActions from '../OfficeActions/OfficeActions';
+import usersPage from '../UsersPage/UsersPage';
 
 class App extends Component {
     componentDidMount() {
@@ -47,10 +48,17 @@ class App extends Component {
                                 path="/application/:id"
                                 component={OfficeActions}
                             />
+
                             <ProtectedRoute
                                 path="/office-action/:appId/:oaId"
                                 component={PreviewPage}
                             />
+
+                            <ProtectedRoute
+                                path="/Users"
+                                component={usersPage}
+                            />
+
                             <Route render={() => <h1>404</h1>} />
                         </Switch>
                     </div>

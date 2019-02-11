@@ -22,8 +22,23 @@ function* registerUser(action) {
   }
 }
 
+function* registerUserAsAdmin(action){
+  try {
+    // clear any existing error on the registration page
+    yield put({ type: 'CLEAR_REGISTRATION_ERROR' });
+
+    // passes the username and password from the payload to the server
+    yield axios.post('api/user/register', action.payload);
+  } catch (error) {
+      console.log('Error with user registration:', error);
+      yield put({type: 'REGISTRATION_FAILED'});
+  }
+}
+
 function* registrationSaga() {
+  yield takeLatest('REGISTER_USER', registerUserAsAdmin)
   yield takeLatest('REGISTER', registerUser);
 }
+
 
 export default registrationSaga;
