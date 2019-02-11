@@ -72,6 +72,10 @@ class AddIssueDialog extends React.Component {
         console.log('state', payloadObj);
         this.props.dispatch({ type: 'POST_ISSUE', payload: payloadObj})
         this.props.handleDialogClose();
+        this.setState({
+            template_type: '',
+            claims: ''
+        })
     }
 
     render() {

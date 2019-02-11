@@ -115,6 +115,11 @@ class AppDrawer extends Component {
         }})
     }
 
+    // take user back to application view
+    handleBack = () => {
+        this.props.history.goBack();
+    }
+
     render() {
         const { classes, currentApplication, officeAction, issuesList, templates } = this.props;
         const oaId = this.props.match.params.oaId;
@@ -132,7 +137,7 @@ class AppDrawer extends Component {
                     <div className={classes.toolbar} />
                     <Divider />
                     <div>
-                        <ListItem button>
+                        <ListItem button onClick={this.handleBack}>
                             <ListItemIcon style={{ margin: 0 }}>
                                 <ChevronLeft fontSize='large' />
                             </ListItemIcon>
@@ -152,20 +157,78 @@ class AppDrawer extends Component {
                         Office Action Issues
                     </Typography>
                     <List>
-                        {issuesList.map((issue) => (
-                            issue.template_id ?
-                                <ListItem component={Link} to='#2' button key={issue.id}>
-                                    <ListItemIcon style={{ margin: 0 }}>
-                                        <CheckIcon
-                                            style={{ color: 'green' }} />
-                                    </ListItemIcon>
-                                    <ListItemText primaryTypographyProps={{ style: { color: 'green' } }} primary={`claims ${issue.claims} ${issue.type}`} />
-                                </ListItem>
-                                :
-                                <ListItem button key={issue.id} style={{paddingLeft: 55}}>
-                                    <ListItemText primaryTypographyProps={{ color: 'textSecondary' }} primary={`claims ${issue.claims} ${issue.type}`} />
-                                </ListItem>
-                        ))}
+                        {issuesList.map((issue) => {
+                            if (issue.section === 'header') {
+                                return (
+                                    issue.template_id ?
+                                        <ListItem component={Link} to='#2' button key={issue.id}>
+                                            <ListItemIcon style={{ margin: 0 }}>
+                                                <CheckIcon
+                                                    style={{ color: 'green' }} />
+                                            </ListItemIcon>
+                                            <ListItemText primaryTypographyProps={{ style: { color: 'green' } }} primary={`${issue.type}`} />
+                                        </ListItem>
+                                        :
+                                        <ListItem button key={issue.id} style={{ paddingLeft: 55 }}>
+                                            <ListItemText primaryTypographyProps={{ color: 'textSecondary' }} primary={`${issue.type}`} />
+                                        </ListItem>
+                                )
+                            }
+                        })}
+                        {issuesList.map((issue) => {
+                            if (issue.section === 'amendment') {
+                                return (
+                                    issue.template_id ?
+                                        <ListItem component={Link} to='#2' button key={issue.id}>
+                                            <ListItemIcon style={{ margin: 0 }}>
+                                                <CheckIcon
+                                                    style={{ color: 'green' }} />
+                                            </ListItemIcon>
+                                            <ListItemText primaryTypographyProps={{ style: { color: 'green' } }} primary={`${issue.type}`} />
+                                        </ListItem>
+                                        :
+                                        <ListItem button key={issue.id} style={{ paddingLeft: 55 }}>
+                                            <ListItemText primaryTypographyProps={{ color: 'textSecondary' }} primary={`${issue.type}`} />
+                                        </ListItem>
+                                )
+                            }
+                        })}
+                        {issuesList.map((issue) => {
+                            if (issue.section === 'issues') {
+                                return (
+                                    issue.template_id ?
+                                        <ListItem component={Link} to='#2' button key={issue.id}>
+                                            <ListItemIcon style={{ margin: 0 }}>
+                                                <CheckIcon
+                                                    style={{ color: 'green' }} />
+                                            </ListItemIcon>
+                                            <ListItemText primaryTypographyProps={{ style: { color: 'green' } }} primary={`claims ${issue.claims} ${issue.type}`} />
+                                        </ListItem>
+                                        :
+                                        <ListItem button key={issue.id} style={{ paddingLeft: 55 }}>
+                                            <ListItemText primaryTypographyProps={{ color: 'textSecondary' }} primary={`claims ${issue.claims} ${issue.type}`} />
+                                        </ListItem>
+                                )
+                            }
+                        })}
+                        {issuesList.map((issue) => {
+                            if (issue.section === 'footer') {
+                                return (
+                                    issue.template_id ?
+                                        <ListItem component={Link} to='#2' button key={issue.id}>
+                                            <ListItemIcon style={{ margin: 0 }}>
+                                                <CheckIcon
+                                                    style={{ color: 'green' }} />
+                                            </ListItemIcon>
+                                            <ListItemText primaryTypographyProps={{ style: { color: 'green' } }} primary={`${issue.type}`} />
+                                        </ListItem>
+                                        :
+                                        <ListItem button key={issue.id} style={{ paddingLeft: 55 }}>
+                                            <ListItemText primaryTypographyProps={{ color: 'textSecondary' }} primary={`${issue.type}`} />
+                                        </ListItem>
+                                )
+                            }
+                        })}
                     </List>
                     <Divider />
                     <div>
