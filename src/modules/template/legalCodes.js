@@ -10,6 +10,11 @@ const legalCodes = [
     'confirmationNumber',
 ];
 
+const claimCodes = [
+    'claim(s)',
+    'claimsisare',
+];
+
 const keys = [
     'applicant_name',
     'filed_date',
@@ -26,6 +31,7 @@ const defaultValue = '***';
 
 const fieldCodes = {
     legalCodes,
+    claimCodes,
     keys,
     defaultValue,
 };
