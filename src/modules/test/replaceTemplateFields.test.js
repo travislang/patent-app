@@ -41,9 +41,65 @@ const testTemplate = [
     },
 ];
 
+const claimTemplate = [
+    {
+        description:
+            'Replacing empty claim field uses default value.',
+        claims: '',
+        template:
+            'User entered empty claim{claim(s)}.',
+        expectedResult:
+            `User entered empty claim ${defaultValue}.`,
+    },
+    {
+        description:
+            'Singular claim replaced correctly.',
+        claims: '1',
+        template:
+            'We are talking about claim{claim(s)}.',
+        expectedResult:
+            `We are talking about claim 1.`,
+    },
+    {
+        description:
+            'Plural claims replaced correctly.',
+        claims: '1-5, 10',
+        template:
+            'We are talking about claim{claim(s)}.',
+        expectedResult:
+            `We are talking about claims 1-5, 10.`,
+    },
+    {
+        description:
+            'Singular claim with to be verb form replaced correctly.',
+        claims: '1',
+        template:
+            'Claim{claim(s)is/are} all the rage.',
+        expectedResult:
+            `Claim 1 is all the rage.`,
+    },
+    {
+        description:
+            'Plural claims with to be verb form replaced correctly.',
+        claims: '1-5, 10',
+        template:
+            'Claim{claim(s)is/are} all the rage.',
+        expectedResult:
+            `Claims 1-5, 10 are all the rage.`,
+    },
+];
+
 for (let testCase of testTemplate) {
     test(`${testCase.description}`, () => {
         expect(replaceTemplateFields(testCase.template, testFieldValues))
+            .toBe(testCase.expectedResult);
+    });
+}
+
+for (let testCase of claimTemplate) {
+    let { claims, description, template, expectedResult } = testCase;
+    test(`${testCase.description}`, () => {
+        expect(replaceTemplateFields(testCase.template, { ...testFieldValues, claims }))
             .toBe(testCase.expectedResult);
     });
 }
