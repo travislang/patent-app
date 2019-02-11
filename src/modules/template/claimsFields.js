@@ -17,8 +17,9 @@ const claimIsAre = (claims) => {
 };
 
 const claimsArePlural = (claims) => {
-    // considered plural if any commas or dashes are present
-    return /[,;:-]/.test(claims);
+    // considered plural if a comma, dash, ampersand, or 'and' is present
+    return /[,;:&-]/.test(claims)
+        || /(and)/.test(claims);
 };
 
 const fixNullOrUndefined = (str) => {

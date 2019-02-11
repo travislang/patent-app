@@ -8,8 +8,10 @@ const testCases = [
     { description: 'Claim range and single is plural', claim: '6-8, 4', expectedResult: true, claimS: 's 6-8, 4', isAre: 's 6-8, 4 are' },
     { description: 'Empty claim returns false (arbitrary)', claim: '', expectedResult: false, claimS: ' ', isAre: '  is' },
     { description: 'Null claim returns false (arbitrary)', claim: null, expectedResult: false, claimS: ' ', isAre: '  is' },
-    // { description: '', claim: , expectedResult:  },
-]
+    { description: 'Claims joined by "and" are plural', claim: '1 and 5', expectedResult: true, claimS: 's 1 and 5', isAre: 's 1 and 5 are' },
+    { description: 'Claims joined by & are plural', claim: '11 & 12', expectedResult: true, claimS: 's 11 & 12', isAre: 's 11 & 12 are' },
+    // { description: '', claim: , expectedResult: , claimS: '', isAre: '' },
+];
 
 for (let testCase of testCases) {
     test(`${testCase.description}`, () => {
