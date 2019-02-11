@@ -6,6 +6,8 @@ import { withStyles } from '@material-ui/core/styles';
 import {TextEditor} from '../TextEditor/index';
 import { Value } from 'slate';
 
+import templateParser from '../../modules/template/replaceTemplateFields';
+
 const styles = theme => ({
     root: {
         display: 'flex',
@@ -55,7 +57,7 @@ const initialValue = (issue) => {
                                 object: 'text',
                                 leaves: [
                                     {
-                                        text: issue.text
+                                        text: templateParser(issue.text, issue)
                                     }
                                 ]
                             }

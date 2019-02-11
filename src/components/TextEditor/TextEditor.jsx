@@ -11,6 +11,7 @@ import { isKeyHotkey } from 'is-hotkey'
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
+import MoreVert from '@material-ui/icons/MoreVert';
 
 import './index.css';
 
@@ -28,6 +29,10 @@ const styles = theme => ({
     },
     toolbarMain: {
         flexGrow: 1
+    },
+    toolbarButton: {
+        padding: theme.spacing.unit / 2,
+        color: theme.palette.grey[500]
     }
 });
 
@@ -71,6 +76,11 @@ class TextEditor extends Component {
         this.setState({value})
     }
 
+    handleToolbarClick = () => {
+        this.setState((state, props) => ({
+            showToolbar: !state.showToolbar
+        }))
+    }
 
     onKeyDown = (e, editor, next) => {
         let mark;
@@ -131,25 +141,47 @@ class TextEditor extends Component {
 
     render() {
         const { classes } = this.props;
+        console.log('rendered', this)
         return (
             <React.Fragment>
-                <FormatToolbar>
-                    <div className={classes.toolbarMain}>
-                        {this.renderMarkButton('bold', 'format_bold')}
-                        {this.renderMarkButton('italic', 'format_italic')}
-                        {this.renderMarkButton('underlined', 'format_underlined')}
-                    </div>
-                    <div>
-                        <IconButton className={classes.button} aria-label="Delete">
-                            <DeleteOutline />
+                {this.state.showToolbar ?
+                    <FormatToolbar>
+                        <div className={classes.toolbarMain}>
+                            {this.renderMarkButton('bold', 'format_bold')}
+                            {this.renderMarkButton('italic', 'format_italic')}
+                            {this.renderMarkButton('underlined', 'format_underlined')}
+                        </div>
+                        <div>
+                            <IconButton className={classes.button} aria-label="Delete">
+                                <DeleteOutline />
+                            </IconButton>
+                            <IconButton
+                                onClick={this.handleToolbarClick}
+                                className={classes.toolbarButton}
+                            >
+                                <MoreVert />
+                            </IconButton>
+                        </div>
+                    </FormatToolbar>
+                    :
+                    <FormatToolbar>
+                        <div className={classes.toolbarMain}>
+
+                        </div>
+                        <IconButton
+                            onClick={this.handleToolbarClick}
+                            className={classes.toolbarButton}
+                        >
+                            <MoreVert />
                         </IconButton>
-                    </div>
-                </FormatToolbar>
+                    </FormatToolbar>
+                }
                 <Editor
                     spellCheck={false}
                     className={'mainEditor'}
                     ref={this.ref}
                     value={this.state.value}
+                    
                     onChange={this.onChange}
                     onKeyDown={this.onKeyDown}
                     renderMark={this.renderMark}
