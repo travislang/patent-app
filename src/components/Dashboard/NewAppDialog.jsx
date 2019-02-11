@@ -66,7 +66,6 @@ class NewAppDialog extends React.Component {
         }, 800);
     }
     handleAdd = (applicationPayload) => { // handle adding new application
-        console.log(applicationPayload);
         this.props.dispatch({
             type: 'POST_APPLICATION',
             payload: applicationPayload
