@@ -6,11 +6,12 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { Typography, withStyles } from '@material-ui/core';
+import { withStyles } from '@material-ui/core';
 
 import { connect } from 'react-redux';
 
 import Grid from '@material-ui/core/Grid'
+
 
 const styles = theme => ({
     dialogContainer: {
@@ -20,6 +21,12 @@ const styles = theme => ({
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
         width: 300,
+
+        cssLabel: {
+            '&$cssFocused': {
+                color: 'red',
+            },
+        }
     },
     searchAppNum: {
         display: 'flex',
@@ -28,28 +35,112 @@ const styles = theme => ({
     },
     inputFieldsContainer: {
         margin: theme.spacing.unit * 3
-    }
+    },
+    cssFocused: {},
 });
 
 
 class NewUserDialog extends React.Component {
+
     state = {
-        userName: '',
-        signatureName: '',
-        registrationNumber: '',
-        phoneNumber: '',
-        firmName: '',
-        usptoCustomerNumber: '',
-        depositAccountNumber: '',
-        password: '',
-        retypedPassword: ''
+        userName: { text: '', error: false },
+        signatureName: { text: '', error: false },
+        phoneNumber: { text: '', error: false },
+        firmName: { text: '', error: false },
+
+        registrationNumber: { text: '', error: false },
+        usptoCustomerNumber: { text: '', error: false },
+        depositAccountNumber: { text: '', error: false },
+
+        password: { text: '', error: false },
+        retypedPassword: { text: '', error: false },
     };
+
+    handleRegisterClick = () => {
+
+        // Verify all fields not empty
+        for (let key in this.state) {
+            if (this.state[key].text == '') {
+                this.state[key].error = true;
+                return;
+            }
+        }
+
+        // Verify User does not already exist
+
+
+        // Verify Phone number
+
+
+        // Verify passwords
+        if (!this.passwordsDoMatch()) {
+            console.log('Passwords do not match!');
+            this.setState({
+                retypedPassword: { text: '', error: true }
+            })
+            return;
+        }
+
+        if (this.fieldsVerified()) {
+            // Destructure state into payload as requested by route
+            const {
+                userName,
+                signatureName,
+                phoneNumber,
+                firmName,
+                registrationNumber,
+                usptoCustomerNumber,
+                depositAccountNumber,
+                password
+            } = this.state;
+
+            // Dispatch action to register saga
+            this.props.dispatch({
+                type: 'REGISTER_USER', payload: {
+                    user_name: userName.text,
+                    signature_name: signatureName.text,
+                    phone_number: phoneNumber.text,
+                    firm_name: firmName.text,
+                    registration_number: registrationNumber.text,
+                    uspto_customer_number: usptoCustomerNumber.text,
+                    deposit_account_number: depositAccountNumber.text,
+                    password: password.text
+                }
+            })
+        }
+    }
+
+    fieldsVerified = () => {
+        for (let key in this.state) {
+            if (this.state[key].error) {
+                return false
+            }
+        }
+
+        return true;
+    }
+
+    passwordsDoMatch = () => {
+        // Fields filled
+        if (this.state.password.text != '' && this.state.retypedPassword.text != '') {
+            // Fields match
+            if (this.state.password.text == this.state.retypedPassword.text) {
+                return true
+            } else {
+                return false;
+            }
+
+        } else {
+            return false;
+        }
+    }
 
     render() {
         const { classes } = this.props;
 
         //   "user_name" VARCHAR (20) UNIQUE NOT NULL,
         //   "password" VARCHAR (255) NOT NULL,
+
         //   "is_admin" BOOLEAN DEFAULT FALSE,
         //   "signature_name" VARCHAR(70),
         //   "registration_number" VARCHAR(10),
@@ -67,7 +158,7 @@ class NewUserDialog extends React.Component {
                 onClose={this.props.handleClose}
                 aria-labelledby="form-dialog-title"
             >
-                <DialogTitle align='center' id="form-dialog-title">New User
+                <DialogTitle align='center' id="form-dialog-title"> New User
                 </DialogTitle>
                 <DialogContent>
                     <Grid container direction='column' alignItems='center'>
@@ -77,162 +168,146 @@ class NewUserDialog extends React.Component {
                                     <Grid container direction='column'>
 
                                         <TextField
+                                            autoComplete={'off'}
+                                            error={this.state.userName.error}
                                             id="outlined-applicantName"
                                             label="User name"
                                             className={classes.appNumTextField}
-                                            value={this.state.userName}
-                                            onChange={(e) => { }}
+                                            value={this.state.userName.text}
+                                            onChange={(e) => {
+                                                this.setState({ userName: { text: e.target.value, error: false } })
+                                            }}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.props.reduxState.uspto.applicantName && {
-                                                shrink: true,
-                                            }}
                                         />
 
                                         <TextField
+                                            autoComplete={'off'}
+                                            error={this.state.signatureName.error}
                                             id="outlined-lastDateCheck"
                                             label="Signature name"
                                             className={classes.appNumTextField}
-                                            value={this.state.signatureName}
-                                            onChange={(e) => { }}
+                                            value={this.state.signatureName.text}
+                                            onChange={(e) => {
+                                                this.setState({ signatureName: { text: e.target.value, error: false } })
+                                            }}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.props.reduxState.uspto.LAST_MOD_TS && {
-                                                shrink: true,
-                                            }}
                                         />
 
                                         <TextField
+                                            autoComplete={'off'}
+                                            error={this.state.phoneNumber.error}
                                             id="outlined-lastDateCheck"
                                             label="Phone"
                                             className={classes.appNumTextField}
-                                            value={this.state.phoneNumber}
-                                            onChange={(e) => { }}
+                                            value={this.state.phoneNumber.text}
+                                            onChange={(e) => {
+                                                this.setState({ phoneNumber: { text: e.target.value, error: false } })
+                                            }}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.props.reduxState.uspto.LAST_MOD_TS && {
-                                                shrink: true,
-                                            }}
                                         />
 
                                         <TextField
+                                            autoComplete={'off'}
+                                            error={this.state.firmName.error}
                                             id="outlined-lastDateCheck"
                                             label="Firm"
                                             className={classes.appNumTextField}
-                                            value={this.state.firmName}
-                                            onChange={(e) => { }}
+                                            value={this.state.firmName.text}
+                                            onChange={(e) => {
+                                                this.setState({ firmName: { text: e.target.value, error: false } })
+                                            }}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.props.reduxState.uspto.LAST_MOD_TS && {
-                                                shrink: true,
+                                        />
+
+                                    </Grid>
+                                </Grid>
+                                <Grid item>
+                                    <Grid container direction='column'>
+
+                                        <TextField
+                                            autoComplete={'off'}
+                                            error={this.state.registrationNumber.error}
+                                            id="outlined-lastDateCheck"
+                                            label="Registration number"
+                                            className={classes.appNumTextField}
+                                            value={this.state.registrationNumber.text}
+                                            onChange={(e) => {
+                                                this.setState({ registrationNumber: { text: e.target.value, error: false } })
                                             }}
+                                            margin="normal"
+                                            variant="outlined"
+                                            margin='dense'
                                         />
 
                                         <TextField
+                                            autoComplete={'off'}
+                                            error={this.state.usptoCustomerNumber.error}
                                             id="outlined-lastDateCheck"
                                             label="USPTO Customer number"
                                             className={classes.appNumTextField}
-                                            value={this.state.usptoCustomerNumber}
-                                            onChange={(e) => { }}
+                                            value={this.state.usptoCustomerNumber.text}
+                                            onChange={(e) => {
+                                                this.setState({ usptoCustomerNumber: { text: e.target.value, error: false } })
+                                            }}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.props.reduxState.uspto.LAST_MOD_TS && {
-                                                shrink: true,
-                                            }}
                                         />
 
                                         <TextField
+                                            autoComplete={'off'}
+                                            error={this.state.depositAccountNumber.error}
                                             id="outlined-lastDateCheck"
-                                            label="Deposit account number:"
+                                            label="Deposit account number"
                                             className={classes.appNumTextField}
-                                            value={this.state.usptoCustomerNumber}
-                                            onChange={(e) => { }}
+                                            value={this.state.depositAccountNumber.text}
+                                            onChange={(e) => {
+                                                this.setState({ depositAccountNumber: { text: e.target.value, error: false } })
+                                            }}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.props.reduxState.uspto.LAST_MOD_TS && {
-                                                shrink: true,
-                                            }}
                                         />
 
                                     </Grid>
                                 </Grid>
                                 <Grid item>
                                     <Grid container direction='column'>
-                                        <TextField
-                                            id="outlined-inventorName"
-                                            label="Inventor Name"
-                                            className={classes.appNumTextField}
-                                            value={5}
-                                            onChange={(e) => { }}
-                                            margin="normal"
-                                            variant="outlined"
-                                            margin='dense'
-                                            InputLabelProps={this.props.reduxState.uspto.inventorName && {
-                                                shrink: true,
-                                            }}
-                                        />
-                                        <TextField
-                                            id="outlined-filed"
-                                            label="Date Filed"
-                                            className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.appFilingDate}
-                                            onChange={(e) => { }}
-                                            margin="normal"
-                                            variant="outlined"
-                                            margin='dense'
-                                            InputLabelProps={this.props.reduxState.uspto.appFilingDate && {
-                                                shrink: true,
-                                            }}
-                                        />
 
-                                    </Grid>
-                                </Grid>
-                                <Grid item>
-                                    <Grid container direction='column'>
                                         <TextField
-                                            id="outlined-customerNumb"
-                                            label="Customer Number"
+                                            autoComplete={'off'}
+                                            error={this.state.password.error}
+                                            id="outlined-lastDateCheck"
+                                            label="Desired password"
                                             className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.customerNum}
-                                            onChange={(e) => { }}
+                                            value={this.state.password.text}
+                                            onChange={(e) => {
+                                                this.setState({ password: { text: e.target.value, error: false } })
+                                            }}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.props.reduxState.uspto.customerNum && {
-                                                shrink: true,
-                                            }}
                                         />
                                         <TextField
-                                            id="outlined-title"
-                                            label="Title"
+                                            autoComplete={'off'}
+                                            error={this.state.retypedPassword.error}
+                                            id="outlined-lastDateCheck"
+                                            label="Re-type password"
                                             className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.patentTitle}
-                                            onChange={(e) => { }}
-                                            margin="normal"
+                                            value={this.state.retypedPassword.text}
+                                            onChange={(e) => {
+                                                this.setState({ retypedPassword: { text: e.target.value, error: false } })
+                                            }}
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.props.reduxState.uspto.patentTitle && {
-                                                shrink: true,
-                                            }}
-                                        />
-                                        <TextField
-                                            id="outlined-examiner"
-                                            label="Examiner"
-                                            className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.appExamName}
-                                            onChange={(e) => { }}
-                                            margin="normal"
-                                            variant="outlined"
-                                            margin='dense'
-                                            InputLabelProps={this.props.reduxState.uspto.appExamName && {
-                                                shrink: true,
-                                            }}
                                         />
                                     </Grid>
                                 </Grid>
@@ -241,10 +316,27 @@ class NewUserDialog extends React.Component {
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.props.handleClose} variant='contained' color="default">
+                    <Button
+                        onClick={() => {
+                            this.props.handleClose();
+
+                            // Revert state
+                            for (let key in this.state) {
+                                this.setState({
+                                    [key]: { text: '', error: false }
+                                })
+                            }
+
+                        }}
+                        variant='contained'
+                        color="default">
                         Cancel
                     </Button>
-                    <Button variant='contained' color="primary">
+                    <Button
+                        variant='contained'
+                        color='primary'
+                        onClick={this.handleRegisterClick}
+                    >
                         Register
                     </Button>
                 </DialogActions>

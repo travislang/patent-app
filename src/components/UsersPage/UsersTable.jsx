@@ -78,30 +78,39 @@ class UsersTable extends Component {
                     <TableBody>
                         { users.map(user => (
                             <TableRow className={classes.row} key={user.id}>
+
                                 <TableCell component="th" scope="row">
                                     {user.user_name}
                                 </TableCell>
+
                                 <TableCell component="th" scope="row">
                                     {user.signature_name}
                                 </TableCell>
+
                                 <TableCell component="th" scope="row">
                                     {user.registration_number}
                                 </TableCell>
+
                                 <TableCell component="th" scope="row">
                                     {user.phone_number}
                                 </TableCell>
+
                                 <TableCell component="th" scope="row">
                                     {user.firm_name}
                                 </TableCell>
+
                                 <TableCell component="th" scope="row">
                                     {user.uspto_customer_number}
                                 </TableCell>
+
                                 <TableCell component="th" scope="row">
                                     {user.deposit_account_number}
                                 </TableCell>
+
                                 <TableCell component="th" scope="row">
                                     {user.active}
                                 </TableCell>
+
                             </TableRow>
                         ))}
                     </TableBody>
