@@ -113,12 +113,12 @@ INSERT INTO "template" ("type_id", "template_name", "content")
 VALUES
 ( (SELECT "id" FROM "template_type" WHERE "type"='Claim Rejection - § 103'),
     '209 Rejection § 103',
-    'In the Office Action, {claim(s)is/are} rejected under 35 U.S.C. § 103 '
+    'In the Office Action, claim{claim(s)is/are} rejected under 35 U.S.C. § 103 '
     'as allegedly being unpatentable over the referenced publications. Neither '
     'the correctness of the characterizations of this reference and the '
     'pending application nor the sufficiency of the rejection is conceded. '
     'This rejection is respectfully traversed. Reconsideration and allowance '
-    'of {claim(s)} is respectfully requested.'
+    'of claim{claim(s)} is respectfully requested.'
 ),
 ( (SELECT "id" FROM "template_type" WHERE "type"='Claim Rejection - § 103'),
     '209 Rejection § 103 Based On Interview',
@@ -140,7 +140,6 @@ VALUES
     'Applicant respectfully asserts that the reference does not teach or suggest '
     'this element. Accordingly, claim{claim(s)is/are} allowable over the reference, '
     'as well as any claims that are dependent thereon.'
-
 );
 
 -- The following gives test applications to display on dashboard
