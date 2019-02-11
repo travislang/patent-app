@@ -34,38 +34,56 @@ const styles = theme => ({
 
 class NewAppDialog extends React.Component {
     state = {
-        appNum: ''
+        appNum: '',
+        search: false,
     };
 
     handleChange = name => event => { // handle change to the redux state
         this.props.dispatch({
             type: 'SET_USPTO_APP_DATA',
             payload: { ...this.props.reduxState.uspto, [name]: event.target.value }
-        })
+        });
     };
     handleId = (event) => { //handle change to the application number
         this.setState({
             appNum: event.target.value
-        })
+        });
     }
     handleAppSearch = () => { // handle which application to search for in uspto
+        this.handleClear();
         this.props.dispatch({
             type: 'FETCH_USPTO_APP_DATA',
             payload: this.state.appNum
         });
+        setTimeout(() => {
+            if (this.props.reduxState.uspto !== false) {
+                this.setState({
+                    search: true,
+                });
+            }
+        }, 800);
     }
     handleAdd = (applicationPayload) => { // handle adding new application
-        Object.keys(applicationPayload).forEach(i =>{
-            console.log(applicationPayload[i])
-            this.setState({
-                reqField: {...this.state.reqField, i: applicationPayload[i]}
-            })
+        this.props.dispatch({
+            type: 'POST_APPLICATION',
+            payload: applicationPayload
         });
-        console.log(this.state);
-        // this.props.dispatch({
-        //     type: 'POST_APPLICATION',
-        //     payload: applicationPayload
-        // });
+        this.handleCloseDialog();
+    }
+    handleCloseDialog = () => { // clear dialog state
+        this.props.handleClose();
+        this.setState({
+            appNum: '',
+        })
+        this.handleClear()
+    }
+    handleClear = () => { // clear dialog info
+        this.setState({
+            search: false,
+        });
+        this.props.dispatch({
+            type: 'CLEAR_USPTO_APP_DATA'
+        });
     }
     render() {
         const { classes } = this.props;
@@ -90,7 +108,7 @@ class NewAppDialog extends React.Component {
                 maxWidth='lg'
                 open={this.props.open}
                 className={classes.dialogContainer}
-                onClose={this.props.handleClose}
+                onClose={this.handleCloseDialog}
                 aria-labelledby="form-dialog-title"
             >
                 <DialogTitle align='center' id="form-dialog-title">New        Application
@@ -115,6 +133,7 @@ class NewAppDialog extends React.Component {
                                 />
                                 <div>
                                     <Button
+                                        type="submit"
                                         onClick={this.handleAppSearch} color="primary"
                                         variant='contained'
                                         size='large'>
@@ -128,6 +147,7 @@ class NewAppDialog extends React.Component {
                                 <Grid item>
                                     <Grid container direction='column'>
                                         <TextField
+                                            error={!this.props.reduxState.uspto.applicantName && this.state.search ? true : false}
                                             id="outlined-applicantName"
                                             label="Applicant Name"
                                             className={classes.appNumTextField}
@@ -141,6 +161,7 @@ class NewAppDialog extends React.Component {
                                             }}
                                         />
                                         <TextField
+                                            error={!this.props.reduxState.uspto.LAST_MOD_TS && this.state.search ? true : false}
                                             id="outlined-lastDateCheck"
                                             label="Last Checked Date"
                                             className={classes.appNumTextField}
@@ -158,6 +179,7 @@ class NewAppDialog extends React.Component {
                                 <Grid item>
                                     <Grid container direction='column'>
                                         <TextField
+                                            error={!this.props.reduxState.uspto.inventorName && this.state.search ? true : false}
                                             id="outlined-inventorName"
                                             label="Inventor Name"
                                             className={classes.appNumTextField}
@@ -171,6 +193,7 @@ class NewAppDialog extends React.Component {
                                             }}
                                         />
                                         <TextField
+                                            error={!this.props.reduxState.uspto.appFilingDate && this.state.search ? true : false}
                                             id="outlined-filed"
                                             label="Date Filed"
                                             className={classes.appNumTextField}
@@ -189,19 +212,7 @@ class NewAppDialog extends React.Component {
                                 <Grid item>
                                     <Grid container direction='column'>
                                         <TextField
-                                            id="outlined-customerNumb"
-                                            label="Customer Number"
-                                            className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.customerNum || ''}
-                                            onChange={this.handleChange('customerNum')}
-                                            margin="normal"
-                                            variant="outlined"
-                                            margin='dense'
-                                            InputLabelProps={this.props.reduxState.uspto.customerNum && {
-                                                shrink: true,
-                                            }}
-                                        />
-                                        <TextField
+                                            error={!this.props.reduxState.uspto.patentTitle && this.state.search ? true : false}
                                             id="outlined-title"
                                             label="Title"
                                             className={classes.appNumTextField}
@@ -215,6 +226,7 @@ class NewAppDialog extends React.Component {
                                             }}
                                         />
                                         <TextField
+                                            error={!this.props.reduxState.uspto.appExamName && this.state.search ? true : false}
                                             id="outlined-examiner"
                                             label="Examiner"
                                             className={classes.appNumTextField}
@@ -232,6 +244,7 @@ class NewAppDialog extends React.Component {
                                 <Grid item>
                                     <Grid container direction='column'>
                                         <TextField
+                                            error={!this.props.reduxState.uspto.appGrpArtNumber && this.state.search ? true : false}
                                             id="outlined-groupArtNum"
                                             label="Group Art Number"
                                             className={classes.appNumTextField}
@@ -245,6 +258,7 @@ class NewAppDialog extends React.Component {
                                             }}
                                         />
                                         <TextField
+                                            error={!this.props.reduxState.uspto.appAttrDockNumber && this.state.search ? true : false}
                                             id="outlined-docketNum"
                                             label="Docket Number"
                                             className={classes.appNumTextField}
@@ -258,6 +272,7 @@ class NewAppDialog extends React.Component {
                                             }}
                                         />
                                         <TextField
+                                            error={!this.props.reduxState.uspto.appConfrNumber && this.state.search ? true : false}
                                             id="outlined-confNum"
                                             label="Confirmation Number"
                                             className={classes.appNumTextField}
@@ -277,10 +292,10 @@ class NewAppDialog extends React.Component {
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.props.handleClose} variant='contained' color="default">
+                    <Button onClick={this.handleCloseDialog} variant='contained' color="default">
                         Cancel
                     </Button>
-                    <Button onClick={()=>this.handleAdd(applicationPayload)} variant='contained' color="primary">
+                    <Button onClick={() => this.handleAdd(applicationPayload)} variant='contained' color="primary">
                         Add Application
                     </Button>
                 </DialogActions>

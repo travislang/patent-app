@@ -26,7 +26,7 @@ router.post('/', rejectUnauthenticated, (req, res) => {
         // }
     ).then(response => {
         apiResponseBreakdown = response.data.queryResults.searchResponse.response.docs[0] // break down response to more relevant information
-        if(apiResponseBreakdown === undefined){
+        if(apiResponseBreakdown === undefined){ // no document is found/return
             res.send(false);
         }
         res.send(apiResponseBreakdown)
