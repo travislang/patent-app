@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 
 import OfficeActionTable from './OfficeActionTable';
+import NewOfficeActionDialog from './NewOfficeActionDialog';
 
 const styles = theme => ({
     root: {
@@ -167,7 +168,7 @@ class OfficeActions extends Component {
                         </Grid>
                     </Grid>
                     <OfficeActionTable handleClick={this.handleClick} officeActions={officeActions} />
-                    {/* <NewAppDialog open={this.state.dialogOpen} handleClose={this.handleClose} /> */}
+                    <NewOfficeActionDialog open={this.state.dialogOpen} handleClose={this.handleClose} />
                 </Paper>
             </div>
         )
