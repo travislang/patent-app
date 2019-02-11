@@ -7,6 +7,7 @@ import { Editor } from 'slate-react';
 import { BoldMark, ItalicMark, UnderlinedMark, FormatToolbar } from './index';
 import { isKeyHotkey } from 'is-hotkey'
 
+import DeleteDialog from './DeleteDialog';
 
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
@@ -51,7 +52,8 @@ class TextEditor extends Component {
     state = {
         value: this.props.initialVal,
         activeButton: -1,
-        showToolbar: false
+        showToolbar: false,
+        deleteDialogOpen: false
     }
 
     // store a reference to the editor
@@ -139,9 +141,18 @@ class TextEditor extends Component {
         }
     }
 
+    handleDeleteTemplate = () => {
+
+    }
+
+    handleTemplateDeleteClose = () => {
+        this.setState({
+            deleteDialogOpen: false
+        })
+    }
+
     render() {
         const { classes } = this.props;
-        console.log('rendered', this)
         return (
             <React.Fragment>
                 {this.state.showToolbar ?
@@ -152,9 +163,19 @@ class TextEditor extends Component {
                             {this.renderMarkButton('underlined', 'format_underlined')}
                         </div>
                         <div>
-                            <IconButton className={classes.button} aria-label="Delete">
+                            <IconButton 
+                                className={classes.button} 
+                                aria-label="Delete"
+                                onClick={() => {this.setState({deleteDialogOpen: true})}}
+                            >
                                 <DeleteOutline />
                             </IconButton>
+                            <DeleteDialog 
+                                open={this.state.deleteDialogOpen}
+                                templateId={}
+                                handleDeleteTemplate={this.handleDeleteTemplate}
+                                handleTemplateDeleteClose={this.handleTemplateDeleteClose}
+                            />
                             <IconButton
                                 onClick={this.handleToolbarClick}
                                 className={classes.toolbarButton}
@@ -166,7 +187,6 @@ class TextEditor extends Component {
                     :
                     <FormatToolbar>
                         <div className={classes.toolbarMain}>
-
                         </div>
                         <IconButton
                             onClick={this.handleToolbarClick}
