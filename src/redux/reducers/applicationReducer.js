@@ -24,7 +24,7 @@ const applicationReducer = (state = {
 
         // Current O.A.R
         case 'SET_OFFICE_ACTION':
-            return {... state, CurrentOfficeActionResponse: action.payload}
+            return {... state, currentOfficeActionResponse: action.payload}
 
         case 'SET_ISSUES':
             return {... state, currentOficeActionIssueList: action.payload}

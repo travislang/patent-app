@@ -24,12 +24,12 @@ router.get('/:typeId', rejectUnauthenticated, (req, res) => {
         JOIN "template_type" ON "template"."type_id"="template_type"."id"
         WHERE "type_id"=$1 AND ("user_id" IS NULL OR "user_id"=$2)
         ORDER BY "id";`;
-    pool.query(query, [typeId, req.user.id])
+    pool.query(query)
         .then((results) => {
             res.send(results.rows);
         }).catch((err) => {
             res.sendStatus(500);
-            console.error('Error in GET /template', err);
+            console.error('Error in GET /template/types', err);
         }
     );
 });
@@ -57,7 +57,7 @@ router.post('/add', rejectUnauthenticated, (req, res) => {
             res.sendStatus(500);
             console.error('Error in POST /template/add', err);
         }
-    );
+        );
 });
 
 router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
