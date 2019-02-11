@@ -96,6 +96,8 @@ class AppDrawer extends Component {
         this.props.dispatch({ type: 'FETCH_ISSUES', payload: { office_action_id: oaId } })
         // get all template types for dialog
         this.props.dispatch({ type: 'FETCH_TEMPLATE_TYPES' })
+        // get all response texts
+        this.props.dispatch({ type: 'FETCH_RESPONSES', payload: { office_Action_Id: oaId}})
     }
 
     handleNewIssueDialogOpen = () => {
@@ -179,7 +181,7 @@ class AppDrawer extends Component {
                         {issuesList.map((issue) => {
                             if (issue.section === 'header') {
                                 return (
-                                    issue.template_id ?
+                                    issue.text ?
                                         <ListItem 
                                                 component={Link} 
                                                 to='#2' 
@@ -208,13 +210,13 @@ class AppDrawer extends Component {
                         {issuesList.map((issue) => {
                             if (issue.section === 'amendment') {
                                 return (
-                                    issue.template_id ?
+                                    issue.text ?
                                         <ListItem 
                                             component={Link} 
                                             to='#2' 
                                             button 
                                             key={issue.id}
-                                            onClick={this.handleNewTemplateDialogOpen(issue)}
+                                            onClick={() => this.handleNewTemplateDialogOpen(issue)}
                                         >
                                             <ListItemIcon style={{ margin: 0 }}>
                                                 <CheckIcon
@@ -237,13 +239,13 @@ class AppDrawer extends Component {
                         {issuesList.map((issue) => {
                             if (issue.section === 'issues') {
                                 return (
-                                    issue.template_id ?
+                                    issue.text ?
                                         <ListItem 
                                             component={Link} 
                                             to='#2' 
                                             button 
                                             key={issue.id}
-                                            onClick={this.handleNewTemplateDialogOpen(issue)}
+                                            onClick={() => this.handleNewTemplateDialogOpen(issue)}
                                         >
                                             <ListItemIcon style={{ margin: 0 }}>
                                                 <CheckIcon
@@ -266,7 +268,7 @@ class AppDrawer extends Component {
                         {issuesList.map((issue) => {
                             if (issue.section === 'footer') {
                                 return (
-                                    issue.template_id ?
+                                    issue.text ?
                                         <ListItem 
                                             component={Link} 
                                             to='#2' 
@@ -313,6 +315,7 @@ class AppDrawer extends Component {
                         currentIssue={this.state.currentIssue}
                         handleTemplateClose={this.handleTemplateClose}
                         templates={templates}
+                        oaId={oaId}
                     />
                 </Drawer>
                 <main className={classes.content}>
@@ -333,7 +336,8 @@ const mapStateToProps = state => ({
     officeAction: state.application.currentOfficeActionResponse,
     issuesList: state.application.currentOficeActionIssueList,
     templateTypes: state.template.types,
-    templates: state.template.templates
+    templates: state.template.templates,
+    responses: state.application.currentOfficeActionResponseTextList
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(withRouter(AppDrawer)));

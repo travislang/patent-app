@@ -52,7 +52,8 @@ class AddTemplateDialog extends React.Component {
 
     state = {
         template: {},
-        templateText: ''
+        templateText: '',
+        templateId: ''
     }
 
     handleChange = event => {
@@ -68,6 +69,22 @@ class AddTemplateDialog extends React.Component {
         });
     };
 
+    handleSubmit = () => {
+        const oaId = this.props.oaId;
+        const issueId = this.props.currentIssue.id;
+        const text = this.state.templateText;
+        this.props.dispatch({
+            type: 'POST_RESPONSE',
+            payload: {
+                office_Action_Id: oaId,
+                issue_id: issueId,
+                text: text
+            }
+        })
+        this.props.dispatch({ type: 'FETCH_ISSUES', payload: { office_action_id: oaId } })
+        // close modal
+        this.props.handleTemplateClose();
+    }
     
 
     render() {
@@ -136,7 +153,7 @@ class AddTemplateDialog extends React.Component {
 
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.props.handleDialogClose} color="primary">
+                        <Button onClick={this.props.handleTemplateClose} color="primary">
                             Cancel
                         </Button>
                         <Button onClick={this.handleSubmit} color="primary">

@@ -61,22 +61,22 @@ class AddIssueDialog extends React.Component {
         this.setState({ [name]: event.target.value });
     };
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        const oaId = this.props.oaId;
-        const payloadObj = {
-            office_action_id: oaId,
-            template_type_id: this.state.template_type,
-            claims: this.state.claims,
-        }
-        console.log('state', payloadObj);
-        this.props.dispatch({ type: 'POST_ISSUE', payload: payloadObj})
-        this.props.handleDialogClose();
-        this.setState({
-            template_type: '',
-            claims: ''
-        })
-    }
+    // handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     const oaId = this.props.oaId;
+    //     const payloadObj = {
+    //         office_action_id: oaId,
+    //         template_type_id: this.state.template_type,
+    //         claims: this.state.claims,
+    //     }
+    //     console.log('state', payloadObj);
+    //     this.props.dispatch({ type: 'POST_ISSUE', payload: payloadObj})
+    //     this.props.handleDialogClose();
+    //     this.setState({
+    //         template_type: '',
+    //         claims: ''
+    //     })
+    // }
 
     render() {
         const {classes, templates} = this.props;
