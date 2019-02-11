@@ -88,6 +88,60 @@ VALUES
 ('user', '$2b$10$doyOvwDhPKKLO/ZiRKDg0eEPXfoAhf13zFQ5r0vJEE/W76V72TDQK', 'false'), --pw user
 ('user2', '$2b$10$ZKcBbq.B2tDia.2QLWFe7e4nP0CxgkqGfeWh8bN/T3WM4V1TvCrjy', 'false'); --pw user2
 
+INSERT INTO "template_type" ("type", "section")
+VALUES
+('Claim Rejection - § 101', 'issue'),
+('Claim Rejection - § 102', 'issue'),
+('Claim Rejection - § 103', 'issue'),
+('Claim Rejection - § 112', 'issue'),
+('Double Patenting', 'issue'),
+('Objections to the Drawings', 'issue'),
+('Objections to the Claims', 'issue'),
+('Objections to the Specification', 'issue'),
+('Claim Interpretation', 'issue'),
+('Allowable Subject Matter', 'issue'),
+('Interview Summary', 'amendment'),
+('Drawings Amendments', 'amendment'),
+('Claims Amendment', 'amendment'),
+('Specification Amendments', 'amendment'),
+('Coversheet Introduction', 'header'),
+('Header', 'header'),
+('Remarks Introduction', 'header'),
+('Conclusion', 'footer');
+
+INSERT INTO "template" ("type_id", "template_name", "content")
+VALUES
+( (SELECT "id" FROM "template_type" WHERE "type"='Claim Rejection - § 103'),
+    '209 Rejection § 103',
+    'In the Office Action, {claim(s)is/are} rejected under 35 U.S.C. § 103 '
+    'as allegedly being unpatentable over the referenced publications. Neither '
+    'the correctness of the characterizations of this reference and the '
+    'pending application nor the sufficiency of the rejection is conceded. '
+    'This rejection is respectfully traversed. Reconsideration and allowance '
+    'of {claim(s)} is respectfully requested.'
+),
+( (SELECT "id" FROM "template_type" WHERE "type"='Claim Rejection - § 103'),
+    '209 Rejection § 103 Based On Interview',
+    'As discussed during the interview, the independent claims have been amended '
+    'with subject matter related to the aforementioned references. For at least '
+    'the foregoing reasons, it is respectfully submitted that all of the independent '
+    'claims are in condition for allowance. Based at least on their respective '
+    'dependence from the independent claims, the dependent claims are also allowable. '
+    'Accordingly, it is respectfully requested that all outstanding rejections of '
+    'the claims be withdrawn and that claims be allowed.'
+),
+( (SELECT "id" FROM "template_type" WHERE "type"='Claim Rejection - § 103'),
+    '209 Rejection § 103 Incorporate Allowable Subject Matter',
+    'Do not use this template'
+),
+( (SELECT "id" FROM "template_type" WHERE "type"='Claim Rejection - § 103'),
+    '209 Rejection § 103 AMD',
+    'Nonetheless, independent claim{claim(s)is/are} amended to recite "***." '
+    'Applicant respectfully asserts that the reference does not teach or suggest '
+    'this element. Accordingly, claim{claim(s)is/are} allowable over the reference, '
+    'as well as any claims that are dependent thereon.'
+
+);
 
 -- The following gives test applications to display on dashboard
 INSERT INTO "application" ("user_id", "applicant_name", "filed_date", "last_checked_date", "status_date", "application_number", "title", "inventor_name", "examiner_name", "group_art_unit", "docket_number")

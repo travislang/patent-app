@@ -25,13 +25,15 @@ const styles = theme => ({
     root: {
         display: 'flex',
         flexWrap: 'wrap',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     formControl: {
-        margin: theme.spacing.unit,
+        margin: theme.spacing.unit * 3,
         marginLeft: theme.spacing.unit * 3,
         marginRight: theme.spacing.unit * 3,
-        minWidth: 250,
+        width: 250,
     },
     selectEmpty: {
         marginTop: theme.spacing.unit * 2,
@@ -39,104 +41,119 @@ const styles = theme => ({
     dialogContainer: {
         minWidth: 700
     },
-    textField: {
+    textFieldArea: {
         marginLeft: theme.spacing.unit * 3,
         marginRight: theme.spacing.unit * 3,
-        width: 250,
+        width: 500,
     },
 });
 
-class AddIssueDialog extends React.Component {
+class AddTemplateDialog extends React.Component {
 
     state = {
-        template_type: '',
-        claims: ''
+        template: {},
+        templateText: '',
+        templateId: ''
     }
 
     handleChange = event => {
-        this.setState({ [event.target.name]: event.target.value });
+        this.setState({ 
+            [event.target.name]: event.target.value,
+            templateText: event.target.value.content || ''
+        });
     };
 
-    handleInputChange = name => event => {
-        this.setState({ [name]: event.target.value });
-    };
-
-    handleSubmit = (e) => {
-        e.preventDefault();
-        const oaId = this.props.oaId;
-        const payloadObj = {
-            office_action_id: oaId,
-            template_type_id: this.state.template_type,
-            claims: this.state.claims,
-        }
-        console.log('state', payloadObj);
-        this.props.dispatch({ type: 'POST_ISSUE', payload: payloadObj})
-        this.props.handleDialogClose();
+    handleTemplateEdit = name => event => {
         this.setState({
-            template_type: '',
-            claims: ''
+            [name]: event.target.value,
+        });
+    };
+
+    handleSubmit = () => {
+        const oaId = this.props.oaId;
+        const issueId = this.props.currentIssue.id;
+        const text = this.state.templateText;
+        this.props.dispatch({
+            type: 'POST_RESPONSE',
+            payload: {
+                office_Action_Id: oaId,
+                issue_id: issueId,
+                text: text
+            }
         })
+        this.props.dispatch({ type: 'FETCH_ISSUES', payload: { office_action_id: oaId } })
+        // close modal
+        this.props.handleTemplateClose();
     }
+    
 
     render() {
-        const {classes, templates} = this.props;
+        const { classes, templates } = this.props;
         return (
             <div>
                 <Dialog
                     maxWidth='lg'
                     open={this.props.open}
                     className={classes.dialogContainer}
-                    onClose={this.props.handleDialogClose}
+                    onClose={this.props.handleTemplateClose}
                     aria-labelledby="add-new-issue"
                 >
-                    <DialogTitle id="add-new-issue">In response to...</DialogTitle>
+                    <DialogTitle id="add-new-issue">Select A Template</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            
+                            Please select a template from the dropdown and then review it before adding it.
                         </DialogContentText>
                         <Grid container direction='column' justify='center' alignItems='center'>
                             <Grid item>
-                                <form 
-                                    className={classes.root} 
+                                <form
+                                    className={classes.root}
                                     autoComplete="off"
                                     onSubmit={this.handleSubmit}
-                                    >
+                                >
                                     <FormControl className={classes.formControl}>
-                                        <InputLabel htmlFor="template-type">Template Type</InputLabel>
+                                        <InputLabel htmlFor="template">Template</InputLabel>
                                         <Select
-                                            value={this.state.template_type}
+                                            value={this.state.template}
                                             onChange={this.handleChange}
                                             inputProps={{
-                                                name: 'template_type',
-                                                id: 'template-type',
+                                                name: 'template',
+                                                id: 'template',
                                             }}
                                         >
-                                            <MenuItem value="">
+                                            <MenuItem value={{}}>
                                                 <em>None</em>
                                             </MenuItem>
                                             {templates.map(template => {
                                                 return (
-                                                    <MenuItem key={template.id} value={template.id}>{template.type}</MenuItem>
+                                                    <MenuItem 
+                                                        key={template.id} 
+                                                        value={template}
+                                                    >
+                                                        {template.template_name}
+                                                    </MenuItem>
                                                 )
                                             })}
                                         </Select>
                                     </FormControl>
                                     <TextField
-                                        id="standard-name"
-                                        label="Claims"
-                                        className={classes.textField}
-                                        value={this.state.claims}
-                                        onChange={this.handleInputChange('claims')}
+                                        id="outlined-multiline-flexible"
+                                        label="Template Preview"
+                                        multiline
+                                        rows="8"
+                                        value={this.state.templateText}
+                                        onChange={this.handleTemplateEdit('templateText')}
+                                        className={classes.textFieldArea}
                                         margin="normal"
-                                        helperText="If there are any claims that this issue applies to enter them here"
+                                        helperText="Please edit anything neccessary and then click 'add Template'"
+                                        variant="outlined"
                                     />
                                 </form>
                             </Grid>
                         </Grid>
-                        
+
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.props.handleDialogClose} color="primary">
+                        <Button onClick={this.props.handleTemplateClose} color="primary">
                             Cancel
                         </Button>
                         <Button onClick={this.handleSubmit} color="primary">
@@ -152,4 +169,4 @@ class AddIssueDialog extends React.Component {
 const mapStateToProps = state => ({
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(AddIssueDialog));
+export default connect(mapStateToProps)(withStyles(styles)(AddTemplateDialog));

@@ -7,7 +7,7 @@ router.get('/:id', rejectUnauthenticated, (req, res) => {
     const { id } = req.params;
     const userId = req.user ? req.user.id : 0;
     let query = 
-        `SELECT "office_action".*, "status".status FROM "office_action"
+        `SELECT "office_action".*, "status"."status" FROM "office_action"
         LEFT JOIN "status" ON "office_action"."status_id" = "status"."id" `;
     if (req.user && req.user.is_admin) {
         query += 'WHERE "office_action"."id"=$1;';
@@ -110,6 +110,30 @@ router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
     }).catch(err => {
         res.sendStatus(500);
         console.error('Error in /office_action/edit', err);
+    });
+});
+
+router.put('/status/:id', rejectUnauthenticated, (req, res) => {
+    const { id } = req.params;
+    const query =
+        `UPDATE "office_action" SET
+            "status_id"=$2
+        WHERE "office_action"."id"=$1
+            AND (EXISTS
+            (SELECT * FROM "application"
+            JOIN "office_action" ON "office_action"."application_id"="application"."id"
+            WHERE "application"."user_id"=$3 AND "office_action"."id"=$1)
+            OR $4);`;
+    pool.query(query, [
+        id,
+        req.body.status_id,
+        req.user.id,
+        req.user.is_admin,
+    ]).then(results => {
+        res.sendStatus(200);
+    }).catch(err => {
+        res.sendStatus(500);
+        console.error('Error in /office_action/status', err);
     });
 });
 
