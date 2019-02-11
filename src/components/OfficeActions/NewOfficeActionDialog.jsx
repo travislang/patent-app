@@ -46,7 +46,6 @@ class NewAppDialog extends React.Component {
         });
     };
     handleAdd = () => {
-        console.log('in handle add')
         this.props.dispatch({
             type: 'POST_OFFICE_ACTION',
             payload: this.state,

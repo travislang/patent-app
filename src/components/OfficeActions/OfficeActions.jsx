@@ -52,7 +52,7 @@ const styles = theme => ({
 
 class OfficeActions extends Component {
     state = {
-        dialogOpen: true,
+        dialogOpen: false,
         displayAllApps: 'false',
     };
     componentDidMount() {
@@ -151,7 +151,7 @@ class OfficeActions extends Component {
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <Button color='primary' variant='contained'>
+                            <Button color='primary' variant='contained' onClick={this.handleNewOfficeAction}>
                                 New Response
                             </Button>
                         </Grid>
