@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,10 +9,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Typography, withStyles } from '@material-ui/core';
-
-import { connect } from 'react-redux';
-
 import Grid from '@material-ui/core/Grid'
+
+import StatusSelector from './StatusSelector';
 
 const styles = theme => ({
     dialogContainer: {
@@ -30,7 +31,6 @@ const styles = theme => ({
         margin: theme.spacing.unit * 3
     }
 });
-
 
 class NewAppDialog extends React.Component {
     state = {
@@ -96,10 +96,6 @@ class NewAppDialog extends React.Component {
                                                 shrink: true,
                                             }}
                                         />
-                                    </Grid>
-                                </Grid>
-                                <Grid item>
-                                    <Grid container direction='column'>
                                         <TextField
                                             id="outlined-usptoStatus"
                                             label="USPTO Status"
@@ -113,6 +109,7 @@ class NewAppDialog extends React.Component {
                                                 shrink: true,
                                             }}
                                         />
+                                        <StatusSelector />
                                     </Grid>
                                 </Grid>
                             </Grid>
