@@ -295,11 +295,29 @@ class NewAppDialog extends React.Component {
                     <Button onClick={this.handleCloseDialog} variant='contained' color="default">
                         Cancel
                     </Button>
-                    <Button onClick={() => this.handleAdd(applicationPayload)} variant='contained' color="primary">
+                    <Button
+                        onClick={() => this.handleAdd(applicationPayload)}
+                        variant='contained'
+                        color="primary"
+                        disabled={
+                            // enable button once text field is filled out
+                            this.props.reduxState.uspto.applicantName
+                                && this.props.reduxState.uspto.appFilingDate
+                                && this.props.reduxState.uspto.LAST_MOD_TS
+                                && this.state.appNum
+                                && this.props.reduxState.uspto.patentTitle
+                                && this.props.reduxState.uspto.inventorName
+                                && this.props.reduxState.uspto.appExamName
+                                && this.props.reduxState.uspto.appGrpArtNumber
+                                && this.props.reduxState.uspto.appAttrDockNumber
+                                && this.props.reduxState.uspto.appConfrNumber
+                                ? false : true
+                        }
+                    >
                         Add Application
                     </Button>
                 </DialogActions>
-            </Dialog>
+            </Dialog >
         );
     }
 }
