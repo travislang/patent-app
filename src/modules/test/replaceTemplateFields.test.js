@@ -87,6 +87,32 @@ const claimTemplate = [
         expectedResult:
             `Claims 1-5, 10 are all the rage.`,
     },
+    {
+        description:
+            'Multiple claim(s) fields are handled.',
+        claims: '1-5, 10',
+        template:
+            'Claim{claim(s)is/are} all the rage because it is claim{claim(s)}.',
+        expectedResult:
+            `Claims 1-5, 10 are all the rage because it is claims 1-5, 10.`,
+    },
+    {
+        description:
+            'Multiple claim(s)is/are fields are handled.',
+        claims: '1-5, 10',
+        template:
+            'Claim{claim(s)is/are} all the rage because it is claim{claim(s)}. And claim{claim(s)is/are} great!',
+        expectedResult:
+            `Claims 1-5, 10 are all the rage because it is claims 1-5, 10. And claims 1-5, 10 are great!`,
+    }, {
+        description:
+            'Multiple claim(s) fields are handled.',
+        claims: '1-5, 10',
+        template:
+            'This is about claim{claim(s)}. Claim{claim(s)is/are} all the rage because it is claim{claim(s)}. And claim{claim(s)is/are} great!',
+        expectedResult:
+            `This is about claims 1-5, 10. Claims 1-5, 10 are all the rage because it is claims 1-5, 10. And claims 1-5, 10 are great!`,
+    },
 ];
 
 for (let testCase of testTemplate) {

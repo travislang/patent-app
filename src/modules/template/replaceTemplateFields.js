@@ -11,10 +11,11 @@ const replaceTemplateFields = (template, values) => {
 
 const replaceClaimsFields = (template, claims) => {
     claims = claims || defaultValue;
+    let reg = new RegExp(/{claim\(s\)}/, 'g');
     template = template.replace(
-        new RegExp(/{claim\(s\)}/, 'g'),
+        new RegExp(/{claim\(s\)}/, 'g'), 
         claimOrClaims(claims)
-    );
+        );
     template = template.replace(
         new RegExp(/{claim\(s\)is\/are}/, 'g'), 
         claimIsAre(claims)
