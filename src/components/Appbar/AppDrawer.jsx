@@ -20,6 +20,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PreviewDoc from '../PreviewPage/PreviewDoc';
 import StatusSelector from '../PreviewPage/StatusSelector';
+import AddTemplateDialog from '../PreviewPage/AddTemplateDialog';
 
 import { HashLink as Link } from 'react-router-hash-link';
 import AddIssueDialog from '../PreviewPage/AddIssueDialog';
@@ -80,6 +81,8 @@ class AppDrawer extends Component {
 
     state = {
         open: false,
+        templateOpen: false,
+        currentIssue: {}
     }
 
     componentDidMount() {
@@ -93,6 +96,8 @@ class AppDrawer extends Component {
         this.props.dispatch({ type: 'FETCH_ISSUES', payload: { office_action_id: oaId } })
         // get all template types for dialog
         this.props.dispatch({ type: 'FETCH_TEMPLATE_TYPES' })
+        // get all response texts
+        this.props.dispatch({ type: 'FETCH_RESPONSES', payload: { office_Action_Id: oaId}})
     }
 
     handleNewIssueDialogOpen = () => {
@@ -101,6 +106,22 @@ class AppDrawer extends Component {
 
     handleDialogClose = () => {
         this.setState({ open: false });
+    }
+
+    handleNewTemplateDialogOpen = (issue) => {
+        this.setState({
+            currentIssue: issue,
+            templateOpen: true
+        })
+        console.log('current issue', this.state.currentIssue);
+        this.props.dispatch({ type: 'FETCH_TEMPLATES', payload: {type_Id: issue.template_type_id}})
+    };
+
+    handleTemplateClose = () => {
+        this.setState({ 
+            templateOpen: false,
+            currentIssue: {}
+         });
     }
 
     handleStatusChange = (statusId) => {
@@ -121,7 +142,7 @@ class AppDrawer extends Component {
     }
 
     render() {
-        const { classes, currentApplication, officeAction, issuesList, templates } = this.props;
+        const { classes, currentApplication, officeAction, issuesList, templates, templateTypes } = this.props;
         const oaId = this.props.match.params.oaId;
         return (
             <div className={classes.root}>
@@ -160,8 +181,14 @@ class AppDrawer extends Component {
                         {issuesList.map((issue) => {
                             if (issue.section === 'header') {
                                 return (
-                                    issue.template_id ?
-                                        <ListItem component={Link} to='#2' button key={issue.id}>
+                                    issue.text ?
+                                        <ListItem 
+                                                component={Link} 
+                                                to='#2' 
+                                                button 
+                                                key={issue.id}
+                                                onClick={() => this.handleNewTemplateDialogOpen(issue)}
+                                            >
                                             <ListItemIcon style={{ margin: 0 }}>
                                                 <CheckIcon
                                                     style={{ color: 'green' }} />
@@ -169,7 +196,12 @@ class AppDrawer extends Component {
                                             <ListItemText primaryTypographyProps={{ style: { color: 'green' } }} primary={`${issue.type}`} />
                                         </ListItem>
                                         :
-                                        <ListItem button key={issue.id} style={{ paddingLeft: 55 }}>
+                                        <ListItem 
+                                            button 
+                                            key={issue.id} 
+                                            style={{ paddingLeft: 55 }}
+                                            onClick={() => this.handleNewTemplateDialogOpen(issue)}
+                                            >
                                             <ListItemText primaryTypographyProps={{ color: 'textSecondary' }} primary={`${issue.type}`} />
                                         </ListItem>
                                 )
@@ -178,8 +210,14 @@ class AppDrawer extends Component {
                         {issuesList.map((issue) => {
                             if (issue.section === 'amendment') {
                                 return (
-                                    issue.template_id ?
-                                        <ListItem component={Link} to='#2' button key={issue.id}>
+                                    issue.text ?
+                                        <ListItem 
+                                            component={Link} 
+                                            to='#2' 
+                                            button 
+                                            key={issue.id}
+                                            onClick={() => this.handleNewTemplateDialogOpen(issue)}
+                                        >
                                             <ListItemIcon style={{ margin: 0 }}>
                                                 <CheckIcon
                                                     style={{ color: 'green' }} />
@@ -187,7 +225,12 @@ class AppDrawer extends Component {
                                             <ListItemText primaryTypographyProps={{ style: { color: 'green' } }} primary={`${issue.type}`} />
                                         </ListItem>
                                         :
-                                        <ListItem button key={issue.id} style={{ paddingLeft: 55 }}>
+                                        <ListItem 
+                                            button 
+                                            key={issue.id} 
+                                            style={{ paddingLeft: 55 }}
+                                            onClick={() => this.handleNewTemplateDialogOpen(issue)}
+                                            >
                                             <ListItemText primaryTypographyProps={{ color: 'textSecondary' }} primary={`${issue.type}`} />
                                         </ListItem>
                                 )
@@ -196,8 +239,14 @@ class AppDrawer extends Component {
                         {issuesList.map((issue) => {
                             if (issue.section === 'issues') {
                                 return (
-                                    issue.template_id ?
-                                        <ListItem component={Link} to='#2' button key={issue.id}>
+                                    issue.text ?
+                                        <ListItem 
+                                            component={Link} 
+                                            to='#2' 
+                                            button 
+                                            key={issue.id}
+                                            onClick={() => this.handleNewTemplateDialogOpen(issue)}
+                                        >
                                             <ListItemIcon style={{ margin: 0 }}>
                                                 <CheckIcon
                                                     style={{ color: 'green' }} />
@@ -205,7 +254,12 @@ class AppDrawer extends Component {
                                             <ListItemText primaryTypographyProps={{ style: { color: 'green' } }} primary={`claims ${issue.claims} ${issue.type}`} />
                                         </ListItem>
                                         :
-                                        <ListItem button key={issue.id} style={{ paddingLeft: 55 }}>
+                                        <ListItem 
+                                            button 
+                                            key={issue.id} 
+                                            style={{ paddingLeft: 55 }}
+                                            onClick={() => this.handleNewTemplateDialogOpen(issue)}
+                                        >
                                             <ListItemText primaryTypographyProps={{ color: 'textSecondary' }} primary={`claims ${issue.claims} ${issue.type}`} />
                                         </ListItem>
                                 )
@@ -214,8 +268,14 @@ class AppDrawer extends Component {
                         {issuesList.map((issue) => {
                             if (issue.section === 'footer') {
                                 return (
-                                    issue.template_id ?
-                                        <ListItem component={Link} to='#2' button key={issue.id}>
+                                    issue.text ?
+                                        <ListItem 
+                                            component={Link} 
+                                            to='#2' 
+                                            button 
+                                            key={issue.id}
+                                            onClick={this.handleNewTemplateDialogOpen(issue)}
+                                            >
                                             <ListItemIcon style={{ margin: 0 }}>
                                                 <CheckIcon
                                                     style={{ color: 'green' }} />
@@ -223,7 +283,12 @@ class AppDrawer extends Component {
                                             <ListItemText primaryTypographyProps={{ style: { color: 'green' } }} primary={`${issue.type}`} />
                                         </ListItem>
                                         :
-                                        <ListItem button key={issue.id} style={{ paddingLeft: 55 }}>
+                                        <ListItem 
+                                            button 
+                                            key={issue.id} 
+                                            style={{ paddingLeft: 55 }}
+                                            onClick={() => this.handleNewTemplateDialogOpen(issue)}
+                                        >
                                             <ListItemText primaryTypographyProps={{ color: 'textSecondary' }} primary={`${issue.type}`} />
                                         </ListItem>
                                 )
@@ -241,10 +306,17 @@ class AppDrawer extends Component {
                     </div>
                     <AddIssueDialog 
                         open={this.state.open} 
-                        templates={templates} 
+                        templates={templateTypes} 
                         handleDialogClose={this.handleDialogClose} 
                         oaId={oaId}
-                        />
+                    />
+                    <AddTemplateDialog
+                        open={this.state.templateOpen}
+                        currentIssue={this.state.currentIssue}
+                        handleTemplateClose={this.handleTemplateClose}
+                        templates={templates}
+                        oaId={oaId}
+                    />
                 </Drawer>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
@@ -263,7 +335,9 @@ const mapStateToProps = state => ({
     currentApplication: state.application.currentApplication,
     officeAction: state.application.currentOfficeActionResponse,
     issuesList: state.application.currentOficeActionIssueList,
-    templates: state.template.types
+    templateTypes: state.template.types,
+    templates: state.template.templates,
+    responses: state.application.currentOfficeActionResponseTextList
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(withRouter(AppDrawer)));
