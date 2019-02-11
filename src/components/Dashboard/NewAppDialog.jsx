@@ -7,6 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Typography, withStyles } from '@material-ui/core';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import { connect } from 'react-redux';
 
@@ -36,6 +37,7 @@ class NewAppDialog extends React.Component {
     state = {
         appNum: '',
         search: false,
+        setUser: '',
     };
 
     handleChange = name => event => { // handle change to the redux state
@@ -64,6 +66,7 @@ class NewAppDialog extends React.Component {
         }, 800);
     }
     handleAdd = (applicationPayload) => { // handle adding new application
+        console.log(applicationPayload);
         this.props.dispatch({
             type: 'POST_APPLICATION',
             payload: applicationPayload
@@ -85,11 +88,16 @@ class NewAppDialog extends React.Component {
             type: 'CLEAR_USPTO_APP_DATA'
         });
     }
+    handleUserId = (event) => {
+        this.setState({
+            setUser: event.target.value
+        })
+    }
     render() {
         const { classes } = this.props;
 
         let applicationPayload = {
-            user_id: this.props.reduxState.user.id,
+            user_id: this.state.setUser || this.props.reduxState.user.id, // admin set user or else use users id that is log in
             applicant_name: this.props.reduxState.uspto.applicantName,
             filed_date: this.props.reduxState.uspto.appFilingDate,
             last_checked_date: this.props.reduxState.uspto.LAST_MOD_TS,
@@ -115,33 +123,81 @@ class NewAppDialog extends React.Component {
                 </DialogTitle>
                 <DialogContent>
                     <Grid container direction='column' alignItems='center'>
-                        <Grid item>
-                            <Typography variant='caption' color='textSecondary' align='center'>
-                                Search application to have patent fields auto-populated or enter them manually
+                        {this.props.reduxState.user.is_admin ?
+                            // admin view
+                            <Grid item>
+                                <Typography variant='caption' color='textSecondary' align='center'>
+                                    Search application to have patent fields auto-populated or enter them manually
                             </Typography>
-                            <div className={classes.searchAppNum}>
-                                <TextField
-                                    error={this.props.reduxState.uspto === false}
-                                    id="outlined-name"
-                                    label={this.props.reduxState.uspto === false ? "Invalid Application Number" : "Application Number"}
-                                    className={classes.appNumTextField}
-                                    value={this.state.appNum || ''}
-                                    onChange={this.handleId}
-                                    margin="normal"
-                                    variant="outlined"
-                                    margin='dense'
-                                />
-                                <div>
-                                    <Button
-                                        type="submit"
-                                        onClick={this.handleAppSearch} color="primary"
-                                        variant='contained'
-                                        size='large'>
-                                        Search
+                                <div className={classes.searchAppNum}>
+                                    <TextField
+                                        select
+                                        label="With Select"
+                                        className={classes.appNumTextField}
+                                        value={this.state.setUser}
+                                        onChange={this.handleUserId}
+                                        margin="normal"
+                                        variant="outlined"
+                                        margin="dense"
+                                    >
+                                        {this.props.reduxState.userList.map(user =>(
+                                            <MenuItem key={user.id} value={user.id}>
+                                            {user.user_name}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                    <TextField
+                                        error={this.props.reduxState.uspto === false}
+                                        id="outlined-name"
+                                        label={this.props.reduxState.uspto === false ? "Invalid Application Number" : "Application Number"}
+                                        className={classes.appNumTextField}
+                                        value={this.state.appNum || ''}
+                                        onChange={this.handleId}
+                                        margin="normal"
+                                        variant="outlined"
+                                        margin='dense'
+                                    />
+                                    <div>
+                                        <Button
+                                            type="submit"
+                                            onClick={this.handleAppSearch} color="primary"
+                                            variant='contained'
+                                            size='large'>
+                                            Search
                                     </Button>
+                                    </div>
                                 </div>
-                            </div>
-                        </Grid>
+                            </Grid>
+                            :
+                            // regular user view
+                            <Grid item>
+                                <Typography variant='caption' color='textSecondary' align='center'>
+                                    Search application to have patent fields auto-populated or enter them manually
+                            </Typography>
+                                <div className={classes.searchAppNum}>
+                                    <TextField
+                                        error={this.props.reduxState.uspto === false}
+                                        id="outlined-name"
+                                        label={this.props.reduxState.uspto === false ? "Invalid Application Number" : "Application Number"}
+                                        className={classes.appNumTextField}
+                                        value={this.state.appNum || ''}
+                                        onChange={this.handleId}
+                                        margin="normal"
+                                        variant="outlined"
+                                        margin='dense'
+                                    />
+                                    <div>
+                                        <Button
+                                            type="submit"
+                                            onClick={this.handleAppSearch} color="primary"
+                                            variant='contained'
+                                            size='large'>
+                                            Search
+                                    </Button>
+                                    </div>
+                                </div>
+                            </Grid>
+                        }
                         <Grid item className={classes.inputFieldsContainer}>
                             <Grid container justify='space-between'>
                                 <Grid item>
