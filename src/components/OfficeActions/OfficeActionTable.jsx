@@ -95,6 +95,9 @@ const styles = theme => ({
     tableWrapper: {
         overflowX: 'auto',
     },
+    tableRow: {
+        cursor: 'pointer'
+    }
 });
 
 class OfficeActionTable extends React.Component {
@@ -147,6 +150,7 @@ class OfficeActionTable extends React.Component {
                                     return (
                                         <TableRow
                                             hover
+                                            className={classes.tableRow}
                                             onClick={event => this.props.handleClick(event, n.id)}
                                             tabIndex={-1}
                                             key={n.id}
