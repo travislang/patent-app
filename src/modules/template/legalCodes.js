@@ -1,15 +1,25 @@
 const legalCodes = [
-    'firstInventor',
+    'applicantName',
     'filedDate',
     'applNumber',
     'title',
+    'inventorName',
+    'examinerName',
+    'groupArtUnit',
+    'docketNumber',
+    'confirmationNumber',
 ];
 
 const keys = [
-    'inventor_name',
+    'applicant_name',
     'filed_date',
     'application_number',
     'title',
+    'inventor_name',
+    'examiner_name',
+    'group_art_unit',
+    'docket_number',
+    'confirmation_number',
 ];
 
 const defaultValue = '***';
@@ -21,3 +31,4 @@ const fieldCodes = {
 };
 
 export default fieldCodes;
+

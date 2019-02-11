@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -48,12 +49,18 @@ const styles = theme => ({
     }
 })
 
-
 class OfficeActions extends Component {
     state = {
         dialogOpen: false,
         displayAllApps: 'false',
     };
+
+
+    componentDidMount() {
+        const appId = this.props.match.params.id;
+        this.props.dispatch({ type: 'FETCH_APPLICATION',payload: appId })
+        this.props.dispatch({ type: 'FETCH_OFFICE_ACTIONS', payload: { application_id: appId}})
+    }
 
     handleChange = event => {
         this.setState({ displayAllApps: event.target.value });
@@ -67,16 +74,21 @@ class OfficeActions extends Component {
         this.setState({ dialogOpen: true })
     }
 
-    render() {
-        const { classes } = this.props;
+    handleClick = (e, oaId) => {
+        const appId = this.props.match.params.id;
+        this.props.history.push(`/office-action/${appId}/${oaId}`);
+    }
 
+    render() {
+        const { classes, officeActions, currentApplication } = this.props;
+        
         return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
                     <Grid container justify='center'>
                         <Grid item className={classes.title}>
                             <Typography color='primary' variant='h4' align='center'>
-                                Application Number 2
+                                {currentApplication.title} - #{currentApplication.application_number}
                             </Typography>
                         </Grid>
                         <Grid item className={classes.fullWidth}>
@@ -86,29 +98,24 @@ class OfficeActions extends Component {
                                         <Typography gutterBottom color='textPrimary' variant='h6'>
                                             First Named Inv: 
                                             <span className={classes.infoHeading}>
-                                                test
+                                                {currentApplication.applicant_name}
                                             </span>
                                         </Typography>
                                         <Typography gutterBottom color='textPrimary' variant='h6'>
-                                            Serial Number: 
+                                            Last Checked Date: 
                                             <span className={classes.infoHeading}>
-                                                test
+                                                {currentApplication.last_checked_date}
+                                                
                                             </span>
                                         </Typography>
                                         <Typography gutterBottom color='textPrimary' variant='h6'>
-                                            Filed: 
+                                            Date Filed: 
                                             <span className={classes.infoHeading}>
-                                                test
+                                                {currentApplication.filed_date}
                                             </span>
                                         </Typography>
                                         <Typography gutterBottom color='textPrimary' variant='h6'>
                                             Customer Number: 
-                                            <span className={classes.infoHeading}>
-                                                test
-                                            </span>
-                                        </Typography>
-                                        <Typography gutterBottom color='textPrimary' variant='h6'>
-                                            Title:
                                             <span className={classes.infoHeading}>
                                                 test
                                             </span>
@@ -120,25 +127,25 @@ class OfficeActions extends Component {
                                         <Typography gutterBottom color='textPrimary' variant='h6'>
                                             Examiner:
                                             <span className={classes.infoHeading}>
-                                                test
+                                                {currentApplication.examiner_name}
                                             </span>
                                         </Typography>
                                         <Typography gutterBottom color='textPrimary' variant='h6'>
                                             Group Art Unit: 
                                             <span className={classes.infoHeading}>
-                                                test
+                                                {currentApplication.group_art_unit}
                                             </span>
                                         </Typography>
                                         <Typography gutterBottom color='textPrimary' variant='h6'>
                                             Docket Number: 
                                             <span className={classes.infoHeading}>
-                                                test
+                                                {currentApplication.docket_number}
                                             </span>
                                         </Typography>
                                         <Typography gutterBottom color='textPrimary' variant='h6'>
-                                            Conference Number:
+                                            Confirmation Number:
                                             <span className={classes.infoHeading}>
-                                                test
+                                                {currentApplication.confirmation_number}
                                             </span>
                                         </Typography>
                                     </Grid>
@@ -159,7 +166,7 @@ class OfficeActions extends Component {
                             </Button>
                         </Grid>
                     </Grid>
-                    <OfficeActionTable />
+                    <OfficeActionTable handleClick={this.handleClick} officeActions={officeActions} />
                     {/* <NewAppDialog open={this.state.dialogOpen} handleClose={this.handleClose} /> */}
                 </Paper>
             </div>
@@ -168,7 +175,8 @@ class OfficeActions extends Component {
 }
 
 const mapStateToProps = state => ({
-
+    currentApplication: state.application.currentApplication,
+    officeActions: state.application.currentApplicationOfficeActionResponseList
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(OfficeActions));
+export default connect(mapStateToProps)(withStyles(styles)(withRouter(OfficeActions)));
