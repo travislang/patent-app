@@ -37,29 +37,35 @@ class NewAppDialog extends React.Component {
         appNum: ''
     };
 
-    handleChange = name => event => {
+    handleChange = name => event => { // handle change to the redux state
         this.props.dispatch({
             type: 'SET_USPTO_APP_DATA',
             payload: { ...this.props.reduxState.uspto, [name]: event.target.value }
         })
     };
-    handleId = (event) => {
+    handleId = (event) => { //handle change to the application number
         this.setState({
             appNum: event.target.value
         })
     }
-    handleAppSearch = () => {
+    handleAppSearch = () => { // handle which application to search for in uspto
         this.props.dispatch({
             type: 'FETCH_USPTO_APP_DATA',
             payload: this.state.appNum
         });
     }
-    handleAdd = (applicationPayload) => {
-        console.log('in handle add')
-        this.props.dispatch({
-            type: 'POST_APPLICATION',
-            payload: applicationPayload
+    handleAdd = (applicationPayload) => { // handle adding new application
+        Object.keys(applicationPayload).forEach(i =>{
+            console.log(applicationPayload[i])
+            this.setState({
+                reqField: {...this.state.reqField, i: applicationPayload[i]}
+            })
         });
+        console.log(this.state);
+        // this.props.dispatch({
+        //     type: 'POST_APPLICATION',
+        //     payload: applicationPayload
+        // });
     }
     render() {
         const { classes } = this.props;
@@ -97,10 +103,11 @@ class NewAppDialog extends React.Component {
                             </Typography>
                             <div className={classes.searchAppNum}>
                                 <TextField
+                                    error={this.props.reduxState.uspto === false}
                                     id="outlined-name"
-                                    label="Application Number"
+                                    label={this.props.reduxState.uspto === false ? "Invalid Application Number" : "Application Number"}
                                     className={classes.appNumTextField}
-                                    value={this.state.appNum}
+                                    value={this.state.appNum || ''}
                                     onChange={this.handleId}
                                     margin="normal"
                                     variant="outlined"
@@ -124,7 +131,7 @@ class NewAppDialog extends React.Component {
                                             id="outlined-applicantName"
                                             label="Applicant Name"
                                             className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.applicantName}
+                                            value={this.props.reduxState.uspto.applicantName || ''}
                                             onChange={this.handleChange('applicantName')}
                                             margin="normal"
                                             variant="outlined"
@@ -137,7 +144,7 @@ class NewAppDialog extends React.Component {
                                             id="outlined-lastDateCheck"
                                             label="Last Checked Date"
                                             className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.LAST_MOD_TS}
+                                            value={this.props.reduxState.uspto.LAST_MOD_TS || ''}
                                             onChange={this.handleChange('LAST_MOD_TS')}
                                             margin="normal"
                                             variant="outlined"
@@ -154,7 +161,7 @@ class NewAppDialog extends React.Component {
                                             id="outlined-inventorName"
                                             label="Inventor Name"
                                             className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.inventorName}
+                                            value={this.props.reduxState.uspto.inventorName || ''}
                                             onChange={this.handleChange('inventorName')}
                                             margin="normal"
                                             variant="outlined"
@@ -167,7 +174,7 @@ class NewAppDialog extends React.Component {
                                             id="outlined-filed"
                                             label="Date Filed"
                                             className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.appFilingDate}
+                                            value={this.props.reduxState.uspto.appFilingDate || ''}
                                             onChange={this.handleChange('appFilingDate')}
                                             margin="normal"
                                             variant="outlined"
@@ -185,7 +192,7 @@ class NewAppDialog extends React.Component {
                                             id="outlined-customerNumb"
                                             label="Customer Number"
                                             className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.customerNum}
+                                            value={this.props.reduxState.uspto.customerNum || ''}
                                             onChange={this.handleChange('customerNum')}
                                             margin="normal"
                                             variant="outlined"
@@ -198,7 +205,7 @@ class NewAppDialog extends React.Component {
                                             id="outlined-title"
                                             label="Title"
                                             className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.patentTitle}
+                                            value={this.props.reduxState.uspto.patentTitle || ''}
                                             onChange={this.handleChange('patentTitle')}
                                             margin="normal"
                                             variant="outlined"
@@ -211,7 +218,7 @@ class NewAppDialog extends React.Component {
                                             id="outlined-examiner"
                                             label="Examiner"
                                             className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.appExamName}
+                                            value={this.props.reduxState.uspto.appExamName || ''}
                                             onChange={this.handleChange('appExamName')}
                                             margin="normal"
                                             variant="outlined"
@@ -228,7 +235,7 @@ class NewAppDialog extends React.Component {
                                             id="outlined-groupArtNum"
                                             label="Group Art Number"
                                             className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.appGrpArtNumber}
+                                            value={this.props.reduxState.uspto.appGrpArtNumber || ''}
                                             onChange={this.handleChange('appGrpArtNumber')}
                                             margin="normal"
                                             variant="outlined"
@@ -241,7 +248,7 @@ class NewAppDialog extends React.Component {
                                             id="outlined-docketNum"
                                             label="Docket Number"
                                             className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.appAttrDockNumber}
+                                            value={this.props.reduxState.uspto.appAttrDockNumber || ''}
                                             onChange={this.handleChange('appAttrDockNumber')}
                                             margin="normal"
                                             variant="outlined"
@@ -254,7 +261,7 @@ class NewAppDialog extends React.Component {
                                             id="outlined-confNum"
                                             label="Confirmation Number"
                                             className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.appConfrNumber}
+                                            value={this.props.reduxState.uspto.appConfrNumber || ''}
                                             onChange={this.handleChange('appConfrNumber')}
                                             margin="normal"
                                             variant="outlined"
