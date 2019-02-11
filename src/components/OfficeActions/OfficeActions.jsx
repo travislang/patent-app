@@ -52,37 +52,26 @@ const styles = theme => ({
 
 class OfficeActions extends Component {
     state = {
-        dialogOpen: false,
+        dialogOpen: true,
         displayAllApps: 'false',
     };
-
-
     componentDidMount() {
         const appId = this.props.match.params.id;
         this.props.dispatch({ type: 'FETCH_APPLICATION',payload: appId })
         this.props.dispatch({ type: 'FETCH_OFFICE_ACTIONS', payload: { application_id: appId}})
     }
-
-    handleChange = event => {
-        this.setState({ displayAllApps: event.target.value });
-    };
-
     handleClose = () => {
         this.setState({ dialogOpen: false });
     };
-
-    handleNewApp = () => {
+    handleNewOfficeAction = () => {
         this.setState({ dialogOpen: true })
     }
-
     handleClick = (e, oaId) => {
         const appId = this.props.match.params.id;
         this.props.history.push(`/office-action/${appId}/${oaId}`);
     }
-
     render() {
-        const { classes, officeActions, currentApplication } = this.props;
-        
+        const { classes, officeActions, currentApplication } = this.props;     
         return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
