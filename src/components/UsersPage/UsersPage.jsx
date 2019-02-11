@@ -6,17 +6,10 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
-
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 
-import ApplicationTable from './ApplicationTable';
-import NewAppDialog from './NewAppDialog';
+import UsersTable from './UsersTable';
+import NewUserDialog from './NewUserDialog';
 
 const styles = theme => ({
     root: {
@@ -53,32 +46,28 @@ const styles = theme => ({
 })
 
 
-class Dashboard extends Component {
-    state = {
-        dialogOpen: false,
-        displayAllApps: 'false',
-    };
+class UsersPage extends Component {
 
-    componentDidMount() {
-        this.props.dispatch({ type: 'FETCH_APPLICATIONS' });
-        this.props.dispatch({ type: 'FETCH_USERS' });
+    state = {
+        showUserRegistration: false
     }
 
-    handleChange = event => {
-        this.setState({ displayAllApps: event.target.value });
-    };
+    componentDidMount(){
+        
+        // Load users into redux
+        this.props.dispatch({type: 'FETCH_USERS'})
+
+    }
 
     handleClose = () => {
-        this.setState({ dialogOpen: false });
+        this.setState({ showUserRegistration: false });
     };
 
     handleNewApp = () => {
-        this.setState({ dialogOpen: true})
+        this.setState({ showUserRegistration: true})
     }
 
     render() {
-        console.log('hello');
-        
         const {classes} = this.props;
 
         return (
@@ -87,7 +76,7 @@ class Dashboard extends Component {
                     <Grid container justify='center'>
                         <Grid item className={classes.title}>
                             <Typography color='primary' variant='h4' align='center'>
-                                Applications
+                                Users
                             </Typography>
                         </Grid>
                         <Grid className={classes.fullWidth}>
@@ -95,22 +84,7 @@ class Dashboard extends Component {
                                 <Grid item className={classes.filter}>
                                     <FormControl component="fieldset" className={classes.formControl}>
                                         <div className={classes.fullWidth}>
-                                            <FormLabel component="legend">
-                                                <Typography variant='h6' align='center'>
-                                                    Display
-                                                </Typography>
-                                            </FormLabel>
                                         </div>
-                                        <RadioGroup
-                                            aria-label="display"
-                                            name="display"
-                                            className={classes.group}
-                                            value={this.state.displayAllApps}
-                                            onChange={this.handleChange}
-                                        >
-                                            <FormControlLabel value='true' control={<Radio />} label="All Applications" />
-                                            <FormControlLabel value='false' control={<Radio />} label="My Applications" />
-                                        </RadioGroup>
                                     </FormControl>
                                 </Grid>
                                 <Grid item className={classes.addNew}>
@@ -121,7 +95,7 @@ class Dashboard extends Component {
                                                 size='large'
                                                 onClick={this.handleNewApp}
                                                 className={classes.button}>
-                                                Add Application
+                                                Register User
                                             </Button>
                                         </Grid>
                                     </Grid>
@@ -129,17 +103,12 @@ class Dashboard extends Component {
                             </Grid>
                         </Grid>
                     </Grid>
-                    <ApplicationTable />
-                    <NewAppDialog open={this.state.dialogOpen} handleClose={this.handleClose} />
+                    <UsersTable />
+                    <NewUserDialog open={this.state.showUserRegistration} handleClose={this.handleClose} />
                 </Paper>
             </div>
         )
     }
 }
 
-const mapStateToProps = state => ({
-    applicationList: state.application.applicationList,
-    user: state.user
-});
-
-export default connect(mapStateToProps)(withStyles(styles)(Dashboard));
+export default connect()(withStyles(styles)(UsersPage));

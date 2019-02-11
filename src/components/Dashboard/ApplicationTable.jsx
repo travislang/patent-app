@@ -139,6 +139,8 @@ class ApplicationTable extends React.Component {
     
 
     render() {
+        console.log(this.props.applicationList)
+
         const { classes } = this.props;
         const data = this.props.applicationList;
         const { order, orderBy, rowsPerPage, page } = this.state;
