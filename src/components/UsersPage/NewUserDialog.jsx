@@ -34,50 +34,30 @@ const styles = theme => ({
 
 class NewUserDialog extends React.Component {
     state = {
-        appNum: ''
+        userName: '',
+        signatureName: '',
+        registrationNumber: '',
+        phoneNumber: '',
+        firmName: '',
+        usptoCustomerNumber: '',
+        depositAccountNumber: '',
+        password: '',
+        retypedPassword: ''
     };
 
-    handleChange = name => event => {
-        this.props.dispatch({
-            type: 'SET_USPTO_APP_DATA',
-            payload: { ...this.props.reduxState.uspto, [name]: event.target.value }
-        })
-    };
-    handleId = (event) => {
-        this.setState({
-            appNum: event.target.value
-        })
-    }
-    handleAppSearch = () => {
-        this.props.dispatch({
-            type: 'FETCH_USPTO_APP_DATA',
-            payload: this.state.appNum
-        });
-    }
-    handleAdd = (applicationPayload) => {
-        console.log('in handle add')
-        this.props.dispatch({
-            type: 'POST_APPLICATION',
-            payload: applicationPayload
-        });
-    }
     render() {
         const { classes } = this.props;
 
-        let applicationPayload = {
-            user_id: this.props.reduxState.user.id,
-            applicant_name: this.props.reduxState.uspto.applicantName,
-            filed_date: this.props.reduxState.uspto.appFilingDate,
-            last_checked_date: this.props.reduxState.uspto.LAST_MOD_TS,
-            status_date: new Date().toLocaleDateString(), // grabbing today day and format it into '8/3/2018'
-            application_number: this.state.appNum,
-            title: this.props.reduxState.uspto.patentTitle,
-            inventor_name: this.props.reduxState.uspto.inventorName,
-            examiner_name: this.props.reduxState.uspto.appExamName,
-            group_art_unit: this.props.reduxState.uspto.appGrpArtNumber,
-            docket_number: this.props.reduxState.uspto.appAttrDockNumber,
-            confirmation_number: this.props.reduxState.uspto.appConfrNumber
-        }
+        //   "user_name" VARCHAR (20) UNIQUE NOT NULL,
+        //   "password" VARCHAR (255) NOT NULL,
+        //   "is_admin" BOOLEAN DEFAULT FALSE,
+        //   "signature_name" VARCHAR(70),
+        //   "registration_number" VARCHAR(10),
+        //   "phone_number" VARCHAR(20),
+        //   "firm_name" VARCHAR(70),
+        //   "uspto_customer_number" VARCHAR(9),
+        //   "deposit_account_number" VARCHAR(9),
+        //   "active" BOOLEAN DEFAULT TRUE
 
         return (
             <Dialog
@@ -87,45 +67,21 @@ class NewUserDialog extends React.Component {
                 onClose={this.props.handleClose}
                 aria-labelledby="form-dialog-title"
             >
-                <DialogTitle align='center' id="form-dialog-title">New        Application
+                <DialogTitle align='center' id="form-dialog-title">New User
                 </DialogTitle>
                 <DialogContent>
                     <Grid container direction='column' alignItems='center'>
-                        <Grid item>
-                            <Typography variant='caption' color='textSecondary' align='center'>
-                                Search application to have patent fields auto-populated or enter them manually
-                            </Typography>
-                            <div className={classes.searchAppNum}>
-                                <TextField
-                                    id="outlined-name"
-                                    label="Application Number"
-                                    className={classes.appNumTextField}
-                                    value={this.state.appNum}
-                                    onChange={this.handleId}
-                                    margin="normal"
-                                    variant="outlined"
-                                    margin='dense'
-                                />
-                                <div>
-                                    <Button
-                                        onClick={this.handleAppSearch} color="primary"
-                                        variant='contained'
-                                        size='large'>
-                                        Search
-                                    </Button>
-                                </div>
-                            </div>
-                        </Grid>
                         <Grid item className={classes.inputFieldsContainer}>
                             <Grid container justify='space-between'>
                                 <Grid item>
                                     <Grid container direction='column'>
+
                                         <TextField
                                             id="outlined-applicantName"
-                                            label="Applicant Name"
+                                            label="User name"
                                             className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.applicantName}
-                                            onChange={this.handleChange('applicantName')}
+                                            value={this.state.userName}
+                                            onChange={(e) => { }}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
@@ -133,12 +89,13 @@ class NewUserDialog extends React.Component {
                                                 shrink: true,
                                             }}
                                         />
+
                                         <TextField
                                             id="outlined-lastDateCheck"
-                                            label="Last Checked Date"
+                                            label="Signature name"
                                             className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.LAST_MOD_TS}
-                                            onChange={this.handleChange('LAST_MOD_TS')}
+                                            value={this.state.signatureName}
+                                            onChange={(e) => { }}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
@@ -146,6 +103,63 @@ class NewUserDialog extends React.Component {
                                                 shrink: true,
                                             }}
                                         />
+
+                                        <TextField
+                                            id="outlined-lastDateCheck"
+                                            label="Phone"
+                                            className={classes.appNumTextField}
+                                            value={this.state.phoneNumber}
+                                            onChange={(e) => { }}
+                                            margin="normal"
+                                            variant="outlined"
+                                            margin='dense'
+                                            InputLabelProps={this.props.reduxState.uspto.LAST_MOD_TS && {
+                                                shrink: true,
+                                            }}
+                                        />
+
+                                        <TextField
+                                            id="outlined-lastDateCheck"
+                                            label="Firm"
+                                            className={classes.appNumTextField}
+                                            value={this.state.firmName}
+                                            onChange={(e) => { }}
+                                            margin="normal"
+                                            variant="outlined"
+                                            margin='dense'
+                                            InputLabelProps={this.props.reduxState.uspto.LAST_MOD_TS && {
+                                                shrink: true,
+                                            }}
+                                        />
+
+                                        <TextField
+                                            id="outlined-lastDateCheck"
+                                            label="USPTO Customer number"
+                                            className={classes.appNumTextField}
+                                            value={this.state.usptoCustomerNumber}
+                                            onChange={(e) => { }}
+                                            margin="normal"
+                                            variant="outlined"
+                                            margin='dense'
+                                            InputLabelProps={this.props.reduxState.uspto.LAST_MOD_TS && {
+                                                shrink: true,
+                                            }}
+                                        />
+
+                                        <TextField
+                                            id="outlined-lastDateCheck"
+                                            label="Deposit account number:"
+                                            className={classes.appNumTextField}
+                                            value={this.state.usptoCustomerNumber}
+                                            onChange={(e) => { }}
+                                            margin="normal"
+                                            variant="outlined"
+                                            margin='dense'
+                                            InputLabelProps={this.props.reduxState.uspto.LAST_MOD_TS && {
+                                                shrink: true,
+                                            }}
+                                        />
+
                                     </Grid>
                                 </Grid>
                                 <Grid item>
@@ -154,8 +168,8 @@ class NewUserDialog extends React.Component {
                                             id="outlined-inventorName"
                                             label="Inventor Name"
                                             className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.inventorName}
-                                            onChange={this.handleChange('inventorName')}
+                                            value={5}
+                                            onChange={(e) => { }}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
@@ -168,7 +182,7 @@ class NewUserDialog extends React.Component {
                                             label="Date Filed"
                                             className={classes.appNumTextField}
                                             value={this.props.reduxState.uspto.appFilingDate}
-                                            onChange={this.handleChange('appFilingDate')}
+                                            onChange={(e) => { }}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
@@ -186,7 +200,7 @@ class NewUserDialog extends React.Component {
                                             label="Customer Number"
                                             className={classes.appNumTextField}
                                             value={this.props.reduxState.uspto.customerNum}
-                                            onChange={this.handleChange('customerNum')}
+                                            onChange={(e) => { }}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
@@ -199,7 +213,7 @@ class NewUserDialog extends React.Component {
                                             label="Title"
                                             className={classes.appNumTextField}
                                             value={this.props.reduxState.uspto.patentTitle}
-                                            onChange={this.handleChange('patentTitle')}
+                                            onChange={(e) => { }}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
@@ -212,54 +226,11 @@ class NewUserDialog extends React.Component {
                                             label="Examiner"
                                             className={classes.appNumTextField}
                                             value={this.props.reduxState.uspto.appExamName}
-                                            onChange={this.handleChange('appExamName')}
+                                            onChange={(e) => { }}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
                                             InputLabelProps={this.props.reduxState.uspto.appExamName && {
-                                                shrink: true,
-                                            }}
-                                        />
-                                    </Grid>
-                                </Grid>
-                                <Grid item>
-                                    <Grid container direction='column'>
-                                        <TextField
-                                            id="outlined-groupArtNum"
-                                            label="Group Art Number"
-                                            className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.appGrpArtNumber}
-                                            onChange={this.handleChange('appGrpArtNumber')}
-                                            margin="normal"
-                                            variant="outlined"
-                                            margin='dense'
-                                            InputLabelProps={this.props.reduxState.uspto.appGrpArtNumber && {
-                                                shrink: true,
-                                            }}
-                                        />
-                                        <TextField
-                                            id="outlined-docketNum"
-                                            label="Docket Number"
-                                            className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.appAttrDockNumber}
-                                            onChange={this.handleChange('appAttrDockNumber')}
-                                            margin="normal"
-                                            variant="outlined"
-                                            margin='dense'
-                                            InputLabelProps={this.props.reduxState.uspto.appAttrDockNumber && {
-                                                shrink: true,
-                                            }}
-                                        />
-                                        <TextField
-                                            id="outlined-confNum"
-                                            label="Confirmation Number"
-                                            className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.appConfrNumber}
-                                            onChange={this.handleChange('appConfrNumber')}
-                                            margin="normal"
-                                            variant="outlined"
-                                            margin='dense'
-                                            InputLabelProps={this.props.reduxState.uspto.appConfrNumber && {
                                                 shrink: true,
                                             }}
                                         />
@@ -273,8 +244,8 @@ class NewUserDialog extends React.Component {
                     <Button onClick={this.props.handleClose} variant='contained' color="default">
                         Cancel
                     </Button>
-                    <Button onClick={()=>this.handleAdd(applicationPayload)} variant='contained' color="primary">
-                        Add Application
+                    <Button variant='contained' color="primary">
+                        Register
                     </Button>
                 </DialogActions>
             </Dialog>

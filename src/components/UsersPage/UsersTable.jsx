@@ -9,7 +9,22 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+const CustomTableCell = withStyles(theme => ({
+    head: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+    body: {
+      fontSize: 14,
+    },
+  }))(TableCell);
+
 const styles = theme => ({
+    row: {
+        '&:nth-of-type(odd)': {
+          backgroundColor: `#efefef`,
+        },
+      },
     root: {
         width: '100%',
         marginTop: theme.spacing.unit * 3,
@@ -62,7 +77,7 @@ class UsersTable extends Component {
                     </TableHead>
                     <TableBody>
                         { users.map(user => (
-                            <TableRow key={user.id}>
+                            <TableRow className={classes.row} key={user.id}>
                                 <TableCell component="th" scope="row">
                                     {user.user_name}
                                 </TableCell>
@@ -80,6 +95,9 @@ class UsersTable extends Component {
                                 </TableCell>
                                 <TableCell component="th" scope="row">
                                     {user.uspto_customer_number}
+                                </TableCell>
+                                <TableCell component="th" scope="row">
+                                    {user.deposit_account_number}
                                 </TableCell>
                                 <TableCell component="th" scope="row">
                                     {user.active}

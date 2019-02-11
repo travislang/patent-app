@@ -54,17 +54,17 @@ class UsersPage extends Component {
 
     componentDidMount(){
         
-        // Load users into state 
+        // Load users into redux
         this.props.dispatch({type: 'FETCH_USERS'})
 
     }
 
     handleClose = () => {
-        this.setState({ dialogOpen: false });
+        this.setState({ showUserRegistration: false });
     };
 
     handleNewApp = () => {
-        this.setState({ dialogOpen: true})
+        this.setState({ showUserRegistration: true})
     }
 
     render() {
@@ -95,7 +95,7 @@ class UsersPage extends Component {
                                                 size='large'
                                                 onClick={this.handleNewApp}
                                                 className={classes.button}>
-                                                Add User
+                                                Register User
                                             </Button>
                                         </Grid>
                                     </Grid>
