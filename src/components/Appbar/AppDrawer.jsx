@@ -84,8 +84,8 @@ class AppDrawer extends Component {
         open: false,
         templateOpen: false,
         currentIssue: {},
-        dialogOpen: true,
-    }
+        alertDialogOpen: true,
+    };
 
     componentDidMount() {
         const appId = this.props.match.params.appId;
@@ -95,7 +95,6 @@ class AppDrawer extends Component {
         // get current office action
         this.props.dispatch({ type: 'FETCH_OFFICE_ACTION', payload: {officeActionResponseId: oaId}})
         // get current office action issues
-        console.log('FETCH_ISSUES', oaId);
         this.props.dispatch({ type: 'FETCH_ISSUES', payload: { office_action_id: oaId } })
         // get all template types for dialog
         this.props.dispatch({ type: 'FETCH_TEMPLATE_TYPES' })
@@ -116,7 +115,6 @@ class AppDrawer extends Component {
             currentIssue: issue,
             templateOpen: true
         })
-        console.log('current issue', this.state.currentIssue);
         this.props.dispatch({ type: 'FETCH_TEMPLATES', payload: {type_Id: issue.template_type_id}})
     };
 
@@ -129,9 +127,7 @@ class AppDrawer extends Component {
 
     handleStatusChange = (statusId) => {
         const appId = this.props.match.params.appId;
-        const oaId = this.props.match.params.oaId;
-        console.log('statusId', statusId);
-        
+        const oaId = this.props.match.params.oaId;        
         this.props.dispatch({ type: 'UPDATE_OFFICE_ACTION', payload: {
             id: oaId,
             application_id: appId,
@@ -145,12 +141,29 @@ class AppDrawer extends Component {
     }
 
     handleDocxDownload = () => {
-    }
+        if (!this.issuesAreAddressed()) {
+            this.setState({
+                alertDialogOpen: true,
+            });
+        }
+    };
+
+    issuesAreAddressed = () => {
+        // An issue is addressed if the template_id key has a value
+        const unAddressedIssues = this.props.issuesList.filter( issue => issue.template_id );
+        return unAddressedIssues.length !== 0;
+    };
+
+    handleAlertDialogClose = () => {
+        this.setState({
+            alertDialogOpen: false,
+        });
+    };
 
     render() {
         const { classes, currentApplication, officeAction, issuesList, templates, templateTypes } = this.props;
         const oaId = this.props.match.params.oaId;
-        console.log('issuesList', issuesList);
+        this.issuesAreAddressed();
         return (
             <div className={classes.root}>
                 <CssBaseline />
@@ -334,10 +347,13 @@ class AppDrawer extends Component {
                     className={classes.fab}
                     onClick={this.handleDocxDownload}
                 >
-                    <CloudDownload className={classes.extendedIcon} />
+                    <CloudDownload className={classes.extendedIcon} onClick={this.handleDocxDownload} />
                     Export as Docx
                 </Fab>
-                <AlertDialog open={this.state.dialogOpen} />
+                <AlertDialog 
+                    open={this.state.alertDialogOpen} 
+                    handleClose={this.handleAlertDialogClose}
+                />
             </div>
         );
     }
