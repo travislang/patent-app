@@ -47,7 +47,11 @@ class UsersTable extends Component {
 
     handleDeleteClick = (id) => {
         console.log('Deleting ID: ',id);
-        
+
+        this.props.dispatch({
+            type:'UPDATE_USER_ACTIVITY',
+            payload: {id}
+        })
     }
 
     render() {
@@ -69,7 +73,6 @@ class UsersTable extends Component {
                             <TableCell style={{color:'white'}} align="left">Customer No.</TableCell>
                             <TableCell style={{color:'white'}} align="left">Deposit No.</TableCell>
                             <TableCell style={{color:'white'}} align="left">Active</TableCell>
-                            <TableCell style={{color:'white'}} align="left"> Disable</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -104,12 +107,8 @@ class UsersTable extends Component {
                                     {user.deposit_account_number}
                                 </TableCell>
 
-                                <TableCell component="th" scope="row">
+                                <TableCell style={{cursor:'pointer'}} onClick={()=>this.handleDeleteClick(user.id)} component="th" scope="row">
                                     {user.active ? 'yes' : 'no'}
-                                </TableCell>
-
-                                <TableCell onClick={()=>this.handleDeleteClick(user.id)} component="th" scope="row">
-
                                 </TableCell>
 
                             </TableRow>
