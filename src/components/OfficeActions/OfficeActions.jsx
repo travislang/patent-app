@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 
 import OfficeActionTable from './OfficeActionTable';
+import NewOfficeActionDialog from './NewOfficeActionDialog';
 
 const styles = theme => ({
     root: {
@@ -54,34 +55,23 @@ class OfficeActions extends Component {
         dialogOpen: false,
         displayAllApps: 'false',
     };
-
-
     componentDidMount() {
         const appId = this.props.match.params.id;
         this.props.dispatch({ type: 'FETCH_APPLICATION',payload: appId })
         this.props.dispatch({ type: 'FETCH_OFFICE_ACTIONS', payload: { application_id: appId}})
     }
-
-    handleChange = event => {
-        this.setState({ displayAllApps: event.target.value });
-    };
-
     handleClose = () => {
         this.setState({ dialogOpen: false });
     };
-
-    handleNewApp = () => {
+    handleNewOfficeAction = () => {
         this.setState({ dialogOpen: true })
     }
-
     handleClick = (e, oaId) => {
         const appId = this.props.match.params.id;
         this.props.history.push(`/office-action/${appId}/${oaId}`);
     }
-
     render() {
-        const { classes, officeActions, currentApplication } = this.props;
-        
+        const { classes, officeActions, currentApplication } = this.props;     
         return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
@@ -161,13 +151,18 @@ class OfficeActions extends Component {
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <Button color='primary' variant='contained'>
+                            <Button color='primary' variant='contained' 
+                                onClick={this.handleNewOfficeAction}>
                                 New Response
                             </Button>
                         </Grid>
                     </Grid>
                     <OfficeActionTable handleClick={this.handleClick} officeActions={officeActions} />
-                    {/* <NewAppDialog open={this.state.dialogOpen} handleClose={this.handleClose} /> */}
+                    <NewOfficeActionDialog 
+                        open={this.state.dialogOpen} 
+                        handleClose={this.handleClose} 
+                        appId={currentApplication.id}
+                    />
                 </Paper>
             </div>
         )

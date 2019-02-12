@@ -112,4 +112,16 @@ router.put('/edit/:id', rejectIfNotAdmin, (req, res) => {
     });
 });
 
+router.put('/active/:id', rejectIfNotAdmin, (req, res) => {
+  const {id} = req.params;
+  const queryString = ` UPDATE "user" SET "active" = NOT "active" WHERE "user"."id"=$1;`;
+
+  pool.query(queryString, [id]).then( results => {
+    res.sendStatus(200);
+  }).catch( err => {
+    res.sendStatus(500);
+    console.error('Error in /user/active', err);
+  });
+})
+
 module.exports = router;
