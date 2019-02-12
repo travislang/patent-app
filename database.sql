@@ -88,6 +88,8 @@ VALUES
 ('user', '$2b$10$doyOvwDhPKKLO/ZiRKDg0eEPXfoAhf13zFQ5r0vJEE/W76V72TDQK', 'false'), --pw user
 ('user2', '$2b$10$ZKcBbq.B2tDia.2QLWFe7e4nP0CxgkqGfeWh8bN/T3WM4V1TvCrjy', 'false'); --pw user2
 
+INSERT INTO "status" ("status") VALUES ('Pending', 'Inactive', 'Active');
+
 INSERT INTO "template_type" ("type", "section")
 VALUES
 ('Claim Rejection - § 101', 'issue'),
