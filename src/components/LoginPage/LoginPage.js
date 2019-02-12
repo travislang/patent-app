@@ -26,14 +26,17 @@ const styles = theme => ({
     },
   },
   loginMessage: {
-    height: theme.spacing.unit *2,
+    height: theme.spacing.unit * 2,
+  },
+  textColor: {
+    color: 'red',
   },
   paper: {
     marginTop: theme.spacing.unit * 18,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
+    padding: `${theme.spacing.unit * 9}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 9}px`,
   },
 });
 
@@ -73,65 +76,65 @@ class LoginPage extends Component {
       <div className={classes.root}>
         <CssBaseline />
         <Paper className={classes.paper}>
-        <form onSubmit={this.login}>
-          <div>
-          <Typography variant="h4" align="center">Login</Typography>
-          </div>
-          <div>
-          <FormControl margin="normal" fullWidth>
-            <InputLabel htmlFor="username">
-              Username
+          <form onSubmit={this.login}>
+            <div>
+              <Typography variant="h4" align="center">Login</Typography>
+            </div>
+            <div>
+              <FormControl margin="normal" fullWidth>
+                <InputLabel htmlFor="username">
+                  Username
               </InputLabel>
-              <Input 
-                id="username" 
-                name="username" 
-                autoComplete="username" 
-                autoFocus 
-                value={this.state.username}
-                onChange={this.handleInputChangeFor('username')}
+                <Input
+                  id="username"
+                  name="username"
+                  autoComplete="username"
+                  autoFocus
+                  value={this.state.username}
+                  onChange={this.handleInputChangeFor('username')}
                 />
-          </FormControl>
-          </div>
-          <div>
-          <FormControl margin="normal" fullWidth>
-            <InputLabel htmlFor="password">
-              Password
+              </FormControl>
+            </div>
+            <div>
+              <FormControl margin="normal" fullWidth>
+                <InputLabel htmlFor="password">
+                  Password
               </InputLabel>
-              <Input 
-                id="password" 
-                name="password"
-                type="password"
-                autoComplete="current-password" 
-                autoFocus 
-                value={this.state.password}
-                onChange={this.handleInputChangeFor('password')}
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  autoFocus
+                  value={this.state.password}
+                  onChange={this.handleInputChangeFor('password')}
                 />
-          </FormControl>
-          </div>
-          <div>
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          </div>
-          <div>
-            <Button
-              fullWidth
-              type="submit"
-              name="submit"
-              value="Log In"
-              color="primary"
-              variant="outlined"
-            >
-            Log In
+              </FormControl>
+            </div>
+            <div>
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+            </div>
+            <div>
+              <Button
+                fullWidth
+                type="submit"
+                name="submit"
+                value="Log In"
+                color="primary"
+                variant="outlined"
+              >
+                Log In
             </Button>
+            </div>
+          </form>
+          <div className={classes.loginMessage}>
+            <Typography variant='caption' color='textSecondary' align='center' className={classes.textColor}>
+              {this.props.errors.loginMessage && this.props.errors.loginMessage}
+            </Typography>
           </div>
-        </form>
-        <div className={classes.loginMessage}>
-          <Typography variant='caption' color='textSecondary' align='center'>
-          {this.props.errors.loginMessage && this.props.errors.loginMessage}
-          </Typography>
-        </div>
         </Paper>
       </div>
     );
