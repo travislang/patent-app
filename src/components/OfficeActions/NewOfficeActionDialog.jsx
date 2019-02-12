@@ -64,6 +64,7 @@ class NewAppDialog extends React.Component {
                 application_id: this.props.appId,
             }
         });
+        this.props.handleClose();
     };
     handleStatusChange = (statusId) => {
         this.setState({
