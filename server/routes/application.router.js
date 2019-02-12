@@ -76,7 +76,7 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 });
 
 router.post('/add', rejectUnauthenticated, (req, res) => {
-    if (!req.user.isAdmin && +req.body.user_id !== req.user.id) {
+if (!req.user.is_admin && +req.body.user_id !== req.user.id) {
         res.sendStatus(403);
     } else {
         const query =

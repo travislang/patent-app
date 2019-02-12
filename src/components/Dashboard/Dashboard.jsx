@@ -60,7 +60,8 @@ class Dashboard extends Component {
     };
 
     componentDidMount() {
-        this.props.dispatch({ type: 'FETCH_APPLICATIONS' })
+        this.props.dispatch({ type: 'FETCH_APPLICATIONS' });
+        this.props.dispatch({ type: 'FETCH_USERS' });
     }
 
     handleChange = event => {
