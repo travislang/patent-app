@@ -142,16 +142,17 @@ class AppDrawer extends Component {
     };
 
     handleDocxDownload = () => {
-        if (!this.issuesAreAddressed()) {
+        const numUnaddressedIssues = this.issuesUnaddressed();
+        if ( numUnaddressedIssues !== 0) {
             this.setState({
                 alertDialogOpen: true,
             });
         }
     };
 
-    issuesAreAddressed = () => {
+    issuesUnaddressed = () => {
         // All issues are addressed if the number of issues = number of responses
-        return this.props.issuesList.length === this.props.responses.length;
+        return this.props.issuesList.length - this.props.responses.length;
     };
 
     confirmedExport = () => {
@@ -169,7 +170,6 @@ class AppDrawer extends Component {
     render() {
         const { classes, currentApplication, officeAction, issuesList, templates, templateTypes } = this.props;
         const oaId = this.props.match.params.oaId;
-        this.issuesAreAddressed();
         return (
             <div className={classes.root}>
                 <CssBaseline />
@@ -360,6 +360,7 @@ class AppDrawer extends Component {
                     open={this.state.alertDialogOpen} 
                     handleConfirm={this.confirmedExport}
                     handleClose={this.handleAlertDialogClose}
+                    numIssues={this.issuesUnaddressed()}
                 />
             </div>
         );

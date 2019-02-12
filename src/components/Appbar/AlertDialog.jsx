@@ -23,9 +23,8 @@ class AlertDialog extends React.Component {
                     <DialogTitle id="alert-dialog-title">{"Export without all sections addressed?"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            There are some issues that you haven't entered responses for. You can see which ones
-                            to the left. <br/>
-                            A green checkmark shows that the response is entered.
+                            There {this.props.numIssues === 1 ? 'is 1 issue': `are ${this.props.numIssues} issues`} that you haven't entered a response for. 
+                            <br/>A green checkmark on an issue to the left shows that a response is entered.
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
