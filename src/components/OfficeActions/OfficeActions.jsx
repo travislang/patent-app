@@ -158,7 +158,11 @@ class OfficeActions extends Component {
                         </Grid>
                     </Grid>
                     <OfficeActionTable handleClick={this.handleClick} officeActions={officeActions} />
-                    <NewOfficeActionDialog open={this.state.dialogOpen} handleClose={this.handleClose} />
+                    <NewOfficeActionDialog 
+                        open={this.state.dialogOpen} 
+                        handleClose={this.handleClose} 
+                        appId={currentApplication.id}
+                    />
                 </Paper>
             </div>
         )

@@ -54,9 +54,15 @@ class NewAppDialog extends React.Component {
         });
     };
     handleAdd = () => {
+        // cannot send empty string for date. Instead, send null
+        const responseSentDate = this.state.response_sent_date ? this.state.response_sent_date : null;
         this.props.dispatch({
             type: 'POST_OFFICE_ACTION',
-            payload: this.state,
+            payload: {
+                ...this.state,
+                response_sent_date: responseSentDate,
+                application_id: this.props.appId,
+            }
         });
     };
     handleStatusChange = (statusId) => {
@@ -138,7 +144,7 @@ class NewAppDialog extends React.Component {
                         Cancel
                     </Button>
                     <Button 
-                        onClick={() => this.handleAdd(this.state)} 
+                        onClick={this.handleAdd} 
                         variant='contained' color="primary"
                         disabled={!this.state.uspto_mailing_date}
                     >Add Office Action
