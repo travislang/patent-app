@@ -81,7 +81,6 @@ class AddTemplateDialog extends React.Component {
                 text: text
             }
         })
-        this.props.dispatch({ type: 'FETCH_ISSUES', payload: { office_action_id: oaId } })
         // close modal
         this.props.handleTemplateClose();
     }

@@ -88,6 +88,8 @@ VALUES
 ('user', '$2b$10$doyOvwDhPKKLO/ZiRKDg0eEPXfoAhf13zFQ5r0vJEE/W76V72TDQK', 'false'), --pw user
 ('user2', '$2b$10$ZKcBbq.B2tDia.2QLWFe7e4nP0CxgkqGfeWh8bN/T3WM4V1TvCrjy', 'false'); --pw user2
 
+INSERT INTO "status" ("status") VALUES ('Pending', 'Inactive', 'Active');
+
 INSERT INTO "template_type" ("type", "section")
 VALUES
 ('Claim Rejection - § 101', 'issue'),
@@ -126,9 +128,9 @@ VALUES
     'with subject matter related to the aforementioned references. For at least '
     'the foregoing reasons, it is respectfully submitted that all of the independent '
     'claims are in condition for allowance. Based at least on their respective '
-    'dependence from the independent claims, the dependent claims are also allowable. '
+    'dependence from the independent claims, any dependent claims are also allowable. '
     'Accordingly, it is respectfully requested that all outstanding rejections of '
-    'the claims be withdrawn and that claims be allowed.'
+    'the claims be withdrawn and that claim{claims(s)} be allowed.'
 ),
 ( (SELECT "id" FROM "template_type" WHERE "type"='Claim Rejection - § 103'),
     '209 Rejection § 103 Incorporate Allowable Subject Matter',

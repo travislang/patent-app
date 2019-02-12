@@ -93,6 +93,7 @@ class AppDrawer extends Component {
         // get current office action
         this.props.dispatch({ type: 'FETCH_OFFICE_ACTION', payload: {officeActionResponseId: oaId}})
         // get current office action issues
+        console.log('FETCH_ISSUES', oaId);
         this.props.dispatch({ type: 'FETCH_ISSUES', payload: { office_action_id: oaId } })
         // get all template types for dialog
         this.props.dispatch({ type: 'FETCH_TEMPLATE_TYPES' })
@@ -141,9 +142,13 @@ class AppDrawer extends Component {
         this.props.history.goBack();
     }
 
+    handleDocxDownload = () => {
+    }
+
     render() {
         const { classes, currentApplication, officeAction, issuesList, templates, templateTypes } = this.props;
         const oaId = this.props.match.params.oaId;
+        console.log('issuesList', issuesList);
         return (
             <div className={classes.root}>
                 <CssBaseline />
@@ -237,7 +242,7 @@ class AppDrawer extends Component {
                             }
                         })}
                         {issuesList.map((issue) => {
-                            if (issue.section === 'issues') {
+                            if (issue.section === 'issue') {
                                 return (
                                     issue.text ?
                                         <ListItem 
@@ -320,9 +325,13 @@ class AppDrawer extends Component {
                 </Drawer>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-                    <PreviewDoc />
+                    <PreviewDoc issuesList={issuesList} />
                 </main>
-                <Fab variant="extended" className={classes.fab}>
+                <Fab 
+                    variant="extended" 
+                    className={classes.fab}
+                    onClick={this.handleDocxDownload}
+                >
                     <CloudDownload className={classes.extendedIcon} />
                     Export as Docx
                 </Fab>
