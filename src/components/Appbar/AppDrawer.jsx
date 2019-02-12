@@ -25,21 +25,6 @@ import AddTemplateDialog from '../PreviewPage/AddTemplateDialog';
 import { HashLink as Link } from 'react-router-hash-link';
 import AddIssueDialog from '../PreviewPage/AddIssueDialog';
 
-import * as docx from "docx";
-
-import fs from 'fs';
-
-let doc = new docx.Document();
-
-// Add some content in the document
-let paragraph = new docx.Paragraph("Some cool text here.");
-// Add more text into the paragraph if you wish
-paragraph.addRun(new docx.TextRun("Lorem Ipsum Foo Bar"));
-doc.addParagraph(paragraph);
-
-// Used to export the file into a .docx file
-
-
 const drawerWidth = 300;
 
 const styles = theme => ({
@@ -158,8 +143,6 @@ class AppDrawer extends Component {
     }
 
     handleDocxDownload = () => {
-        console.log('doc', doc);
-        
     }
 
     render() {
