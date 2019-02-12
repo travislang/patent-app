@@ -117,8 +117,11 @@ class NewAppDialog extends React.Component {
                     <Button onClick={this.props.handleClose} variant='contained' color="default">
                         Cancel
                     </Button>
-                    <Button onClick={() => this.handleAdd(this.state)} variant='contained' color="primary">
-                        Add Office Action
+                    <Button 
+                        onClick={() => this.handleAdd(this.state)} 
+                        variant='contained' color="primary"
+                        disabled={!this.state.uspto_mailing_date}
+                    >Add Office Action
                     </Button>
                 </DialogActions>
             </Dialog>

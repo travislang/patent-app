@@ -151,7 +151,8 @@ class OfficeActions extends Component {
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <Button color='primary' variant='contained' onClick={this.handleNewOfficeAction}>
+                            <Button color='primary' variant='contained' 
+                                onClick={this.handleNewOfficeAction}>
                                 New Response
                             </Button>
                         </Grid>
