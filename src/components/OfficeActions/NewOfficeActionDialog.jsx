@@ -74,27 +74,24 @@ class NewAppDialog extends React.Component {
                                             label="USPTO Mailing Date"
                                             className={classes.appNumTextField}
                                             value={this.state.uspto_mailing_date}
-                                            // type='date'
+                                            type="date"
                                             onChange={this.handleChange('uspto_mailing_date')}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.state.uspto_mailing_date && {
-                                                shrink: true,
-                                            }}
+                                            InputLabelProps={{ shrink: true, }}
                                         />
                                         <TextField
                                             id="outlined-responseSentDate"
                                             label="Response Sent Date"
                                             className={classes.appNumTextField}
-                                            value={this.props.reduxState.uspto.LAST_MOD_TS}
+                                            value={this.state.response_sent_date}
+                                            type="date"
                                             onChange={this.handleChange('response_sent_date')}
                                             margin="normal"
                                             variant="outlined"
                                             margin='dense'
-                                            InputLabelProps={this.state.response_sent_date && {
-                                                shrink: true,
-                                            }}
+                                            InputLabelProps={{ shrink: true, }}
                                         />
                                         <TextField
                                             id="outlined-usptoStatus"
