@@ -320,7 +320,7 @@ class AppDrawer extends Component {
                 </Drawer>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-                    <PreviewDoc />
+                    <PreviewDoc issuesList={issuesList} />
                 </main>
                 <Fab variant="extended" className={classes.fab}>
                     <CloudDownload className={classes.extendedIcon} />
