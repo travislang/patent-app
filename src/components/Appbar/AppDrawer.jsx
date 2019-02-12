@@ -150,9 +150,8 @@ class AppDrawer extends Component {
     };
 
     issuesAreAddressed = () => {
-        // An issue is addressed if the template_id key has a value
-        const unAddressedIssues = this.props.issuesList.filter( issue => issue.template_id );
-        return unAddressedIssues.length == 0;
+        // All issues are addressed if the number of issues = number of responses
+        return this.props.issuesList.length === this.props.responses.length;
     };
 
     confirmedExport = () => {
