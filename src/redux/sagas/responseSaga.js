@@ -26,7 +26,7 @@ function* postResponse(action){
 
         // Update redux
         yield dispatch({type:'FETCH_RESPONSES', payload: {office_Action_Id}});
-
+        yield dispatch({ type: 'FETCH_ISSUES', payload: { office_action_id: office_Action_Id } })
     } catch (error) {
         console.log(`Error in postResposne: ${error}`);
     }
@@ -73,7 +73,6 @@ function* updateResponse(action){
 
         // Update redux
         yield dispatch({type:'FETCH_RESPONSES', payload: {office_Action_Id}});
-        
     } catch (error) {
         console.log(`Error in updateResponse: ${error}`);
     }
