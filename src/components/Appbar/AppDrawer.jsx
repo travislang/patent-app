@@ -84,7 +84,8 @@ class AppDrawer extends Component {
         open: false,
         templateOpen: false,
         currentIssue: {},
-        alertDialogOpen: true,
+        alertDialogOpen: false,
+        confirmedExport: false,
     };
 
     componentDidMount() {
@@ -123,7 +124,7 @@ class AppDrawer extends Component {
             templateOpen: false,
             currentIssue: {}
          });
-    }
+    };
 
     handleStatusChange = (statusId) => {
         const appId = this.props.match.params.appId;
@@ -133,12 +134,12 @@ class AppDrawer extends Component {
             application_id: appId,
             status_id: statusId
         }})
-    }
+    };
 
     // take user back to application view
     handleBack = () => {
         this.props.history.goBack();
-    }
+    };
 
     handleDocxDownload = () => {
         if (!this.issuesAreAddressed()) {
@@ -151,7 +152,13 @@ class AppDrawer extends Component {
     issuesAreAddressed = () => {
         // An issue is addressed if the template_id key has a value
         const unAddressedIssues = this.props.issuesList.filter( issue => issue.template_id );
-        return unAddressedIssues.length !== 0;
+        return unAddressedIssues.length == 0;
+    };
+
+    confirmedExport = () => {
+        this.setState({
+            confirmedExport: true,
+        });
     };
 
     handleAlertDialogClose = () => {
@@ -321,7 +328,7 @@ class AppDrawer extends Component {
                             <ListItemIcon style={{ margin: 0 }}>
                                 <Add fontSize='large' />
                             </ListItemIcon>
-                            <ListItemText primaryTypographyProps={primaryTypographyStyles} primary='Add New Item' />
+                            <ListItemText primaryTypographyProps={primaryTypographyStyles} primary='Add Item' />
                         </ListItem>
                     </div>
                     <AddIssueDialog 
@@ -352,6 +359,7 @@ class AppDrawer extends Component {
                 </Fab>
                 <AlertDialog 
                     open={this.state.alertDialogOpen} 
+                    handleConfirm={this.confirmedExport}
                     handleClose={this.handleAlertDialogClose}
                 />
             </div>
