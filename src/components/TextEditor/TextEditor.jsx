@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { connect } from 'react-redux';
 
 import { Editor } from 'slate-react';
+import Plain from 'slate-plain-serializer'
+import { Value } from 'slate';
 
 import { BoldMark, ItalicMark, UnderlinedMark, FormatToolbar } from './index';
 import { isKeyHotkey } from 'is-hotkey'
@@ -72,9 +75,31 @@ class TextEditor extends Component {
         const { value } = this.state
         return value.blocks.some(node => node.type == type)
     }
-
+    // claims: "7-9, 11, 12"
+    // id: 32
+    // office_action_id: 1
+    // resp_id: 20
+    // section: "issues"
+    // template_id: null
+    // template_type_id: 10
+    // text: "In the Office Action, {claim(s)is/are} rejected under 35 U.S.C. § 103 as allegedly being unpatentable over the referenced publications. Neither the correctness of the characterizations of this reference and the pending application nor the sufficiency of the rejection is conceded. This rejection is respectfully traversed. Reconsideration and allowance of {claim(s)} is respectfully requested."
+    // type: "Claim Rejection - Section 103"
+    
     // update state to reflect proper text value
     onChange = ({value}) => {
+        const {issue} = this.props;
+        // converts slate text to JSON
+        const content = JSON.stringify(value.toJSON())
+        if(value.document !== this.state.value.document) {
+            this.props.dispatch({ type: 'UPDATE_RESPONSE', payload: {
+                id: issue.resp_id,
+                office_Action_Id: issue.office_action_id,
+                issue_id: issue.id,
+                text: content
+            }})
+            console.log('issue', issue);
+            
+        }
         this.setState({value})
     }
 
@@ -211,4 +236,4 @@ class TextEditor extends Component {
     }
 }
 
-export default withStyles(styles)(TextEditor);
+export default connect()(withStyles(styles)(TextEditor));

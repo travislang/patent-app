@@ -6,7 +6,6 @@ import { withStyles } from '@material-ui/core/styles';
 import {TextEditor} from '../TextEditor/index';
 import { Value } from 'slate';
 
-import templateParser from '../../modules/template/replaceTemplateFields';
 
 const styles = theme => ({
     root: {
@@ -22,73 +21,23 @@ const styles = theme => ({
 
 });
 
-function getSlateHeading(issue) {
-    if(issue.section === 'issues') {
-        return `claims ${issue.claims} ${issue.type}`
-    }
-    else {
-        return issue.type
-    }
-}
-
 const initialValue = (issue) => {
-    return Value.fromJSON({
-            document: {
-                nodes: [
-                    {
-                        object: 'block',
-                        type: 'title',
-                        nodes: [
-                            {
-                                object: 'text',
-                                leaves: [
-                                    {
-                                        text: getSlateHeading(issue)
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        object: 'block',
-                        type: 'paragragh',
-                        nodes: [
-                            {
-                                object: 'text',
-                                leaves: [
-                                    {
-                                        text: templateParser(issue.text, issue)
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                ]
-            }
-        })
+    if(issue.text){
+        const parsed = JSON.parse(issue.text);
+        return Value.fromJSON(parsed)
+    }
 }
-
-// claims: "1-5, 8"
-// id: 9
-// office_action_id: 1
-// section: "issues"
-// template_id: null
-// template_type_id: 9
-// text: null
-// type: "Claim Rejection - Section 102"
-
-
 
 const PreviewDoc = (props) => {
     const issues = props.issuesList;
-    
+    const oaId = props.oaId;
     return (
         issues.map(issue => {
             return issue.text ? 
             (
                 <div id={issue.id} className={props.classes.root}>
                     <Paper className={props.classes.content}>
-                        <TextEditor initialVal={initialValue(issue)} />
+                        <TextEditor issue={issue} initialVal={initialValue(issue)} />
                     </Paper>
                 </div>
             )

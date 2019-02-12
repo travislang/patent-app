@@ -21,6 +21,9 @@ import Select from '@material-ui/core/Select';
 
 import Grid from '@material-ui/core/Grid'
 
+import { Value } from 'slate';
+import templateParser from '../../modules/template/replaceTemplateFields';
+
 const styles = theme => ({
     root: {
         display: 'flex',
@@ -69,16 +72,66 @@ class AddTemplateDialog extends React.Component {
         });
     };
 
+    getSlateHeading = (issue) => {
+        if (issue.section === 'issue') {
+            return `claims ${issue.claims} ${issue.type}`
+        }
+        else {
+            return issue.type
+        }
+    }
+
+    initialValue = (issue, text) => {
+        return Value.fromJSON({
+            document: {
+                nodes: [
+                    {
+                        object: 'block',
+                        type: 'title',
+                        nodes: [
+                            {
+                                object: 'text',
+                                leaves: [
+                                    {
+                                        text: this.getSlateHeading(issue)
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        object: 'block',
+                        type: 'paragragh',
+                        nodes: [
+                            {
+                                object: 'text',
+                                leaves: [
+                                    {
+                                        text: templateParser(text, issue)
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                ]
+            }
+        })
+    }
+
     handleSubmit = () => {
         const oaId = this.props.oaId;
         const issueId = this.props.currentIssue.id;
         const text = this.state.templateText;
+        const issue = this.props.currentIssue;
+        
+        const content = JSON.stringify(this.initialValue(issue, text).toJSON());
+
         this.props.dispatch({
             type: 'POST_RESPONSE',
             payload: {
                 office_Action_Id: oaId,
                 issue_id: issueId,
-                text: text
+                text: content
             }
         })
         // close modal

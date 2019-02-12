@@ -337,7 +337,7 @@ class AppDrawer extends Component {
                 </Drawer>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-                    <PreviewDoc issuesList={issuesList} />
+                    <PreviewDoc oaId={oaId} issuesList={issuesList} />
                 </main>
                 <a href='http://localhost:5000/api/download'>
                     <Fab
