@@ -108,6 +108,7 @@ class AppDrawer extends Component {
         // get current office action
         this.props.dispatch({ type: 'FETCH_OFFICE_ACTION', payload: {officeActionResponseId: oaId}})
         // get current office action issues
+        console.log('FETCH_ISSUES', oaId);
         this.props.dispatch({ type: 'FETCH_ISSUES', payload: { office_action_id: oaId } })
         // get all template types for dialog
         this.props.dispatch({ type: 'FETCH_TEMPLATE_TYPES' })
@@ -164,6 +165,7 @@ class AppDrawer extends Component {
     render() {
         const { classes, currentApplication, officeAction, issuesList, templates, templateTypes } = this.props;
         const oaId = this.props.match.params.oaId;
+        console.log('issuesList', issuesList);
         return (
             <div className={classes.root}>
                 <CssBaseline />
@@ -257,7 +259,7 @@ class AppDrawer extends Component {
                             }
                         })}
                         {issuesList.map((issue) => {
-                            if (issue.section === 'issues') {
+                            if (issue.section === 'issue') {
                                 return (
                                     issue.text ?
                                         <ListItem 
