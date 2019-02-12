@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography';
@@ -10,6 +10,13 @@ import FormControl from '@material-ui/core/FormControl';
 
 import UsersTable from './UsersTable';
 import NewUserDialog from './NewUserDialog';
+import { green } from '@material-ui/core/colors';
+
+const theme = createMuiTheme({
+    palette: {
+            primary: { main: '#fff'},
+    },
+  });
 
 const styles = theme => ({
     root: {
@@ -75,7 +82,7 @@ class UsersPage extends Component {
                 <Paper className={classes.paper}>
                     <Grid container justify='center'>
                         <Grid item className={classes.title}>
-                            <Typography color='primary' variant='h4' align='center'>
+                            <Typography  style={{fontWeight:'bold'}} color='primary' variant='h4' align='center'>
                                 Users
                             </Typography>
                         </Grid>
@@ -90,13 +97,16 @@ class UsersPage extends Component {
                                 <Grid item className={classes.addNew}>
                                     <Grid container style={{height: '100%'}} alignItems='center'>
                                         <Grid item>
+                                        <MuiThemeProvider theme={theme}>
                                             <Button 
                                                 color='primary' variant="contained" 
                                                 size='large'
                                                 onClick={this.handleNewApp}
-                                                className={classes.button}>
+                                                className={classes.button}
+                                                style={{color:'#267CCE'}}>
                                                 Register User
                                             </Button>
+                                        </MuiThemeProvider>
                                         </Grid>
                                     </Grid>
                                 </Grid>

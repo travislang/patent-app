@@ -10,12 +10,16 @@ import { connect } from 'react-redux';
 const styles = theme => ({
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
+        backgroundColor: '#267CCE',
+        color:'#eee'
     },
     logo: {
-        flexGrow: 1
+        flexGrow: 1,
+        fontWeight: 'bold'
     },
     navContainer: {
-        display: 'flex'
+        display: 'flex',
+
     },
     navItem: {
         marginRight: theme.spacing.unit * 3,

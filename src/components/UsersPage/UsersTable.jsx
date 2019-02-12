@@ -16,7 +16,7 @@ const styles = theme => ({
         },
     },
     head: {
-        backgroundColor: '#1796f0'
+        backgroundColor: '#267CCE'
     },
     root: {
         width: '100%',
