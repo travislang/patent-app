@@ -172,7 +172,6 @@ class TextEditor extends Component {
                             </IconButton>
                             <DeleteDialog 
                                 open={this.state.deleteDialogOpen}
-                                templateId={}
                                 handleDeleteTemplate={this.handleDeleteTemplate}
                                 handleTemplateDeleteClose={this.handleTemplateDeleteClose}
                             />
