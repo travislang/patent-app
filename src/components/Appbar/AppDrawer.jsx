@@ -24,6 +24,7 @@ import AddTemplateDialog from '../PreviewPage/AddTemplateDialog';
 
 import { HashLink as Link } from 'react-router-hash-link';
 import AddIssueDialog from '../PreviewPage/AddIssueDialog';
+import axios from 'axios';
 
 const drawerWidth = 300;
 
@@ -114,7 +115,6 @@ class AppDrawer extends Component {
             currentIssue: issue,
             templateOpen: true
         })
-        console.log('current issue', this.state.currentIssue);
         this.props.dispatch({ type: 'FETCH_TEMPLATES', payload: {type_Id: issue.template_type_id}})
     };
 
@@ -143,6 +143,18 @@ class AppDrawer extends Component {
     }
 
     handleDocxDownload = () => {
+        axios({
+            url: '/api/download',
+            method: 'GET',
+            responseType: 'blob',
+        }).then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'file.pdf');
+            document.body.appendChild(link);
+            link.click();
+        });
     }
 
     render() {
