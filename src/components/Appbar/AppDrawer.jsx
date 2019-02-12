@@ -24,6 +24,7 @@ import AddTemplateDialog from '../PreviewPage/AddTemplateDialog';
 
 import { HashLink as Link } from 'react-router-hash-link';
 import AddIssueDialog from '../PreviewPage/AddIssueDialog';
+import AlertDialog from './AlertDialog';
 
 const drawerWidth = 300;
 
@@ -82,7 +83,8 @@ class AppDrawer extends Component {
     state = {
         open: false,
         templateOpen: false,
-        currentIssue: {}
+        currentIssue: {},
+        dialogOpen: true,
     }
 
     componentDidMount() {
@@ -335,6 +337,7 @@ class AppDrawer extends Component {
                     <CloudDownload className={classes.extendedIcon} />
                     Export as Docx
                 </Fab>
+                <AlertDialog open={this.state.dialogOpen} />
             </div>
         );
     }
