@@ -61,10 +61,10 @@ class UsersTable extends Component {
         console.log(this.props);
 
         return (
-            <Paper className={classes.root}>
-                <Table className={classes.table}>
+            <Paper className={classes.root} style={{boxShadow: 'none'}}>
+                <Table className={classes.table} style={{boxShadow: 'none'}}>
                     <TableHead>
-                        <TableRow className={classes.head}>
+                        <TableRow className={classes.head} style={{boxShadow: 'none'}}>
                             <TableCell style={{color:'white'}}>Username</TableCell>
                             <TableCell style={{color:'white'}} align="left">Signature name</TableCell>
                             <TableCell style={{color:'white'}} align="left">Registration No.</TableCell>
@@ -107,7 +107,7 @@ class UsersTable extends Component {
                                     {user.deposit_account_number}
                                 </TableCell>
 
-                                <TableCell align='center' style={{cursor:'pointer'}} onClick={()=>this.handleDeleteClick(user.id)} component="th" scope="row">
+                                <TableCell align="center" style={{cursor:'pointer'}} onClick={()=>this.handleDeleteClick(user.id)} component="th" scope="row">
                                 {user.active ? (
                                         <div style={{color:'green'}} > Yes </div>
                                     ) : (
