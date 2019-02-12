@@ -39,6 +39,14 @@ class NewAppDialog extends React.Component {
         uspto_status: '',
         status_id: null,
     };
+    clearForm = () => {
+        this.setState({
+            uspto_mailing_date: '',
+            response_sent_date: '',
+            uspto_status: '',
+            status_id: null,
+        });
+    }
     handleChange = name => event => {
         this.setState({
             ...this.state,
@@ -50,7 +58,16 @@ class NewAppDialog extends React.Component {
             type: 'POST_OFFICE_ACTION',
             payload: this.state,
         });
-    }
+    };
+    handleStatusChange = (statusId) => {
+        this.setState({
+            status_id: statusId,
+        });
+    };
+    handleDialogClose = () => {
+        this.clearForm();
+        this.props.handleClose();
+    };
     render() {
         const { classes } = this.props;
         return (
@@ -58,7 +75,7 @@ class NewAppDialog extends React.Component {
                 maxWidth='lg'
                 open={this.props.open}
                 className={classes.dialogContainer}
-                onClose={this.props.handleClose}
+                onClose={this.handleDialogClose}
                 aria-labelledby="form-dialog-title"
             >
                 <DialogTitle align='center' id="form-dialog-title">New Office Action
@@ -106,7 +123,10 @@ class NewAppDialog extends React.Component {
                                                 shrink: true,
                                             }}
                                         />
-                                        <StatusSelector />
+                                        <StatusSelector 
+                                            handleStatusChange={this.handleStatusChange}
+                                            statusId={this.state.status_id}
+                                        />
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -114,7 +134,7 @@ class NewAppDialog extends React.Component {
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.props.handleClose} variant='contained' color="default">
+                    <Button onClick={this.handleDialogClose} variant='contained' color="default">
                         Cancel
                     </Button>
                     <Button 
