@@ -142,20 +142,20 @@ class AppDrawer extends Component {
         this.props.history.goBack();
     }
 
-    handleDocxDownload = () => {
-        axios({
-            url: '/api/download',
-            method: 'GET',
-            responseType: 'blob',
-        }).then((response) => {
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'file.pdf');
-            document.body.appendChild(link);
-            link.click();
-        });
-    }
+    // handleDocxDownload = () => {
+    //     axios({
+    //         url: '/api/download',
+    //         method: 'GET',
+    //         responseType: 'blob',
+    //     }).then((response) => {
+    //         const url = window.URL.createObjectURL(new Blob([response.data]));
+    //         const link = document.createElement('a');
+    //         link.href = url;
+    //         link.setAttribute('download', 'file.pdf');
+    //         document.body.appendChild(link);
+    //         link.click();
+    //     });
+    // }
 
     render() {
         const { classes, currentApplication, officeAction, issuesList, templates, templateTypes } = this.props;
@@ -339,14 +339,17 @@ class AppDrawer extends Component {
                     <div className={classes.toolbar} />
                     <PreviewDoc issuesList={issuesList} />
                 </main>
-                <Fab 
-                    variant="extended" 
-                    className={classes.fab}
-                    onClick={this.handleDocxDownload}
-                >
-                    <CloudDownload className={classes.extendedIcon} />
-                    Export as Docx
-                </Fab>
+                <a href='http://localhost:5000/api/download'>
+                    <Fab
+                        variant="extended"
+                        className={classes.fab}
+                        // onClick={this.handleDocxDownload}
+                    >
+                        <CloudDownload className={classes.extendedIcon} />
+                        Export as Docx
+                    </Fab>
+                </a>
+                
             </div>
         );
     }
