@@ -46,9 +46,27 @@ function* fetchUsers(){
   }
 }
 
+function* updateUserActivity(action){
+  try {
+
+    // Destructure variable from client
+    const {id} = action.payload;
+
+    // Request API to update activity
+    yield axios.put(`/api/user/active/${id}`)
+
+    // update redux
+    yield put({type:'FETCH_USERS'});
+
+  } catch (error) {
+    console.log(`Error in updateUserActivity: ${error}`);
+  }
+}
+
 function* userSaga() {
   yield takeLatest('FETCH_USER', fetchUser);
-  yield takeLatest('FETCH_USERS', fetchUsers)
+  yield takeLatest('FETCH_USERS', fetchUsers);
+  yield takeLatest('UPDATE_USER_ACTIVITY', updateUserActivity)
 }
 
 export default userSaga;
