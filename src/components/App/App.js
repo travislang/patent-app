@@ -34,6 +34,7 @@ class App extends Component {
                     <div>
                         <Appbar />
                         <Switch>
+                            {/* change redirect to dashboard */}
                             <Redirect exact from="/" to="/home" />
                             <ProtectedRoute
                                 exact

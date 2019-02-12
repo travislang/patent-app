@@ -25,10 +25,10 @@ const styles = theme => ({
       marginRight: 'auto',
     },
   },
-  loginMessage: {
+  loginMessageBox: {
     height: theme.spacing.unit * 2,
   },
-  textColor: {
+  textMessageColor: {
     color: 'red',
   },
   paper: {
@@ -76,10 +76,10 @@ class LoginPage extends Component {
       <div className={classes.root}>
         <CssBaseline />
         <Paper className={classes.paper}>
+          <div>
+            <Typography variant="h4" align="center">Login</Typography>
+          </div>
           <form onSubmit={this.login}>
-            <div>
-              <Typography variant="h4" align="center">Login</Typography>
-            </div>
             <div>
               <FormControl margin="normal" fullWidth>
                 <InputLabel htmlFor="username">
@@ -111,12 +111,16 @@ class LoginPage extends Component {
                 />
               </FormControl>
             </div>
+            <br />
+            {/* 
+            // Will have to implement/change duration of session for this checkbox
             <div>
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
-            </div>
+            </div> 
+            */}
             <div>
               <Button
                 fullWidth
@@ -130,8 +134,8 @@ class LoginPage extends Component {
             </Button>
             </div>
           </form>
-          <div className={classes.loginMessage}>
-            <Typography variant='caption' color='textSecondary' align='center' className={classes.textColor}>
+          <div className={classes.loginMessageBox}>
+            <Typography variant='caption' align='center' className={classes.textMessageColor}>
               {this.props.errors.loginMessage && this.props.errors.loginMessage}
             </Typography>
           </div>
