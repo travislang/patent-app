@@ -107,8 +107,12 @@ class UsersTable extends Component {
                                     {user.deposit_account_number}
                                 </TableCell>
 
-                                <TableCell style={{cursor:'pointer'}} onClick={()=>this.handleDeleteClick(user.id)} component="th" scope="row">
-                                    {user.active ? 'yes' : 'no'}
+                                <TableCell align='center' style={{cursor:'pointer'}} onClick={()=>this.handleDeleteClick(user.id)} component="th" scope="row">
+                                {user.active ? (
+                                        <div style={{color:'green'}} > Yes </div>
+                                    ) : (
+                                        <div style={{color:'red'}}> No </div>
+                                    )}
                                 </TableCell>
 
                             </TableRow>
