@@ -59,14 +59,15 @@ function* postOfficeAction(action){
         // Deconstruct payload
         const {
         application_id,
-        response_due_date,
+        uspto_mailing_date,
         response_sent_date,
         uspto_status,
         status_id } = action.payload;
 
         // Request to post an office action
         yield axios.post('/api/office_action/add',{
-            response_due_date,
+            application_id,
+            uspto_mailing_date,
             response_sent_date,
             uspto_status,
             status_id
