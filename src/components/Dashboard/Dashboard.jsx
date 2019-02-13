@@ -26,7 +26,7 @@ const styles = theme => ({
     },
     paper: {
         margin: theme.spacing.unit * 15,
-        width: '100%'
+        width: 1040,
     },
     title: {
         padding: `${theme.spacing.unit * 2}px 0 0`
@@ -86,7 +86,7 @@ class Dashboard extends Component {
                 <Paper className={classes.paper}>
                     <Grid container justify='center'>
                         <Grid item className={classes.title}>
-                            <Typography color='primary' variant='h4' align='center'>
+                            <Typography color='primary' variant='h4' align='center' style={{fontWeight:'bold'}}>
                                 Applications
                             </Typography>
                         </Grid>
@@ -118,7 +118,8 @@ class Dashboard extends Component {
                                     <Grid container style={{height: '100%'}} alignItems='center'>
                                         <Grid item>
                                             <Button 
-                                                color='primary' variant="contained" 
+                                                color='primary' 
+                                                variant="contained" 
                                                 size='large'
                                                 onClick={this.handleNewApp}
                                                 className={classes.button}>

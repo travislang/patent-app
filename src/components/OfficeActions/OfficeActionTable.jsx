@@ -54,10 +54,11 @@ class EnhancedTableHead extends React.Component {
 
         return (
             <TableHead>
-                <TableRow>
+                <TableRow style={{boxShadow: 'none', backgroundColor: '#267CCE'}}>
                     {rows.map(
                         row => (
                             <TableCell
+                                style={{color:'white'}}
                                 key={row.id}
                                 align='left'
                                 sortDirection={orderBy === row.id ? order : false}
@@ -70,6 +71,7 @@ class EnhancedTableHead extends React.Component {
                                     <TableSortLabel
                                         active={orderBy === row.id}
                                         direction={order}
+                                        style={{color:'white'}}
                                         onClick={this.createSortHandler(row.id)}
                                     >
                                         {row.label}
@@ -96,7 +98,10 @@ const styles = theme => ({
         overflowX: 'auto',
     },
     tableRow: {
-        cursor: 'pointer'
+        cursor: 'pointer',
+        '&:nth-of-type(odd)': {
+            backgroundColor: `#efefef`,
+        },
     }
 });
 
