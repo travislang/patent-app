@@ -4,6 +4,9 @@ import { put as dispatch, takeLatest } from 'redux-saga/effects';
 // *----------*  *----------*
 import axios from 'axios';
 
+// *----------* moment *----------*
+import moment from 'moment';
+
 // *----------* Office action Sagas *----------*
 
 // Worker saga responsible for handling 'FETCH_OFFICE_ACTIONS' actions
@@ -17,7 +20,17 @@ function* fetchOfficeActions(action){
 
         // Request all office actions by id
         const officeActionResponse = yield axios.get(`/api/office_action/by_app/${application_id}`);
-    
+        
+        // Format dates for each O.A.R to mm/dd/yyyy
+        for(const data of officeActionResponse.data ){
+            if(typeof data.uspto_mailing_date != null){
+                data.uspto_mailing_date = moment(data.uspto_mailing_date).format('L');
+            }
+            if (typeof data.response_sent_date != null) {
+                data.response_sent_date = moment(data.response_sent_date).format('L');
+            }
+        }
+
         // Update redux
         yield dispatch({
             type: 'SET_OFFICE_ACTIONS',
@@ -40,6 +53,7 @@ function* fetchOfficeAction(action){
 
         // Request office action by id
         const officeActionResponse = yield axios.get(`/api/office_action/${officeActionResponseId}`);
+
     
         // Update redux
         yield dispatch({
