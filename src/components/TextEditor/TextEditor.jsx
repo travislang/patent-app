@@ -16,6 +16,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import MoreVert from '@material-ui/icons/MoreVert';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import './index.css';
 
@@ -186,13 +187,15 @@ class TextEditor extends Component {
         const isActive = this.hasMark(type)
         const {classes} = this.props;
         return (
-            <IconButton
-                color={isActive ? 'primary' : 'default'}
-                onMouseDown={e => this.onMarkClick(e, type)}
-                className={classes.button}
-            >
-                <Icon>{icon}</Icon>
-            </IconButton>
+            <Tooltip title={type}>
+                <IconButton
+                    color={isActive ? 'primary' : 'default'}
+                    onMouseDown={e => this.onMarkClick(e, type)}
+                    className={classes.button}
+                >
+                    <Icon>{icon}</Icon>
+                </IconButton>
+            </Tooltip>
         )
     }
 
@@ -209,13 +212,15 @@ class TextEditor extends Component {
         }
 
         return (
-            <IconButton
-                color={isActive ? 'primary' : 'default'}
-                onMouseDown={e => this.onBlockClick(e, type)}
-                className={classes.button}
-            >
-                <Icon>{icon}</Icon>
-            </IconButton>
+            <Tooltip title={type}>
+                <IconButton
+                    color={isActive ? 'primary' : 'default'}
+                    onMouseDown={e => this.onBlockClick(e, type)}
+                    className={classes.button}
+                >
+                    <Icon>{icon}</Icon>
+                </IconButton>
+            </Tooltip>
         )
     }
 
@@ -269,36 +274,42 @@ class TextEditor extends Component {
                             {this.renderBlockButton('bulleted-list', 'format_list_bulleted')}
                         </div>
                         <div>
-                            <IconButton 
-                                className={classes.button} 
-                                aria-label="Delete"
-                                onClick={() => {this.setState({deleteDialogOpen: true})}}
-                            >
-                                <DeleteOutline />
-                            </IconButton>
+                            <Tooltip title='Delete Template'>
+                                <IconButton
+                                    className={classes.button}
+                                    aria-label="Delete"
+                                    onClick={() => { this.setState({ deleteDialogOpen: true }) }}
+                                >
+                                    <DeleteOutline />
+                                </IconButton>
+                            </Tooltip>
                             <DeleteDialog 
                                 open={this.state.deleteDialogOpen}
                                 handleDeleteTemplate={this.handleDeleteTemplate}
                                 handleTemplateDeleteClose={this.handleTemplateDeleteClose}
                             />
-                            <IconButton
-                                onClick={this.handleToolbarClick}
-                                className={classes.toolbarButton}
-                            >
-                                <MoreVert />
-                            </IconButton>
+                            <Tooltip title='Editor Options'>
+                                <IconButton
+                                    onClick={this.handleToolbarClick}
+                                    className={classes.toolbarButton}
+                                >
+                                    <MoreVert />
+                                </IconButton>
+                            </Tooltip>
                         </div>
                     </FormatToolbar>
                     :
                     <FormatToolbar>
                         <div className={classes.toolbarMain}>
                         </div>
-                        <IconButton
-                            onClick={this.handleToolbarClick}
-                            className={classes.toolbarButton}
-                        >
-                            <MoreVert />
-                        </IconButton>
+                        <Tooltip title='Editor Options'>
+                            <IconButton
+                                onClick={this.handleToolbarClick}
+                                className={classes.toolbarButton}
+                            >
+                                <MoreVert />
+                            </IconButton>
+                        </Tooltip>
                     </FormatToolbar>
                 }
                 <Editor
