@@ -25,7 +25,7 @@ router.get('/:officeActionId', rejectUnauthenticated, async (req, res) => {
         resolve(createDocx(query, officeActionId))
     })
     docx.then(doc => {
-        res.setHeader('Content-Disposition', 'attachment; filename=My Doc.docx');
+        res.setHeader('Content-Disposition', 'attachment; filename=My Document.docx');
         res.send(Buffer.from(doc, 'base64'));
     })
 })
@@ -44,14 +44,22 @@ async function createDocx(query, officeActionId) {
             .basedOn("Normal")
             .next("Normal")
             .quickFormat()
-            .size(28)
+            .size(35)
             .bold()
+            .center()
             .spacing({ after: 120 });
+
+        doc.Styles.createParagraphStyle('para', 'para')
+            .basedOn("Normal")
+            .next("Normal")
+            .quickFormat()
+            .size(24)
+            .spacing({ after: 80 });
 
         for (let response of responseText.rows) {
             // Add some content in the document
             doc.createParagraph(`${response.type} claims ${response.claims}`).heading1();
-            doc.createParagraph(response.text);
+            doc.createParagraph(response.text).style("para");
         }
 
         // Used to export the file into a .docx file
