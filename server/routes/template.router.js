@@ -19,8 +19,9 @@ router.get('/types', rejectUnauthenticated, (req, res) => {
 
 router.get('/all', rejectUnauthenticated, (req, res) => {
     const query =
-        `SELECT "template".*, "template_type"."type" FROM "template"
+        `SELECT "template".*, "template_type"."type", "user"."user_name" FROM "template"
         RIGHT JOIN "template_type" ON "template"."type_id"="template_type"."id"
+        LEFT JOIN "user" ON "template"."user_id"="user"."id"
         WHERE "template"."user_id"=$1 OR "template"."user_id" IS NULL OR $2=TRUE
         ORDER BY "template_type"."id";`;
     pool.query(query, [req.user.id, req.user.is_admin])

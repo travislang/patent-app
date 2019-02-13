@@ -36,16 +36,15 @@ class TemplateTable extends Component {
         })
     };
     render() {
-        const { classes, users } = this.props;
-        console.log(this.props);
+        const { classes, allTemplates } = this.props;
         return (
             <Paper className={classes.root}>
                 <Table className={classes.table}>
                     <TableHead>
                         <TableRow className={classes.head}>
-                            <TableCell style={{ color: 'white' }}>Username</TableCell>
-                            <TableCell style={{ color: 'white' }} align="left">Signature name</TableCell>
-                            <TableCell style={{ color: 'white' }} align="left">Registration No.</TableCell>
+                            <TableCell style={{ color: 'white' }}>Type</TableCell>
+                            <TableCell style={{ color: 'white' }} align="left">Template name</TableCell>
+                            <TableCell style={{ color: 'white' }} align="left">User</TableCell>
                             <TableCell style={{ color: 'white' }} align="left">Phone</TableCell>
                             <TableCell style={{ color: 'white' }} align="left">Firm</TableCell>
                             <TableCell style={{ color: 'white' }} align="left">Customer No.</TableCell>
@@ -54,41 +53,17 @@ class TemplateTable extends Component {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {users.map(user => (
-                            <TableRow className={classes.row} key={user.id}>
-
+                        {allTemplates && allTemplates.map(template => (
+                            <TableRow className={classes.row} key={template.id}>
                                 <TableCell component="th" scope="row">
-                                    {user.user_name}
+                                    {template.type}
                                 </TableCell>
-
                                 <TableCell component="th" scope="row">
-                                    {user.signature_name}
+                                    {template.template_name}
                                 </TableCell>
-
                                 <TableCell component="th" scope="row">
-                                    {user.registration_number}
+                                    {template.user_id ? template.user_name : 'All'}
                                 </TableCell>
-
-                                <TableCell component="th" scope="row">
-                                    {user.phone_number}
-                                </TableCell>
-
-                                <TableCell component="th" scope="row">
-                                    {user.firm_name}
-                                </TableCell>
-
-                                <TableCell component="th" scope="row">
-                                    {user.uspto_customer_number}
-                                </TableCell>
-
-                                <TableCell component="th" scope="row">
-                                    {user.deposit_account_number}
-                                </TableCell>
-
-                                <TableCell style={{ cursor: 'pointer' }} onClick={() => this.handleDeleteClick(user.id)} component="th" scope="row">
-                                    {user.active ? 'yes' : 'no'}
-                                </TableCell>
-
                             </TableRow>
                         ))}
                     </TableBody>
@@ -100,7 +75,7 @@ class TemplateTable extends Component {
 
 const mapStoreToProps = store => (
     {
-        users: store.userList,
+        allTemplates: store.template.allTemplates,
         applicationList: store.application,
     }
 )
