@@ -201,10 +201,9 @@ class AppDrawer extends Component {
                                     issue.text ?
                                         <ListItem 
                                                 component={Link} 
-                                                to='#2' 
+                                                to={issue.id} 
                                                 button 
                                                 key={issue.id}
-                                                onClick={() => this.handleNewTemplateDialogOpen(issue)}
                                             >
                                             <ListItemIcon style={{ margin: 0 }}>
                                                 <CheckIcon
@@ -229,11 +228,10 @@ class AppDrawer extends Component {
                                 return (
                                     issue.text ?
                                         <ListItem 
-                                            component={Link} 
-                                            to='#2' 
+                                            component={Link}
+                                            to={issue.id} 
                                             button 
                                             key={issue.id}
-                                            onClick={() => this.handleNewTemplateDialogOpen(issue)}
                                         >
                                             <ListItemIcon style={{ margin: 0 }}>
                                                 <CheckIcon
@@ -243,7 +241,7 @@ class AppDrawer extends Component {
                                         </ListItem>
                                         :
                                         <ListItem 
-                                            button 
+                                            button
                                             key={issue.id} 
                                             style={{ paddingLeft: 55 }}
                                             onClick={() => this.handleNewTemplateDialogOpen(issue)}
@@ -258,11 +256,10 @@ class AppDrawer extends Component {
                                 return (
                                     issue.text ?
                                         <ListItem 
-                                            component={Link} 
-                                            to='#2' 
+                                            component={Link}
+                                            to={`#${issue.id}`}  
                                             button 
                                             key={issue.id}
-                                            onClick={() => this.handleNewTemplateDialogOpen(issue)}
                                         >
                                             <ListItemIcon style={{ margin: 0 }}>
                                                 <CheckIcon
@@ -287,11 +284,10 @@ class AppDrawer extends Component {
                                 return (
                                     issue.text ?
                                         <ListItem 
-                                            component={Link} 
-                                            to='#2' 
+                                            component={Link}
+                                            to={issue.id}  
                                             button 
                                             key={issue.id}
-                                            onClick={this.handleNewTemplateDialogOpen(issue)}
                                             >
                                             <ListItemIcon style={{ margin: 0 }}>
                                                 <CheckIcon
