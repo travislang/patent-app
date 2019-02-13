@@ -73,7 +73,7 @@ class StatusSelector extends React.Component {
 
                     </ListItem>
                 </List>
-                <LensIcon style={{ color: iconColor, fontSize: 30 }} />
+                <LensIcon style={{color: iconColor, fontSize: 30 }} />
                 <Menu
                     id="lock-menu"
                     anchorEl={anchorEl}

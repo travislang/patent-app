@@ -4,6 +4,9 @@ import { put as dispatch, takeLatest } from 'redux-saga/effects';
 // *----------*  *----------*
 import axios from 'axios';
 
+// *----------* moment *----------*
+import moment from 'moment';
+
 // *----------* ApplicationList Sagas *----------*
 
 // Worker saga responsible for handling FETCH_APPLICATIONS actions
@@ -12,6 +15,25 @@ function* fetchApplications() {
 
         // Request all applications 
         const applicationResponseData = yield axios.get('api/application/status');
+
+        // Format dates for each O.A.R to mm/dd/yyyy
+        // for(const data of officeActionResponse.data ){
+        //     if(typeof data.uspto_mailing_date != null){
+        //         data.uspto_mailing_date = moment(data.uspto_mailing_date).format('L');
+        //     }
+        //     if (typeof data.response_sent_date != null) {
+        //         data.response_sent_date = moment(data.response_sent_date).format('L');
+        //     }
+        // }
+
+        // Format dates of each application by mm/dd/yyyy
+        for (const application of applicationResponseData.data){
+            application.filed_date = moment(application.filed_date).format('L');
+            application.last_checked_date = moment(application.last_checked_date).format('L');
+            application.status_date = moment(application.status_date).format('L');
+            application.response_sent_date = moment(application.response_sent_date).format('L');
+            application.uspto_mailing_date = moment(application.uspto_mailing_date).format('L');
+        }
 
         // Update redux with application
         yield dispatch({
@@ -32,6 +54,17 @@ function* fetchApplication(action) {
 
         // Request an application by id (sent as payload) ->
         const { data: applicationResponseData } = yield axios.get(`/api/application/${action.payload}`);
+
+        // Format dates from DB by mm/dd/yyyy
+        const {
+            filed_date,
+            last_checked_date,
+            status_date 
+        } = applicationResponseData[0];
+
+        applicationResponseData[0].filed_date = moment(filed_date).format('L');
+        applicationResponseData[0].last_checked_date = moment(last_checked_date).format('L');
+        applicationResponseData[0].status_date = moment(status_date).format('L');
 
         // Update redux with application
         yield dispatch({

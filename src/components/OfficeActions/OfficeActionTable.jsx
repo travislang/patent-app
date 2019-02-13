@@ -53,8 +53,8 @@ class EnhancedTableHead extends React.Component {
         const { order, orderBy } = this.props;
 
         return (
-            <TableHead>
-                <TableRow style={{boxShadow: 'none', backgroundColor: '#267CCE'}}>
+            <TableHead style={{backgroundColor: '#267CCE'}}>
+                <TableRow>
                     {rows.map(
                         row => (
                             <TableCell
@@ -62,6 +62,7 @@ class EnhancedTableHead extends React.Component {
                                 key={row.id}
                                 align='left'
                                 sortDirection={orderBy === row.id ? order : false}
+                                style={{color:'white'}}
                             >
                                 <Tooltip
                                     title="Sort"
