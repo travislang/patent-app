@@ -8,24 +8,63 @@ const docx = require("docx");
 
 const { Document, Paragraph, Packer } = docx;
 
-router.get('/', rejectUnauthenticated, async (req, res) => {
-    // Create document
-    var doc = new docx.Document();
+router.get('/:officeActionId', rejectUnauthenticated, async (req, res) => {
+    const { officeActionId } = req.params;
+    
+    const query =
+        `SELECT "response_text".*, "issue"."claims", "template_type"."type", "template_type"."section" FROM "response_text"
+            JOIN "issue" ON "issue"."id"="response_text"."issue_id"
+            JOIN "template_type" ON "issue"."template_type_id"="template_type"."id"
+            JOIN "office_action" ON "office_action"."id"="issue"."office_action_id"
+            JOIN "application" ON "office_action"."application_id"="application"."id"
+            WHERE "issue"."office_action_id"=$1 AND "application"."user_id"=${req.user.id}
+            ORDER BY "id";`;
 
-    // Add some content in the document
-    var paragraph = new docx.Paragraph("sweet its working.");
-    // Add more text into the paragraph if you wish
-    paragraph.addRun(new docx.TextRun("Lorem Ipsum Foo Bar"));
-    doc.addParagraph(paragraph);
-
-    // Used to export the file into a .docx file
-    var packer = new docx.Packer();
-
-    const b64string = await packer.toBase64String(doc);
-    res.setHeader('Content-Disposition', 'attachment; filename=My Doc.docx');
-    res.send(Buffer.from(b64string, 'base64'));
-    // res.download(Buffer.from(b64string))
+    // create the docx and when done send back to client
+    let docx = new Promise(function (resolve, reject) {
+        resolve(createDocx(query, officeActionId))
+    })
+    docx.then(doc => {
+        res.setHeader('Content-Disposition', 'attachment; filename=My Doc.docx');
+        res.send(Buffer.from(doc, 'base64'));
+    })
 })
+
+
+
+async function createDocx(query, officeActionId) {
+    try {
+        let responseText = await pool.query(query, [officeActionId])
+        console.log('this is responses', responseText.rows);
+        // Create document
+        let doc = new docx.Document();
+
+        //document styles
+        doc.Styles.createParagraphStyle('Heading1', 'Heading 1')
+            .basedOn("Normal")
+            .next("Normal")
+            .quickFormat()
+            .size(28)
+            .bold()
+            .spacing({ after: 120 });
+
+        for (let response of responseText.rows) {
+            // Add some content in the document
+            doc.createParagraph(`${response.type} claims ${response.claims}`).heading1();
+            doc.createParagraph(response.text);
+        }
+
+        // Used to export the file into a .docx file
+        var packer = new docx.Packer();
+
+        const b64string = await packer.toBase64String(doc);
+        return b64string;
+    }
+    catch( err ) {
+        console.log('error getting responses in download route', err);
+    }
+}
+
 
 
 module.exports = router;

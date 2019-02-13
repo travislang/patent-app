@@ -339,7 +339,7 @@ class AppDrawer extends Component {
                     <div className={classes.toolbar} />
                     <PreviewDoc oaId={oaId} issuesList={issuesList} />
                 </main>
-                <a href='http://localhost:5000/api/download'>
+                <a href={`http://localhost:5000/api/download/${oaId}`}>
                     <Fab
                         variant="extended"
                         className={classes.fab}
