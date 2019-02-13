@@ -9,6 +9,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+import DeleteIcon from '@material-ui/icons/Delete';
+
 const styles = theme => ({
     row: {
         '&:nth-of-type(odd)': {
@@ -36,7 +38,8 @@ class TemplateTable extends Component {
         })
     };
     render() {
-        const { classes, allTemplates } = this.props;
+        const { classes, allTemplates, user } = this.props;
+        console.log('props', this.props);
         return (
             <Paper className={classes.root}>
                 <Table className={classes.table}>
@@ -45,11 +48,7 @@ class TemplateTable extends Component {
                             <TableCell style={{ color: 'white' }}>Type</TableCell>
                             <TableCell style={{ color: 'white' }} align="left">Template name</TableCell>
                             <TableCell style={{ color: 'white' }} align="left">User</TableCell>
-                            <TableCell style={{ color: 'white' }} align="left">Phone</TableCell>
-                            <TableCell style={{ color: 'white' }} align="left">Firm</TableCell>
-                            <TableCell style={{ color: 'white' }} align="left">Customer No.</TableCell>
-                            <TableCell style={{ color: 'white' }} align="left">Deposit No.</TableCell>
-                            <TableCell style={{ color: 'white' }} align="left">Active</TableCell>
+                            {user.is_admin && <TableCell style={{ color: 'white' }} align="center">Delete</TableCell>}
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -64,6 +63,9 @@ class TemplateTable extends Component {
                                 <TableCell component="th" scope="row">
                                     {template.user_id ? template.user_name : 'All'}
                                 </TableCell>
+                                {user.is_admin && <TableCell component="th" scope="row">
+                                    <DeleteIcon fontSize={'small'}/>
+                                </TableCell>}
                             </TableRow>
                         ))}
                     </TableBody>
@@ -77,6 +79,7 @@ const mapStoreToProps = store => (
     {
         allTemplates: store.template.allTemplates,
         applicationList: store.application,
+        user : store.user,
     }
 )
 
