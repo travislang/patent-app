@@ -26,7 +26,7 @@ const styles = theme => ({
     },
     paper: {
         margin: theme.spacing.unit * 15,
-        minWidth: 1040,
+        width: '100%'
     },
     title: {
         padding: `${theme.spacing.unit * 2}px 0 0`
@@ -56,7 +56,7 @@ const styles = theme => ({
 class Dashboard extends Component {
     state = {
         dialogOpen: false,
-        displayAllApps: 'false',
+        displayAllApps: '1',
     };
 
     componentDidMount() {
@@ -108,8 +108,9 @@ class Dashboard extends Component {
                                             value={this.state.displayAllApps}
                                             onChange={this.handleChange}
                                         >
-                                            <FormControlLabel value='true' control={<Radio />} label="All Applications" />
-                                            <FormControlLabel value='false' control={<Radio />} label="My Applications" />
+                                            <FormControlLabel value='1' control={<Radio />} label="Active Applications" />
+                                            <FormControlLabel value='2' control={<Radio />} label="Inactive Applications" />
+                                            <FormControlLabel value='3' control={<Radio />} label="All Applications" />
                                         </RadioGroup>
                                     </FormControl>
                                 </Grid>
@@ -129,7 +130,7 @@ class Dashboard extends Component {
                             </Grid>
                         </Grid>
                     </Grid>
-                    <ApplicationTable />
+                    <ApplicationTable displayApp={this.state.displayAllApps}/>
                     <NewAppDialog open={this.state.dialogOpen} handleClose={this.handleClose} />
                 </Paper>
             </div>
