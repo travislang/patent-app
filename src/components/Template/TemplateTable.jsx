@@ -8,6 +8,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -64,7 +65,9 @@ class TemplateTable extends Component {
                                     {template.user_id ? template.user_name : 'All'}
                                 </TableCell>
                                 {user.is_admin && <TableCell component="th" scope="row">
-                                    <DeleteIcon fontSize={'small'}/>
+                                    <IconButton>
+                                        <DeleteIcon fontSize={'small'}/>
+                                    </IconButton>
                                 </TableCell>}
                             </TableRow>
                         ))}

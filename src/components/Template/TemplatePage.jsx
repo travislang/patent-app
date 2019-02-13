@@ -59,13 +59,13 @@ class TemplatePage extends Component {
             showAddDialog: false 
         });
     };
-    handleNewApp = () => {
+    handleNewTemplate = () => {
         this.setState({ 
             showAddDialog: true 
         });
     };
     render() {
-        const { classes } = this.props;
+        const { classes, user } = this.props;
         return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
@@ -86,10 +86,10 @@ class TemplatePage extends Component {
                                 <Grid item className={classes.addNew}>
                                     <Grid container style={{ height: '100%' }} alignItems='center'>
                                         <Grid item>
-                                            {this.props.user.is_admin && <Button
+                                            {user.is_admin && <Button
                                                 color='primary' variant="contained"
                                                 size='large'
-                                                onClick={this.handleNewApp}
+                                                onClick={this.handleNewTemplate}
                                                 className={classes.button}>
                                                 Add Template
                                             </Button>}

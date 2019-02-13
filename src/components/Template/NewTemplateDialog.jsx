@@ -1,17 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from '@material-ui/core';
-
-import { connect } from 'react-redux';
-
-import Grid from '@material-ui/core/Grid'
-
 
 const styles = theme => ({
     dialogContainer: {
@@ -43,21 +42,13 @@ const styles = theme => ({
 class NewTemplateDialog extends React.Component {
 
     state = {
-        userName: { text: '', error: false },
+        user: { text: '', error: false },
         signatureName: { text: '', error: false },
         phoneNumber: { text: '', error: false },
         firmName: { text: '', error: false },
 
-        registrationNumber: { text: '', error: false },
-        usptoCustomerNumber: { text: '', error: false },
-        depositAccountNumber: { text: '', error: false },
-
-        password: { text: '', error: false },
-        retypedPassword: { text: '', error: false },
     };
-
     handleRegisterClick = () => {
-
         // Verify all fields not empty
         for (let key in this.state) {
             if (this.state[key].text == '') {
@@ -65,13 +56,6 @@ class NewTemplateDialog extends React.Component {
                 return;
             }
         }
-
-        // Verify User does not already exist
-
-
-        // Verify Phone number
-
-
         // Verify passwords
         if (!this.passwordsDoMatch()) {
             console.log('Passwords do not match!');
@@ -158,7 +142,7 @@ class NewTemplateDialog extends React.Component {
                 onClose={this.props.handleClose}
                 aria-labelledby="form-dialog-title"
             >
-                <DialogTitle align='center' id="form-dialog-title"> New User
+                <DialogTitle align='center' id="form-dialog-title"> New Template
                 </DialogTitle>
                 <DialogContent>
                     <Grid container direction='column' alignItems='center'>
@@ -166,14 +150,29 @@ class NewTemplateDialog extends React.Component {
                             <Grid container justify='space-between'>
                                 <Grid item>
                                     <Grid container direction='column'>
-
+                                        <TextField
+                                            select
+                                            label="User"
+                                            className={classes.appNumTextField}
+                                            value={this.state.user}
+                                            onChange={this.handleUserId}
+                                            margin="normal"
+                                            variant="outlined"
+                                            margin="dense"
+                                        >
+                                            {this.props.reduxState.userList.map(user => (
+                                                <MenuItem key={user.id} value={user.id}>
+                                                    {user.user_name}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
                                         <TextField
                                             autoComplete={'off'}
-                                            error={this.state.userName.error}
+                                            // error={this.state.userName.error}
                                             id="outlined-applicantName"
                                             label="User name"
                                             className={classes.appNumTextField}
-                                            value={this.state.userName.text}
+                                            // value={this.state.userName.text}
                                             onChange={(e) => {
                                                 this.setState({ userName: { text: e.target.value, error: false } })
                                             }}
@@ -181,14 +180,13 @@ class NewTemplateDialog extends React.Component {
                                             variant="outlined"
                                             margin='dense'
                                         />
-
                                         <TextField
                                             autoComplete={'off'}
-                                            error={this.state.signatureName.error}
+                                            // error={this.state.signatureName.error}
                                             id="outlined-lastDateCheck"
                                             label="Signature name"
                                             className={classes.appNumTextField}
-                                            value={this.state.signatureName.text}
+                                            // value={this.state.signatureName.text}
                                             onChange={(e) => {
                                                 this.setState({ signatureName: { text: e.target.value, error: false } })
                                             }}
@@ -196,14 +194,13 @@ class NewTemplateDialog extends React.Component {
                                             variant="outlined"
                                             margin='dense'
                                         />
-
                                         <TextField
                                             autoComplete={'off'}
-                                            error={this.state.phoneNumber.error}
+                                            // error={this.state.phoneNumber.error}
                                             id="outlined-lastDateCheck"
                                             label="Phone"
                                             className={classes.appNumTextField}
-                                            value={this.state.phoneNumber.text}
+                                            // value={this.state.phoneNumber.text}
                                             onChange={(e) => {
                                                 this.setState({ phoneNumber: { text: e.target.value, error: false } })
                                             }}
@@ -211,14 +208,13 @@ class NewTemplateDialog extends React.Component {
                                             variant="outlined"
                                             margin='dense'
                                         />
-
                                         <TextField
                                             autoComplete={'off'}
-                                            error={this.state.firmName.error}
+                                            // error={this.state.firmName.error}
                                             id="outlined-lastDateCheck"
                                             label="Firm"
                                             className={classes.appNumTextField}
-                                            value={this.state.firmName.text}
+                                            // value={this.state.firmName.text}
                                             onChange={(e) => {
                                                 this.setState({ firmName: { text: e.target.value, error: false } })
                                             }}
@@ -226,86 +222,21 @@ class NewTemplateDialog extends React.Component {
                                             variant="outlined"
                                             margin='dense'
                                         />
-
                                     </Grid>
                                 </Grid>
                                 <Grid item>
                                     <Grid container direction='column'>
-
                                         <TextField
                                             autoComplete={'off'}
-                                            error={this.state.registrationNumber.error}
+                                            // error={this.state.registrationNumber.error}
                                             id="outlined-lastDateCheck"
                                             label="Registration number"
                                             className={classes.appNumTextField}
-                                            value={this.state.registrationNumber.text}
+                                            // value={this.state.registrationNumber.text}
                                             onChange={(e) => {
                                                 this.setState({ registrationNumber: { text: e.target.value, error: false } })
                                             }}
                                             margin="normal"
-                                            variant="outlined"
-                                            margin='dense'
-                                        />
-
-                                        <TextField
-                                            autoComplete={'off'}
-                                            error={this.state.usptoCustomerNumber.error}
-                                            id="outlined-lastDateCheck"
-                                            label="USPTO Customer number"
-                                            className={classes.appNumTextField}
-                                            value={this.state.usptoCustomerNumber.text}
-                                            onChange={(e) => {
-                                                this.setState({ usptoCustomerNumber: { text: e.target.value, error: false } })
-                                            }}
-                                            margin="normal"
-                                            variant="outlined"
-                                            margin='dense'
-                                        />
-
-                                        <TextField
-                                            autoComplete={'off'}
-                                            error={this.state.depositAccountNumber.error}
-                                            id="outlined-lastDateCheck"
-                                            label="Deposit account number"
-                                            className={classes.appNumTextField}
-                                            value={this.state.depositAccountNumber.text}
-                                            onChange={(e) => {
-                                                this.setState({ depositAccountNumber: { text: e.target.value, error: false } })
-                                            }}
-                                            margin="normal"
-                                            variant="outlined"
-                                            margin='dense'
-                                        />
-
-                                    </Grid>
-                                </Grid>
-                                <Grid item>
-                                    <Grid container direction='column'>
-
-                                        <TextField
-                                            autoComplete={'off'}
-                                            error={this.state.password.error}
-                                            id="outlined-lastDateCheck"
-                                            label="Desired password"
-                                            className={classes.appNumTextField}
-                                            value={this.state.password.text}
-                                            onChange={(e) => {
-                                                this.setState({ password: { text: e.target.value, error: false } })
-                                            }}
-                                            margin="normal"
-                                            variant="outlined"
-                                            margin='dense'
-                                        />
-                                        <TextField
-                                            autoComplete={'off'}
-                                            error={this.state.retypedPassword.error}
-                                            id="outlined-lastDateCheck"
-                                            label="Re-type password"
-                                            className={classes.appNumTextField}
-                                            value={this.state.retypedPassword.text}
-                                            onChange={(e) => {
-                                                this.setState({ retypedPassword: { text: e.target.value, error: false } })
-                                            }}
                                             variant="outlined"
                                             margin='dense'
                                         />
@@ -337,7 +268,7 @@ class NewTemplateDialog extends React.Component {
                         color='primary'
                         onClick={this.handleRegisterClick}
                     >
-                        Register
+                        Add Template
                     </Button>
                 </DialogActions>
             </Dialog>
