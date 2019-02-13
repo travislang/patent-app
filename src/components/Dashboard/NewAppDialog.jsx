@@ -131,7 +131,7 @@ class NewAppDialog extends React.Component {
                                 <div className={classes.searchAppNum}>
                                     <TextField
                                         select
-                                        label="With Select"
+                                        label="Select User"
                                         className={classes.appNumTextField}
                                         value={this.state.setUser}
                                         onChange={this.handleUserId}
