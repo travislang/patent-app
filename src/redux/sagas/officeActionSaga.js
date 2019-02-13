@@ -106,6 +106,7 @@ function* updateOfficeAction(action){
 
         // Update redux
         yield dispatch({type: 'FETCH_OFFICE_ACTIONS', payload: {application_id}})
+        yield dispatch({type: 'FETCH_OFFICE_ACTION', payload: {officeActionResponseId: id}})
 
     } catch (error) {
         console.log(`Error in updateOfficeAction: ${error}`);
