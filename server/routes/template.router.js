@@ -33,7 +33,7 @@ router.get('/all', rejectUnauthenticated, (req, res) => {
     );
 });
 
-router.get('/:typeId', rejectUnauthenticated, (req, res) => {
+router.get('/by_type/:typeId', rejectUnauthenticated, (req, res) => {
     const { typeId } = req.params;
     const query =
         `SELECT "template".*, "template_type"."type" FROM "template"

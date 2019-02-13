@@ -5,7 +5,7 @@ const templateReducer = (state = { templates:[], types: [], allTemplates: [] }, 
             return {...state, templates: action.payload};
         case 'SET_TEMPLATE_TYPES':
             return {...state, types: action.payload};
-        case 'SET_ALL_TEMPLATES;':
+        case 'SET_ALL_TEMPLATES':
             return {...state, allTemplates: action.payload};
         default:
             return state;

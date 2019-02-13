@@ -52,7 +52,7 @@ class TemplatePage extends Component {
         showAddDialog: false,
     }
     componentDidMount() {
-        this.props.dispatch({ type: 'FETCH_TEMPLATE_TYPES' })
+        this.props.dispatch({ type: 'FETCH_ALL_TEMPLATES' })
     };
     handleClose = () => {
         this.setState({ 

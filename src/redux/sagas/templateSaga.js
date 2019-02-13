@@ -14,7 +14,7 @@ function* fetchTemplates(action){
         const {type_Id} = action.payload;
 
         // Request templates from API by
-        const { data : templatesResponseData } = yield axios.get(`/api/template/${type_Id}`);
+        const { data : templatesResponseData } = yield axios.get(`/api/template/by_type${type_Id}`);
 
         // Updat redux 
         yield dispatch({
@@ -45,9 +45,22 @@ function* fetchTemplateTypes (){
     }
 }
 
+function* fetchAllTemplates() {
+    try {
+        const { data: templatesResponseData } = yield axios.get('/api/template/all')
+        yield dispatch({
+            type: 'SET_ALL_TEMPLATES',
+            payload: templatesResponseData
+        });
+    } catch (error) {
+        console.log(`Error in fetchAllTemplates`);
+    }
+}
+
 function* templateSaga (){
     yield takeLatest('FETCH_TEMPLATES', fetchTemplates);
     yield takeLatest('FETCH_TEMPLATE_TYPES', fetchTemplateTypes);
+    yield takeLatest('FETCH_ALL_TEMPLATES', fetchAllTemplates);
 }
 
 export default templateSaga;
