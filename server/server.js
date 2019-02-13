@@ -16,6 +16,7 @@ const issueRouter = require('./routes/issue.router');
 const statusRouter = require('./routes/status.router');
 const templateRouter = require('./routes/template.router');
 const responseRouter = require('./routes/response.router');
+const downloadRouter = require('./routes/download.router');
 
 // ---- api route ----
 const usptoRouter = require('./routes/uspto.router');
@@ -41,6 +42,7 @@ app.use('/api/issue', issueRouter);
 app.use('/api/status', statusRouter);
 app.use('/api/template', templateRouter);
 app.use('/api/response', responseRouter);
+app.use('/api/download', downloadRouter);
 
 // Serve static files
 app.use(express.static('build'));

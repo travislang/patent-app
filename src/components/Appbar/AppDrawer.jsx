@@ -24,6 +24,7 @@ import AddTemplateDialog from '../PreviewPage/AddTemplateDialog';
 
 import { HashLink as Link } from 'react-router-hash-link';
 import AddIssueDialog from '../PreviewPage/AddIssueDialog';
+import axios from 'axios';
 
 const drawerWidth = 300;
 
@@ -114,7 +115,6 @@ class AppDrawer extends Component {
             currentIssue: issue,
             templateOpen: true
         })
-        console.log('current issue', this.state.currentIssue);
         this.props.dispatch({ type: 'FETCH_TEMPLATES', payload: {type_Id: issue.template_type_id}})
     };
 
@@ -142,8 +142,20 @@ class AppDrawer extends Component {
         this.props.history.goBack();
     }
 
-    handleDocxDownload = () => {
-    }
+    // handleDocxDownload = () => {
+    //     axios({
+    //         url: '/api/download',
+    //         method: 'GET',
+    //         responseType: 'blob',
+    //     }).then((response) => {
+    //         const url = window.URL.createObjectURL(new Blob([response.data]));
+    //         const link = document.createElement('a');
+    //         link.href = url;
+    //         link.setAttribute('download', 'file.pdf');
+    //         document.body.appendChild(link);
+    //         link.click();
+    //     });
+    // }
 
     render() {
         const { classes, currentApplication, officeAction, issuesList, templates, templateTypes } = this.props;
@@ -189,10 +201,9 @@ class AppDrawer extends Component {
                                     issue.text ?
                                         <ListItem 
                                                 component={Link} 
-                                                to='#2' 
+                                                to={issue.id} 
                                                 button 
                                                 key={issue.id}
-                                                onClick={() => this.handleNewTemplateDialogOpen(issue)}
                                             >
                                             <ListItemIcon style={{ margin: 0 }}>
                                                 <CheckIcon
@@ -217,11 +228,10 @@ class AppDrawer extends Component {
                                 return (
                                     issue.text ?
                                         <ListItem 
-                                            component={Link} 
-                                            to='#2' 
+                                            component={Link}
+                                            to={issue.id} 
                                             button 
                                             key={issue.id}
-                                            onClick={() => this.handleNewTemplateDialogOpen(issue)}
                                         >
                                             <ListItemIcon style={{ margin: 0 }}>
                                                 <CheckIcon
@@ -231,7 +241,7 @@ class AppDrawer extends Component {
                                         </ListItem>
                                         :
                                         <ListItem 
-                                            button 
+                                            button
                                             key={issue.id} 
                                             style={{ paddingLeft: 55 }}
                                             onClick={() => this.handleNewTemplateDialogOpen(issue)}
@@ -246,11 +256,10 @@ class AppDrawer extends Component {
                                 return (
                                     issue.text ?
                                         <ListItem 
-                                            component={Link} 
-                                            to='#2' 
+                                            component={Link}
+                                            to={`#${issue.id}`}  
                                             button 
                                             key={issue.id}
-                                            onClick={() => this.handleNewTemplateDialogOpen(issue)}
                                         >
                                             <ListItemIcon style={{ margin: 0 }}>
                                                 <CheckIcon
@@ -275,11 +284,10 @@ class AppDrawer extends Component {
                                 return (
                                     issue.text ?
                                         <ListItem 
-                                            component={Link} 
-                                            to='#2' 
+                                            component={Link}
+                                            to={issue.id}  
                                             button 
                                             key={issue.id}
-                                            onClick={this.handleNewTemplateDialogOpen(issue)}
                                             >
                                             <ListItemIcon style={{ margin: 0 }}>
                                                 <CheckIcon
@@ -325,16 +333,19 @@ class AppDrawer extends Component {
                 </Drawer>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-                    <PreviewDoc issuesList={issuesList} />
+                    <PreviewDoc oaId={oaId} issuesList={issuesList} />
                 </main>
-                <Fab 
-                    variant="extended" 
-                    className={classes.fab}
-                    onClick={this.handleDocxDownload}
-                >
-                    <CloudDownload className={classes.extendedIcon} />
-                    Export as Docx
-                </Fab>
+                <a href={`http://localhost:5000/api/download/${oaId}`}>
+                    <Fab
+                        variant="extended"
+                        className={classes.fab}
+                        // onClick={this.handleDocxDownload}
+                    >
+                        <CloudDownload className={classes.extendedIcon} />
+                        Export as Docx
+                    </Fab>
+                </a>
+                
             </div>
         );
     }
