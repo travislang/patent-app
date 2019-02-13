@@ -176,7 +176,7 @@ class AppDrawer extends Component {
                             handleStatusChange={this.handleStatusChange} 
                             statusId={officeAction.status_id} 
                             status={officeAction.status}
-                            />
+                        />
                     </div>
                     <Divider />
                     <Typography className={classes.issuesHeading} variant='h6' align='center'>
