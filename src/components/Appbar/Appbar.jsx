@@ -25,7 +25,8 @@ const styles = theme => ({
         marginRight: theme.spacing.unit * 3,
         textDecoration: 'none',
         '&:hover': {
-            color: 'blue'
+            transform: 'scale(1.1)',
+            textDecoration: 'underline'
         }
     }
 
