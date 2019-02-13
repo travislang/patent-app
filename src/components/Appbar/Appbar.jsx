@@ -73,7 +73,7 @@ function MainAppBar(props) {
                         </Typography>
                         :
                         // when no user are log in
-                        <Typography className={classes.navItem} variant="button" color="inherit" component={Link} to="/home">
+                        <Typography className={classes.navItem} variant="button" color="inherit" component={Link} to="/">
                             Login
                         </Typography>
                         }

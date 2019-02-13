@@ -11,7 +11,6 @@ import { connect } from 'react-redux';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 
 import Appbar from '../Appbar/Appbar';
-import UserPage from '../UserPage/UserPage';
 import PreviewPage from '../PreviewPage/PreviewPage';
 import Dashboard from '../Dashboard/Dashboard';
 
@@ -35,12 +34,7 @@ class App extends Component {
                         <Appbar />
                         <Switch>
                             {/* change redirect to dashboard */}
-                            <Redirect exact from="/" to="/home" />
-                            <ProtectedRoute
-                                exact
-                                path="/home"
-                                component={UserPage}
-                            />
+                            <Redirect exact from="/" to="/dashboard" />
                             <ProtectedRoute
                                 path="/dashboard"
                                 component={Dashboard}
