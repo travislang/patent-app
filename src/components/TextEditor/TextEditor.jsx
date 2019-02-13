@@ -39,6 +39,15 @@ const styles = theme => ({
     toolbarButton: {
         padding: theme.spacing.unit / 2,
         color: theme.palette.grey[500]
+    },
+    editorContainer: {
+        position: 'relative'
+    },
+    editorTitle: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 65
     }
 });
 
@@ -82,9 +91,10 @@ class TextEditor extends Component {
     // update state to reflect proper text value
     onChange = ({value}) => {
         const {issue} = this.props;
-        // converts slate text to JSON
-        const content = JSON.stringify(value.toJSON())
+        
         if(value.document !== this.state.value.document) {
+            // serializes text
+            const content = Plain.serialize(value);
             this.props.dispatch({ type: 'UPDATE_RESPONSE', payload: {
                 id: issue.resp_id,
                 office_Action_Id: issue.office_action_id,
@@ -256,10 +266,19 @@ class TextEditor extends Component {
         })
     }
 
+    getSlateHeading = (issue) => {
+        if (issue.section === 'issue') {
+            return `${issue.type} claims ${issue.claims}`
+        }
+        else {
+            return issue.type
+        }
+    }
+
     render() {
-        const { classes } = this.props;
+        const { classes, issue } = this.props;
         return (
-            <React.Fragment>
+            <div className={classes.editorContainer}>
                 {this.state.showToolbar ?
                     <FormatToolbar>
                         <div className={classes.toolbarMain}>
@@ -322,7 +341,13 @@ class TextEditor extends Component {
                     renderMark={this.renderMark}
                     renderNode={this.renderNode}
                 />
-            </React.Fragment>
+                <div className={classes.editorTitle}>
+                    <Typography variant='h6' align='center' >
+                        {this.getSlateHeading(issue)}
+                    </Typography>
+                    <br />
+                </div>
+            </div>
         )
     }
 }
