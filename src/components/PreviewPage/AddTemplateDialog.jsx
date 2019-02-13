@@ -74,53 +74,6 @@ class AddTemplateDialog extends React.Component {
             [name]: event.target.value,
         });
     };
-
-    // getSlateHeading = (issue) => {
-    //     if (issue.section === 'issue') {
-    //         return `claims ${issue.claims} ${issue.type}`
-    //     }
-    //     else {
-    //         return issue.type
-    //     }
-    // }
-
-    // initialValue = (issue, text) => {
-    //     return Value.fromJSON({
-    //         document: {
-    //             nodes: [
-    //                 {
-    //                     object: 'block',
-    //                     type: 'title',
-    //                     nodes: [
-    //                         {
-    //                             object: 'text',
-    //                             leaves: [
-    //                                 {
-    //                                     text: this.getSlateHeading(issue)
-    //                                 }
-    //                             ]
-    //                         }
-    //                     ]
-    //                 },
-    //                 {
-    //                     object: 'block',
-    //                     type: 'paragragh',
-    //                     nodes: [
-    //                         {
-    //                             object: 'text',
-    //                             leaves: [
-    //                                 {
-    //                                     text: templateParser(text, issue)
-    //                                 }
-    //                             ]
-    //                         }
-    //                     ]
-    //                 },
-    //             ]
-    //         }
-    //     })
-    // }
-
     
     handleSubmit = () => {
         const oaId = this.props.oaId;
