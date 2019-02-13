@@ -23,6 +23,8 @@ const isBoldHotkey = isKeyHotkey('mod+b')
 const isItalicHotkey = isKeyHotkey('mod+i')
 const isUnderlinedHotkey = isKeyHotkey('mod+u')
 
+const DEFAULT_NODE = 'paragraph'
+
 const styles = theme => ({
     button: {
         padding: theme.spacing.unit / 2,
@@ -112,6 +114,7 @@ class TextEditor extends Component {
         } else {
             return next();
         }
+
         e.preventDefault();
         editor.toggleMark(mark);
     }
@@ -120,6 +123,50 @@ class TextEditor extends Component {
         e.preventDefault();
         console.log(e);
         this.editor.toggleMark(type);
+    }
+
+    onBlockClick = (event, type) => {
+        event.preventDefault()
+
+        const { editor } = this;
+        const { value } = editor;
+        const { document } = value;
+
+        // Handle everything but list buttons.
+        if (type != 'bulleted-list' && type != 'numbered-list') {
+            const isActive = this.hasBlock(type)
+            const isList = this.hasBlock('list-item')
+
+            if (isList) {
+                editor
+                    .setBlocks(isActive ? DEFAULT_NODE : type)
+                    .unwrapBlock('bulleted-list')
+                    .unwrapBlock('numbered-list')
+            } else {
+                editor.setBlocks(isActive ? DEFAULT_NODE : type)
+            }
+        } else {
+            // Handle the extra wrapping required for list buttons.
+            const isList = this.hasBlock('list-item')
+            const isType = value.blocks.some(block => {
+                return !!document.getClosest(block.key, parent => parent.type == type)
+            })
+
+            if (isList && isType) {
+                editor
+                    .setBlocks(DEFAULT_NODE)
+                    .unwrapBlock('bulleted-list')
+                    .unwrapBlock('numbered-list')
+            } else if (isList) {
+                editor
+                    .unwrapBlock(
+                        type == 'bulleted-list' ? 'numbered-list' : 'bulleted-list'
+                    )
+                    .wrapBlock(type)
+            } else {
+                editor.setBlocks('list-item').wrapBlock(type)
+            }
+        }
     }
 
     renderMark = (props, editor, next) => {
@@ -164,7 +211,7 @@ class TextEditor extends Component {
         return (
             <IconButton
                 color={isActive ? 'primary' : 'default'}
-                onMouseDown={e => this.onClickBlock(e, type)}
+                onMouseDown={e => this.onBlockClick(e, type)}
                 className={classes.button}
             >
                 <Icon>{icon}</Icon>
@@ -173,9 +220,23 @@ class TextEditor extends Component {
     }
 
     renderNode = (props, editor, next) => {
-        switch (props.node.type) {
+        const { attributes, children, node } = props;
+
+        switch (node.type) {
             case 'title':
                 return <TitleNode {...props} />
+            case 'block-quote':
+                return <blockquote {...attributes}>{children}</blockquote>
+            case 'bulleted-list':
+                return <ul {...attributes}>{children}</ul>
+            case 'heading-one':
+                return <h1 {...attributes}>{children}</h1>
+            case 'heading-two':
+                return <h2 {...attributes}>{children}</h2>
+            case 'list-item':
+                return <li {...attributes}>{children}</li>
+            case 'numbered-list':
+                return <ol {...attributes}>{children}</ol>
             default:
                 return next()
         }
