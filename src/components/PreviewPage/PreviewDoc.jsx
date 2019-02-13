@@ -35,7 +35,7 @@ const PreviewDoc = (props) => {
         issues.map(issue => {
             return issue.text ? 
             (
-                <div id={issue.id} className={props.classes.root}>
+                <div key={issue.id} id={issue.id} className={props.classes.root}>
                     <Paper className={props.classes.content}>
                         <TextEditor issue={issue} initialVal={initialValue(issue)} />
                     </Paper>

@@ -75,15 +75,7 @@ class TextEditor extends Component {
         const { value } = this.state
         return value.blocks.some(node => node.type == type)
     }
-    // claims: "7-9, 11, 12"
-    // id: 32
-    // office_action_id: 1
-    // resp_id: 20
-    // section: "issues"
-    // template_id: null
-    // template_type_id: 10
-    // text: "In the Office Action, {claim(s)is/are} rejected under 35 U.S.C. § 103 as allegedly being unpatentable over the referenced publications. Neither the correctness of the characterizations of this reference and the pending application nor the sufficiency of the rejection is conceded. This rejection is respectfully traversed. Reconsideration and allowance of {claim(s)} is respectfully requested."
-    // type: "Claim Rejection - Section 103"
+    
     
     // update state to reflect proper text value
     onChange = ({value}) => {
@@ -157,6 +149,29 @@ class TextEditor extends Component {
         )
     }
 
+    renderBlockButton = (type, icon) => {
+        const { classes } = this.props;
+        let isActive = this.hasBlock(type)
+
+        if (['numbered-list', 'bulleted-list'].includes(type)) {
+            const { value: { document, blocks } } = this.state;
+            if (blocks.size > 0) {
+                const parent = document.getParent(blocks.first().key)
+                isActive = this.hasBlock('list-item') && parent && parent.type === type
+            }
+        }
+
+        return (
+            <IconButton
+                color={isActive ? 'primary' : 'default'}
+                onMouseDown={e => this.onClickBlock(e, type)}
+                className={classes.button}
+            >
+                <Icon>{icon}</Icon>
+            </IconButton>
+        )
+    }
+
     renderNode = (props, editor, next) => {
         switch (props.node.type) {
             case 'title':
@@ -186,6 +201,11 @@ class TextEditor extends Component {
                             {this.renderMarkButton('bold', 'format_bold')}
                             {this.renderMarkButton('italic', 'format_italic')}
                             {this.renderMarkButton('underlined', 'format_underlined')}
+                            {this.renderBlockButton('heading-one', 'looks_one')}
+                            {this.renderBlockButton('heading-two', 'looks_two')}
+                            {this.renderBlockButton('block-quote', 'format_quote')}
+                            {this.renderBlockButton('numbered-list', 'format_list_numbered')}
+                            {this.renderBlockButton('bulleted-list', 'format_list_bulleted')}
                         </div>
                         <div>
                             <IconButton 
