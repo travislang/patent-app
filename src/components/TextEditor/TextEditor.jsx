@@ -4,8 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 
 import { Editor } from 'slate-react';
-import Plain from 'slate-plain-serializer'
-import { Value } from 'slate';
+import Plain from 'slate-plain-serializer';
 
 import { BoldMark, ItalicMark, UnderlinedMark, FormatToolbar } from './index';
 import { isKeyHotkey } from 'is-hotkey'
