@@ -29,37 +29,15 @@ const styles = theme => ({
 });
 
 class TemplateTable extends Component {
-
-    /*
-    
-    "user_name" VARCHAR (20) UNIQUE NOT NULL,
-      "password" VARCHAR (255) NOT NULL,
-      "is_admin" BOOLEAN DEFAULT FALSE,
-      "signature_name" VARCHAR(70),
-      "registration_number" VARCHAR(10),
-      "phone_number" VARCHAR(20),
-      "firm_name" VARCHAR(70),
-      "uspto_customer_number" VARCHAR(9),
-      "deposit_account_number" VARCHAR(9),
-      "active" BOOLEAN DEFAULT TRUE
-  
-    */
-
     handleDeleteClick = (id) => {
-        console.log('Deleting ID: ', id);
-
         this.props.dispatch({
             type: 'UPDATE_USER_ACTIVITY',
             payload: { id }
         })
-    }
-
+    };
     render() {
-
         const { classes, users } = this.props;
-
         console.log(this.props);
-
         return (
             <Paper className={classes.root}>
                 <Table className={classes.table}>

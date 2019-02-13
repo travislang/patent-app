@@ -17,6 +17,22 @@ router.get('/types', rejectUnauthenticated, (req, res) => {
     );
 });
 
+router.get('/all', rejectUnauthenticated, (req, res) => {
+    const query =
+        `SELECT "template".*, "template_type"."type" FROM "template"
+        RIGHT JOIN "template_type" ON "template"."type_id"="template_type"."id"
+        WHERE "template"."user_id"=$1 OR "template"."user_id" IS NULL OR $2=TRUE
+        ORDER BY "template_type"."id";`;
+    pool.query(query, [req.user.id, req.user.is_admin])
+        .then((results) => {
+            res.send(results.rows);
+        }).catch((err) => {
+            res.sendStatus(500);
+            console.error('Error in GET /template/all', err);
+        }
+    );
+});
+
 router.get('/:typeId', rejectUnauthenticated, (req, res) => {
     const { typeId } = req.params;
     const query =
@@ -57,7 +73,7 @@ router.post('/add', rejectUnauthenticated, (req, res) => {
             res.sendStatus(500);
             console.error('Error in POST /template/add', err);
         }
-        );
+    );
 });
 
 router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
