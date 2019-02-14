@@ -136,15 +136,14 @@ class ApplicationTable extends React.Component {
     };
 
     handleClick = (event, appId) => {
-        console.log(this.props.history.push(`/application/${appId}`));
+        console.log(this.props.history.push(`/application/${appId}`)); // remove this console log after
 
     }
 
 
 
     render() {
-        console.log(this.props.applicationList)
-
+        // console.log(this.props.applicationList)
         const { classes } = this.props;
         const data = this.props.applicationList;
         const { order, orderBy, rowsPerPage, page } = this.state;
@@ -165,7 +164,7 @@ class ApplicationTable extends React.Component {
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map(n => {
                                     return (
-                                        displayApp === '1' && n.status === 'Active' || n.status === 'Pending'? // filter for active
+                                        displayApp === '1' && n.status_id === 3 || n.status_id === 1 ? // filter for active id = 3 is active / id = 1 is pending
                                             <TableRow
                                                 hover
                                                 className={classes.tableRow}
@@ -182,7 +181,7 @@ class ApplicationTable extends React.Component {
                                                 <TableCell align="left">{n.uspto_status || 'NA'}</TableCell>
                                                 <TableCell align="left">{n.status || 'NA'}</TableCell>
                                             </TableRow>
-                                        : displayApp === '2' && n.status === 'Inactive' ? // filter for inactive
+                                        : displayApp === '2' && n.status_id === 2 ? // filter for inactive id = 2 is inactive
                                                 <TableRow
                                                     hover
                                                     className={classes.tableRow}
