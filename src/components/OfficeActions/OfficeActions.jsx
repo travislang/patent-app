@@ -20,7 +20,7 @@ const styles = theme => ({
     },
     paper: {
         margin: theme.spacing.unit * 15,
-        minWidth: 1040,
+        width: 1040,
     },
     title: {
         padding: `${theme.spacing.unit * 2}px 0 0`
@@ -77,7 +77,7 @@ class OfficeActions extends Component {
                 <Paper className={classes.paper}>
                     <Grid container justify='center'>
                         <Grid item className={classes.title}>
-                            <Typography color='primary' variant='h4' align='center'>
+                            <Typography color='primary' variant='h4' align='center' style={{fontWeight:'bold'}}>
                                 {currentApplication.title} - #{currentApplication.application_number}
                             </Typography>
                         </Grid>

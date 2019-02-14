@@ -7,6 +7,8 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import Paper from '@material-ui/core/Paper';
 
 const styles = theme => ({
@@ -46,11 +48,11 @@ class UsersTable extends Component {
     */
 
     handleDeleteClick = (id) => {
-        console.log('Deleting ID: ',id);
+        console.log('Deleting ID: ', id);
 
         this.props.dispatch({
-            type:'UPDATE_USER_ACTIVITY',
-            payload: {id}
+            type: 'UPDATE_USER_ACTIVITY',
+            payload: { id }
         })
     }
 
@@ -61,18 +63,18 @@ class UsersTable extends Component {
         console.log(this.props);
 
         return (
-            <Paper className={classes.root} style={{boxShadow: 'none'}}>
-                <Table className={classes.table} style={{boxShadow: 'none'}}>
+            <Paper className={classes.root} style={{ boxShadow: 'none' }}>
+                <Table className={classes.table} style={{ boxShadow: 'none' }}>
                     <TableHead>
-                        <TableRow className={classes.head} style={{boxShadow: 'none'}}>
-                            <TableCell style={{color:'white'}}>Username</TableCell>
-                            <TableCell style={{color:'white'}} align="left">Signature name</TableCell>
-                            <TableCell style={{color:'white'}} align="left">Registration No.</TableCell>
-                            <TableCell style={{color:'white'}} align="left">Phone</TableCell>
-                            <TableCell style={{color:'white'}} align="left">Firm</TableCell>
-                            <TableCell style={{color:'white'}} align="left">Customer No.</TableCell>
-                            <TableCell style={{color:'white'}} align="left">Deposit No.</TableCell>
-                            <TableCell style={{color:'white'}} align="left">Active</TableCell>
+                        <TableRow className={classes.head} style={{ boxShadow: 'none' }}>
+                            <TableCell style={{ color: 'white' }}>Username</TableCell>
+                            <TableCell style={{ color: 'white' }} align="left">Signature name</TableCell>
+                            <TableCell style={{ color: 'white' }} align="left">Registration No.</TableCell>
+                            <TableCell style={{ color: 'white' }} align="left">Phone</TableCell>
+                            <TableCell style={{ color: 'white' }} align="left">Firm</TableCell>
+                            <TableCell style={{ color: 'white' }} align="left">Customer No.</TableCell>
+                            <TableCell style={{ color: 'white' }} align="left">Deposit No.</TableCell>
+                            <TableCell style={{ color: 'white' }} align="left">Active</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -107,12 +109,13 @@ class UsersTable extends Component {
                                     {user.deposit_account_number}
                                 </TableCell>
 
-                                <TableCell align="center" style={{cursor:'pointer'}} onClick={()=>this.handleDeleteClick(user.id)} component="th" scope="row">
-                                {user.active ? (
-                                        <div style={{color:'green'}} > Yes </div>
-                                    ) : (
-                                        <div style={{color:'red'}}> No </div>
-                                    )}
+                                <TableCell align="center" style={{ cursor: 'pointer' }}  component="th" scope="row">
+                                                <Checkbox 
+                                                    checked={user.active}
+                                                    value={user.active} 
+                                                    color="primary" 
+                                                    onClick={() => this.handleDeleteClick(user.id)}
+                                                />
                                 </TableCell>
 
                             </TableRow>

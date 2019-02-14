@@ -55,13 +55,13 @@ class EnhancedTableHead extends React.Component {
 
     render() {
         const { order, orderBy } = this.props;
-
         return (
             <TableHead>
-                <TableRow>
+                <TableRow style={{boxShadow: 'none', backgroundColor: '#267CCE'}}>
                     {rows.map(
                         row => (
                             <TableCell
+                                style={{color:'white'}}
                                 key={row.id}
                                 align='left'
                                 sortDirection={orderBy === row.id ? order : false}
@@ -74,6 +74,7 @@ class EnhancedTableHead extends React.Component {
                                     <TableSortLabel
                                         active={orderBy === row.id}
                                         direction={order}
+                                        style={{color:'white'}}
                                         onClick={this.createSortHandler(row.id)}
                                     >
                                         {row.label}
@@ -94,13 +95,16 @@ const styles = theme => ({
         width: '100%',
     },
     table: {
-        minWidth: 1020,
+        width: '100%',
     },
     tableWrapper: {
         overflowX: 'auto',
     },
     tableRow: {
-        cursor: 'pointer'
+        cursor: 'pointer',
+        '&:nth-of-type(odd)': {
+            backgroundColor: `#efefef`,
+        },
     }
 });
 
@@ -133,10 +137,10 @@ class ApplicationTable extends React.Component {
 
     handleClick = (event, appId) => {
         console.log(this.props.history.push(`/application/${appId}`));
-        
+
     }
 
-    
+
 
     render() {
         console.log(this.props.applicationList)
@@ -145,7 +149,7 @@ class ApplicationTable extends React.Component {
         const data = this.props.applicationList;
         const { order, orderBy, rowsPerPage, page } = this.state;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-
+        const displayApp = this.props.displayApp
         return (
             <Paper className={classes.root}>
                 <div className={classes.tableWrapper}>
@@ -161,23 +165,58 @@ class ApplicationTable extends React.Component {
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map(n => {
                                     return (
-                                        <TableRow
-                                            hover
-                                            className={classes.tableRow}
-                                            onClick={event => this.handleClick(event, n.app_table_id)}
-                                            tabIndex={-1}
-                                            key={n.app_table_id}
-                                        >
-                                            <TableCell component="th" scope="row" align="left">
-                                                {n.user_name}
-                                            </TableCell>
-                                            <TableCell align="left">{n.title}</TableCell>
-                                            <TableCell align="left">{n.applicant_name}</TableCell>
-                                            <TableCell align="left">{n.uspto_mailing_date || 'NA'}</TableCell>
-                                            <TableCell align="left">{n.uspto_status || 'NA'}</TableCell>
-                                            <TableCell align="left">{n.status || 'NA'}</TableCell>
-                                        </TableRow>
-                                    );
+                                        displayApp === '1' && n.status === 'Active' || n.status === 'Pending'? // filter for active
+                                            <TableRow
+                                                hover
+                                                className={classes.tableRow}
+                                                onClick={event => this.handleClick(event, n.app_table_id)}
+                                                tabIndex={-1}
+                                                key={n.app_table_id}
+                                            >
+                                                <TableCell component="th" scope="row" align="left">
+                                                    {n.user_name}
+                                                </TableCell>
+                                                <TableCell align="left">{n.title}</TableCell>
+                                                <TableCell align="left">{n.applicant_name}</TableCell>
+                                                <TableCell align="left">{n.uspto_mailing_date || 'NA'}</TableCell>
+                                                <TableCell align="left">{n.uspto_status || 'NA'}</TableCell>
+                                                <TableCell align="left">{n.status || 'NA'}</TableCell>
+                                            </TableRow>
+                                        : displayApp === '2' && n.status === 'Inactive' ? // filter for inactive
+                                                <TableRow
+                                                    hover
+                                                    className={classes.tableRow}
+                                                    onClick={event => this.handleClick(event, n.app_table_id)}
+                                                    tabIndex={-1}
+                                                    key={n.app_table_id}
+                                                >
+                                                    <TableCell component="th" scope="row" align="left">
+                                                        {n.user_name}
+                                                    </TableCell>
+                                                    <TableCell align="left">{n.title}</TableCell>
+                                                    <TableCell align="left">{n.applicant_name}</TableCell>
+                                                    <TableCell align="left">{n.uspto_mailing_date || 'NA'}</TableCell>
+                                                    <TableCell align="left">{n.uspto_status || 'NA'}</TableCell>
+                                                    <TableCell align="left">{n.status || 'NA'}</TableCell>
+                                                </TableRow>
+                                        : displayApp === '3' && // no filter
+                                                <TableRow
+                                                    hover
+                                                    className={classes.tableRow}
+                                                    onClick={event => this.handleClick(event, n.app_table_id)}
+                                                    tabIndex={-1}
+                                                    key={n.app_table_id}
+                                                >
+                                                    <TableCell component="th" scope="row" align="left">
+                                                        {n.user_name}
+                                                    </TableCell>
+                                                    <TableCell align="left">{n.title}</TableCell>
+                                                    <TableCell align="left">{n.applicant_name}</TableCell>
+                                                    <TableCell align="left">{n.uspto_mailing_date || 'NA'}</TableCell>
+                                                    <TableCell align="left">{n.uspto_status || 'NA'}</TableCell>
+                                                    <TableCell align="left">{n.status || 'NA'}</TableCell>
+                                                </TableRow>
+                                    )
                                 })}
                             {emptyRows > 0 && (
                                 <TableRow style={{ height: 49 * emptyRows }}>
