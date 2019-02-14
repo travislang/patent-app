@@ -77,7 +77,7 @@ class Dashboard extends Component {
     }
 
     render() {
-        console.log('hello');
+        // console.log('hello');
         
         const {classes} = this.props;
 
