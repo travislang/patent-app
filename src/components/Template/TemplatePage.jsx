@@ -22,7 +22,7 @@ const styles = theme => ({
         minWidth: 1040,
     },
     title: {
-        padding: `${theme.spacing.unit * 2}px 0 0`
+        padding: `${theme.spacing.unit * 2}px 0 0`,
     },
     button: {
         margin: theme.spacing.unit,
@@ -71,7 +71,7 @@ class TemplatePage extends Component {
                 <Paper className={classes.paper}>
                     <Grid container justify='center'>
                         <Grid item className={classes.title}>
-                            <Typography color='primary' variant='h4' align='center'>
+                            <Typography style={{fontWeight:'bold'}} color='primary' variant='h4' align='center'>
                                 Templates
                             </Typography>
                         </Grid>

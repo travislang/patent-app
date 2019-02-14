@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
+import TablePagination from '@material-ui/core/TablePagination';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
@@ -14,9 +15,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = theme => ({
     row: {
+        cursor: 'pointer',
         '&:nth-of-type(odd)': {
             backgroundColor: `#efefef`,
         },
+
     },
     head: {
         backgroundColor: '#1796f0'
@@ -32,6 +35,20 @@ const styles = theme => ({
 });
 
 class TemplateTable extends Component {
+
+    state = {
+        page: 0,
+        rowsPerPage: 10,
+    };
+
+    handleChangePage = (event, page) => {
+        this.setState({ page });
+    };
+
+    handleChangeRowsPerPage = event => {
+        this.setState({ rowsPerPage: event.target.value });
+    };
+
     handleDeleteClick = (id) => {
         this.props.dispatch({
             type: 'UPDATE_USER_ACTIVITY',
@@ -40,40 +57,58 @@ class TemplateTable extends Component {
     };
     render() {
         const { classes, allTemplates, user } = this.props;
+        const { rowsPerPage, page } = this.state;
         console.log('props', this.props);
         return (
-            <Paper className={classes.root}>
-                <Table className={classes.table}>
-                    <TableHead>
-                        <TableRow className={classes.head}>
-                            <TableCell style={{ color: 'white' }}>Type</TableCell>
-                            <TableCell style={{ color: 'white' }} align="left">Template name</TableCell>
-                            <TableCell style={{ color: 'white' }} align="left">User</TableCell>
-                            {user.is_admin && <TableCell style={{ color: 'white' }} align="center">Delete</TableCell>}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {allTemplates && allTemplates.map(template => (
-                            <TableRow className={classes.row} key={template.id}>
-                                <TableCell component="th" scope="row">
-                                    {template.type}
-                                </TableCell>
-                                <TableCell component="th" scope="row">
-                                    {template.template_name}
-                                </TableCell>
-                                <TableCell component="th" scope="row">
-                                    {template.user_id ? template.user_name : 'All'}
-                                </TableCell>
-                                {user.is_admin && <TableCell component="th" scope="row">
-                                    <IconButton>
-                                        <DeleteIcon fontSize={'small'}/>
-                                    </IconButton>
-                                </TableCell>}
+            <div>
+                <Paper className={classes.root}>
+                    <Table className={classes.table}>
+                        <TableHead>
+                            <TableRow className={classes.head}>
+                                <TableCell align="left" style={{ color: 'white' }}>Type</TableCell>
+                                <TableCell align="left" style={{ color: 'white' }} align="left">Template name</TableCell>
+                                <TableCell align='center' style={{ color: 'white' }}>User</TableCell>
+                                {user.is_admin && <TableCell style={{ color: 'white' }} align="center">Delete</TableCell>}
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </Paper>
+                        </TableHead>
+                        <TableBody>
+                            {allTemplates.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((template,i) => (
+                                <TableRow key={i} className={classes.row}>
+                                    <TableCell component="th" scope="row">
+                                        {template.type}
+                                    </TableCell>
+                                    <TableCell component="th" scope="row">
+                                        {template.template_name}
+                                    </TableCell>
+                                    <TableCell align='center' component="th" scope="row">
+                                        {template.user_id ? template.user_name : 'All'}
+                                    </TableCell>
+                                    {user.is_admin && <TableCell align='center' component="th" scope="row">
+                                        <IconButton>
+                                            <DeleteIcon fontSize={'small'} />
+                                        </IconButton>
+                                    </TableCell>}
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={allTemplates.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        backIconButtonProps={{
+                            'aria-label': 'Previous Page',
+                        }}
+                        nextIconButtonProps={{
+                            'aria-label': 'Next Page',
+                        }}
+                        onChangePage={this.handleChangePage}
+                        onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                    />
+                </Paper>
+            </div>
         );
     }
 }
@@ -82,7 +117,7 @@ const mapStoreToProps = store => (
     {
         allTemplates: store.template.allTemplates,
         applicationList: store.application,
-        user : store.user,
+        user: store.user,
     }
 )
 
