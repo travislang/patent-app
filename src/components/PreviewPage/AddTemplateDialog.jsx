@@ -21,6 +21,12 @@ import Select from '@material-ui/core/Select';
 
 import Grid from '@material-ui/core/Grid'
 
+import { Value } from 'slate';
+import templateParser from '../../modules/template/replaceTemplateFields';
+
+import Plain from 'slate-plain-serializer';
+
+
 const styles = theme => ({
     root: {
         display: 'flex',
@@ -68,17 +74,21 @@ class AddTemplateDialog extends React.Component {
             [name]: event.target.value,
         });
     };
-
+    
     handleSubmit = () => {
         const oaId = this.props.oaId;
         const issueId = this.props.currentIssue.id;
         const text = this.state.templateText;
+        const issue = this.props.currentIssue;
+        
+        const content = templateParser(text, issue);
+
         this.props.dispatch({
             type: 'POST_RESPONSE',
             payload: {
                 office_Action_Id: oaId,
                 issue_id: issueId,
-                text: text
+                text: content
             }
         })
         // close modal

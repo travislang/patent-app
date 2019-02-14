@@ -25,7 +25,8 @@ const styles = theme => ({
         marginRight: theme.spacing.unit * 3,
         textDecoration: 'none',
         '&:hover': {
-            color: 'blue'
+            transform: 'scale(1.1)',
+            textDecoration: 'underline'
         }
     }
 
@@ -73,7 +74,7 @@ function MainAppBar(props) {
                         </Typography>
                         :
                         // when no user are log in
-                        <Typography className={classes.navItem} variant="button" color="inherit" component={Link} to="/home">
+                        <Typography className={classes.navItem} variant="button" color="inherit" component={Link} to="/">
                             Login
                         </Typography>
                         }

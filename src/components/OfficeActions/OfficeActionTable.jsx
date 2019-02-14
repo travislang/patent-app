@@ -53,14 +53,16 @@ class EnhancedTableHead extends React.Component {
         const { order, orderBy } = this.props;
 
         return (
-            <TableHead>
+            <TableHead style={{backgroundColor: '#267CCE'}}>
                 <TableRow>
                     {rows.map(
                         row => (
                             <TableCell
+                                style={{color:'white'}}
                                 key={row.id}
                                 align='left'
                                 sortDirection={orderBy === row.id ? order : false}
+                                style={{color:'white'}}
                             >
                                 <Tooltip
                                     title="Sort"
@@ -70,6 +72,7 @@ class EnhancedTableHead extends React.Component {
                                     <TableSortLabel
                                         active={orderBy === row.id}
                                         direction={order}
+                                        style={{color:'white'}}
                                         onClick={this.createSortHandler(row.id)}
                                     >
                                         {row.label}
@@ -96,7 +99,10 @@ const styles = theme => ({
         overflowX: 'auto',
     },
     tableRow: {
-        cursor: 'pointer'
+        cursor: 'pointer',
+        '&:nth-of-type(odd)': {
+            backgroundColor: `#efefef`,
+        },
     }
 });
 

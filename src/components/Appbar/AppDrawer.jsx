@@ -25,6 +25,7 @@ import AddTemplateDialog from '../PreviewPage/AddTemplateDialog';
 import { HashLink as Link } from 'react-router-hash-link';
 import AddIssueDialog from '../PreviewPage/AddIssueDialog';
 import AlertDialog from './AlertDialog';
+import axios from 'axios';
 
 const drawerWidth = 300;
 
@@ -167,6 +168,7 @@ class AppDrawer extends Component {
         });
     };
 
+
     render() {
         const { classes, currentApplication, officeAction, issuesList, templates, templateTypes } = this.props;
         const oaId = this.props.match.params.oaId;
@@ -197,7 +199,7 @@ class AppDrawer extends Component {
                             handleStatusChange={this.handleStatusChange} 
                             statusId={officeAction.status_id} 
                             status={officeAction.status}
-                            />
+                        />
                     </div>
                     <Divider />
                     <Typography className={classes.issuesHeading} variant='h6' align='center'>
@@ -210,10 +212,9 @@ class AppDrawer extends Component {
                                     issue.text ?
                                         <ListItem 
                                                 component={Link} 
-                                                to='#2' 
+                                                to={issue.id} 
                                                 button 
                                                 key={issue.id}
-                                                onClick={() => this.handleNewTemplateDialogOpen(issue)}
                                             >
                                             <ListItemIcon style={{ margin: 0 }}>
                                                 <CheckIcon
@@ -238,11 +239,10 @@ class AppDrawer extends Component {
                                 return (
                                     issue.text ?
                                         <ListItem 
-                                            component={Link} 
-                                            to='#2' 
+                                            component={Link}
+                                            to={issue.id} 
                                             button 
                                             key={issue.id}
-                                            onClick={() => this.handleNewTemplateDialogOpen(issue)}
                                         >
                                             <ListItemIcon style={{ margin: 0 }}>
                                                 <CheckIcon
@@ -252,7 +252,7 @@ class AppDrawer extends Component {
                                         </ListItem>
                                         :
                                         <ListItem 
-                                            button 
+                                            button
                                             key={issue.id} 
                                             style={{ paddingLeft: 55 }}
                                             onClick={() => this.handleNewTemplateDialogOpen(issue)}
@@ -267,11 +267,10 @@ class AppDrawer extends Component {
                                 return (
                                     issue.text ?
                                         <ListItem 
-                                            component={Link} 
-                                            to='#2' 
+                                            component={Link}
+                                            to={`#${issue.id}`}  
                                             button 
                                             key={issue.id}
-                                            onClick={() => this.handleNewTemplateDialogOpen(issue)}
                                         >
                                             <ListItemIcon style={{ margin: 0 }}>
                                                 <CheckIcon
@@ -296,11 +295,10 @@ class AppDrawer extends Component {
                                 return (
                                     issue.text ?
                                         <ListItem 
-                                            component={Link} 
-                                            to='#2' 
+                                            component={Link}
+                                            to={issue.id}  
                                             button 
                                             key={issue.id}
-                                            onClick={this.handleNewTemplateDialogOpen(issue)}
                                             >
                                             <ListItemIcon style={{ margin: 0 }}>
                                                 <CheckIcon
@@ -346,7 +344,7 @@ class AppDrawer extends Component {
                 </Drawer>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-                    <PreviewDoc issuesList={issuesList} />
+                    <PreviewDoc oaId={oaId} issuesList={issuesList} />
                 </main>
                 <Fab 
                     variant="extended" 

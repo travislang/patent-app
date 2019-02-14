@@ -7,8 +7,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 class DeleteTemplateDialog extends React.Component {
-
     render() {
+        const oaId = this.props;
         return (
             <Dialog
                 open={this.props.open}

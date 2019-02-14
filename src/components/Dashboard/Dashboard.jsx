@@ -26,7 +26,7 @@ const styles = theme => ({
     },
     paper: {
         margin: theme.spacing.unit * 15,
-        minWidth: 1040,
+        width: 1040,
     },
     title: {
         padding: `${theme.spacing.unit * 2}px 0 0`
@@ -56,7 +56,7 @@ const styles = theme => ({
 class Dashboard extends Component {
     state = {
         dialogOpen: false,
-        displayAllApps: 'false',
+        displayAllApps: '1',
     };
 
     componentDidMount() {
@@ -86,7 +86,7 @@ class Dashboard extends Component {
                 <Paper className={classes.paper}>
                     <Grid container justify='center'>
                         <Grid item className={classes.title}>
-                            <Typography color='primary' variant='h4' align='center'>
+                            <Typography color='primary' variant='h4' align='center' style={{fontWeight:'bold'}}>
                                 Applications
                             </Typography>
                         </Grid>
@@ -108,8 +108,9 @@ class Dashboard extends Component {
                                             value={this.state.displayAllApps}
                                             onChange={this.handleChange}
                                         >
-                                            <FormControlLabel value='true' control={<Radio />} label="All Applications" />
-                                            <FormControlLabel value='false' control={<Radio />} label="My Applications" />
+                                            <FormControlLabel value='1' control={<Radio />} label="Active Applications" />
+                                            <FormControlLabel value='2' control={<Radio />} label="Inactive Applications" />
+                                            <FormControlLabel value='3' control={<Radio />} label="All Applications" />
                                         </RadioGroup>
                                     </FormControl>
                                 </Grid>
@@ -117,7 +118,8 @@ class Dashboard extends Component {
                                     <Grid container style={{height: '100%'}} alignItems='center'>
                                         <Grid item>
                                             <Button 
-                                                color='primary' variant="contained" 
+                                                color='primary' 
+                                                variant="contained" 
                                                 size='large'
                                                 onClick={this.handleNewApp}
                                                 className={classes.button}>
@@ -129,7 +131,7 @@ class Dashboard extends Component {
                             </Grid>
                         </Grid>
                     </Grid>
-                    <ApplicationTable />
+                    <ApplicationTable displayApp={this.state.displayAllApps}/>
                     <NewAppDialog open={this.state.dialogOpen} handleClose={this.handleClose} />
                 </Paper>
             </div>
