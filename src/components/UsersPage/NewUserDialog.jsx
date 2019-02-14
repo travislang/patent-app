@@ -61,11 +61,13 @@ class NewUserDialog extends React.Component {
         // Verify all fields not empty
         for (let key in this.state) {
             if (this.state[key].text == '') {
-                this.state[key].error = true;
-                return;
+                this.setState({
+                    [key]: {...this.state[key], error: true}
+                })
+                // this.setstate[key].error = true;
+                // return;
             }
         }
-
         // Verify User does not already exist
 
 
@@ -76,11 +78,10 @@ class NewUserDialog extends React.Component {
         if (!this.passwordsDoMatch()) {
             console.log('Passwords do not match!');
             this.setState({
-                retypedPassword: { text: '', error: true }
+                retypedPassword: {...this.state.retypedPassword, error: true }
             })
             return;
         }
-
         if (this.fieldsVerified()) {
             // Destructure state into payload as requested by route
             const {
@@ -113,10 +114,9 @@ class NewUserDialog extends React.Component {
     fieldsVerified = () => {
         for (let key in this.state) {
             if (this.state[key].error) {
-                return false
+                return false;
             }
         }
-
         return true;
     }
 
@@ -170,7 +170,7 @@ class NewUserDialog extends React.Component {
                                         <TextField
                                             autoComplete={'off'}
                                             error={this.state.userName.error}
-                                            id="outlined-applicantName"
+                                            id="outlined-userName"
                                             label="User name"
                                             className={classes.appNumTextField}
                                             value={this.state.userName.text}
@@ -185,7 +185,7 @@ class NewUserDialog extends React.Component {
                                         <TextField
                                             autoComplete={'off'}
                                             error={this.state.signatureName.error}
-                                            id="outlined-lastDateCheck"
+                                            id="outlined-signName"
                                             label="Signature name"
                                             className={classes.appNumTextField}
                                             value={this.state.signatureName.text}
@@ -200,7 +200,7 @@ class NewUserDialog extends React.Component {
                                         <TextField
                                             autoComplete={'off'}
                                             error={this.state.phoneNumber.error}
-                                            id="outlined-lastDateCheck"
+                                            id="outlined-phone"
                                             label="Phone"
                                             className={classes.appNumTextField}
                                             value={this.state.phoneNumber.text}
@@ -215,7 +215,7 @@ class NewUserDialog extends React.Component {
                                         <TextField
                                             autoComplete={'off'}
                                             error={this.state.firmName.error}
-                                            id="outlined-lastDateCheck"
+                                            id="outlined-firm"
                                             label="Firm"
                                             className={classes.appNumTextField}
                                             value={this.state.firmName.text}
@@ -235,7 +235,7 @@ class NewUserDialog extends React.Component {
                                         <TextField
                                             autoComplete={'off'}
                                             error={this.state.registrationNumber.error}
-                                            id="outlined-lastDateCheck"
+                                            id="outlined-regNum"
                                             label="Registration number"
                                             className={classes.appNumTextField}
                                             value={this.state.registrationNumber.text}
@@ -250,7 +250,7 @@ class NewUserDialog extends React.Component {
                                         <TextField
                                             autoComplete={'off'}
                                             error={this.state.usptoCustomerNumber.error}
-                                            id="outlined-lastDateCheck"
+                                            id="outlined-usptoCustomerNum"
                                             label="USPTO Customer number"
                                             className={classes.appNumTextField}
                                             value={this.state.usptoCustomerNumber.text}
@@ -265,7 +265,7 @@ class NewUserDialog extends React.Component {
                                         <TextField
                                             autoComplete={'off'}
                                             error={this.state.depositAccountNumber.error}
-                                            id="outlined-lastDateCheck"
+                                            id="outlined-depositAccount"
                                             label="Deposit account number"
                                             className={classes.appNumTextField}
                                             value={this.state.depositAccountNumber.text}
@@ -285,8 +285,9 @@ class NewUserDialog extends React.Component {
                                         <TextField
                                             autoComplete={'off'}
                                             error={this.state.password.error}
-                                            id="outlined-lastDateCheck"
+                                            id="outlined-password"
                                             label="Desired password"
+                                            type="password"
                                             className={classes.appNumTextField}
                                             value={this.state.password.text}
                                             onChange={(e) => {
@@ -299,8 +300,10 @@ class NewUserDialog extends React.Component {
                                         <TextField
                                             autoComplete={'off'}
                                             error={this.state.retypedPassword.error}
-                                            id="outlined-lastDateCheck"
+                                            id="outlined-passwordCheck"
                                             label="Re-type password"
+                                            type="password"
+                                            required
                                             className={classes.appNumTextField}
                                             value={this.state.retypedPassword.text}
                                             onChange={(e) => {
