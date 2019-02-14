@@ -8,7 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Typography, withStyles } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
-
+import AlertDialog from '../AlertDialog/AlertDialog';
 import { connect } from 'react-redux';
 
 import Grid from '@material-ui/core/Grid'
@@ -38,6 +38,7 @@ class NewAppDialog extends React.Component {
         appNum: '',
         search: false,
         setUser: '',
+        open: false,
     };
 
     handleChange = name => event => { // handle change to the redux state
@@ -70,16 +71,16 @@ class NewAppDialog extends React.Component {
             type: 'POST_APPLICATION',
             payload: applicationPayload
         });
-        this.handleCloseDialog();
+        this.handleClickOpen();
     }
-    handleCloseDialog = () => { // clear dialog state
+    handleCloseDialog = () => { // clear this dialog state
         this.props.handleClose();
         this.setState({
             appNum: '',
         })
         this.handleClear()
     }
-    handleClear = () => { // clear dialog info
+    handleClear = () => { // clear this dialog info
         this.setState({
             search: false,
         });
@@ -92,6 +93,16 @@ class NewAppDialog extends React.Component {
             setUser: event.target.value
         })
     }
+
+    // ---- Notification Box functions ----
+    handleClickOpen = () => {
+        this.setState({ open: true });
+    };
+
+    handleClose = () => {
+        this.setState({ open: false });
+    };
+
     render() {
         const { classes } = this.props;
 
@@ -139,9 +150,9 @@ class NewAppDialog extends React.Component {
                                         variant="outlined"
                                         margin="dense"
                                     >
-                                        {this.props.reduxState.userList.map(user =>(
+                                        {this.props.reduxState.userList.map(user => (
                                             <MenuItem key={user.id} value={user.id}>
-                                            {user.user_name}
+                                                {user.user_name}
                                             </MenuItem>
                                         ))}
                                     </TextField>
@@ -372,6 +383,13 @@ class NewAppDialog extends React.Component {
                         Add Application
                     </Button>
                 </DialogActions>
+                <AlertDialog
+                    open={this.state.open}
+                    handleClose={this.handleClose}
+                    item={applicationPayload.title}
+                    title="Application Added"
+                    followUpClose={this.handleCloseDialog}
+                />
             </Dialog >
         );
     }

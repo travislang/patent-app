@@ -33,16 +33,15 @@ router.post('/register', rejectIfNotAdmin, (req, res) => {
   const hashedPassword = encryptLib.encryptPassword(req.body.password);
   const query = 
     `INSERT INTO "user" (
-      "user_name", "password", "is_admin", "signature_name", 
+      "user_name", "password", "signature_name", 
       "registration_number", "phone_number", "firm_name", 
       "uspto_customer_number", "deposit_account_number"
       )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
     RETURNING id;`;
   pool.query(query, [
       req.body.user_name,
       hashedPassword,
-      req.body.is_admin,
       req.body.signature_name,
       req.body.registration_number,
       req.body.phone_number,
