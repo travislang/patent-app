@@ -32,7 +32,8 @@ class AlertDialog extends React.Component {
                         <Button onClick={this.props.handleClose} color="primary">
                             Cancel
                         </Button>
-                        <a href={`http://localhost:5000/api/download/${oaId}`}>
+                        <a style={{
+                            outline: 'none', textDecoration: 'none'}} href={`http://localhost:5000/api/download/${oaId}`}>
                             <Button onClick={this.handleConfirm} color="primary" autoFocus>
                                 Export
                             </Button>
