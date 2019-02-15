@@ -16,6 +16,7 @@ import Icon from '@material-ui/core/Icon';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import MoreVert from '@material-ui/icons/MoreVert';
 import Tooltip from '@material-ui/core/Tooltip';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 import './index.css';
 
@@ -24,6 +25,13 @@ const isItalicHotkey = isKeyHotkey('mod+i')
 const isUnderlinedHotkey = isKeyHotkey('mod+u')
 
 const DEFAULT_NODE = 'paragraph'
+
+const theme = createMuiTheme({
+    palette: {
+        primary: { main: '#ffffff' },
+        secondary: { main: '#213a60' }
+    }
+});
 
 const styles = theme => ({
     button: {
@@ -38,7 +46,7 @@ const styles = theme => ({
     },
     toolbarButton: {
         padding: theme.spacing.unit / 2,
-        color: theme.palette.grey[500]
+        color: theme.palette.grey[300]
     },
     editorContainer: {
         position: 'relative'
@@ -48,6 +56,9 @@ const styles = theme => ({
         left: 0,
         right: 0,
         top: 65
+    },
+    iconActive: {
+        color: theme.palette.grey[500]
     }
 });
 
@@ -86,25 +97,27 @@ class TextEditor extends Component {
         const { value } = this.state
         return value.blocks.some(node => node.type == type)
     }
-    
-    
+
+
     // update state to reflect proper text value
-    onChange = ({value}) => {
-        const {issue} = this.props;
-        
-        if(value.document !== this.state.value.document) {
+    onChange = ({ value }) => {
+        const { issue } = this.props;
+
+        if (value.document !== this.state.value.document) {
             // serializes text
             const content = Plain.serialize(value);
-            this.props.dispatch({ type: 'UPDATE_RESPONSE', payload: {
-                id: issue.resp_id,
-                office_Action_Id: issue.office_action_id,
-                issue_id: issue.id,
-                text: content
-            }})
+            this.props.dispatch({
+                type: 'UPDATE_RESPONSE', payload: {
+                    id: issue.resp_id,
+                    office_Action_Id: issue.office_action_id,
+                    issue_id: issue.id,
+                    text: content
+                }
+            })
             console.log('issue', issue);
-            
+
         }
-        this.setState({value})
+        this.setState({ value })
     }
 
     handleToolbarClick = () => {
@@ -115,9 +128,9 @@ class TextEditor extends Component {
 
     onKeyDown = (e, editor, next) => {
         let mark;
-        if(isBoldHotkey(e)) {
+        if (isBoldHotkey(e)) {
             mark = 'bold'
-        } else if(isItalicHotkey(e)) {
+        } else if (isItalicHotkey(e)) {
             mark = 'italic'
         } else if (isUnderlinedHotkey(e)) {
             mark = 'underlined'
@@ -194,16 +207,18 @@ class TextEditor extends Component {
 
     renderMarkButton = (type, icon) => {
         const isActive = this.hasMark(type)
-        const {classes} = this.props;
+        const { classes } = this.props;
         return (
             <Tooltip title={type}>
-                <IconButton
-                    color={isActive ? 'primary' : 'default'}
-                    onMouseDown={e => this.onMarkClick(e, type)}
-                    className={classes.button}
-                >
-                    <Icon>{icon}</Icon>
-                </IconButton>
+                <MuiThemeProvider theme={theme}>
+                    <IconButton
+                        color={isActive ? 'primary' : 'secondary'}
+                        onMouseDown={e => this.onMarkClick(e, type)}
+                        className={classes.button}
+                    >
+                        <Icon>{icon}</Icon>
+                    </IconButton>
+                </MuiThemeProvider>
             </Tooltip>
         )
     }
@@ -222,13 +237,15 @@ class TextEditor extends Component {
 
         return (
             <Tooltip title={type}>
-                <IconButton
-                    color={isActive ? 'primary' : 'default'}
-                    onMouseDown={e => this.onBlockClick(e, type)}
-                    className={classes.button}
-                >
-                    <Icon>{icon}</Icon>
-                </IconButton>
+                <MuiThemeProvider theme={theme}>
+                    <IconButton
+                        color={isActive ? 'primary' : 'default'}
+                        onMouseDown={e => this.onBlockClick(e, type)}
+                        className={classes.button}
+                    >
+                        <Icon>{icon}</Icon>
+                    </IconButton>
+                </MuiThemeProvider>
             </Tooltip>
         )
     }
@@ -256,7 +273,7 @@ class TextEditor extends Component {
         }
     }
 
-    
+
 
     // claims: ""
     // id: 10
@@ -270,12 +287,14 @@ class TextEditor extends Component {
 
     handleDeleteTemplate = (issue) => {
         console.log('delete issue', issue);
-        
-        this.props.dispatch({ type: 'DELETE_RESPONSE', payload: {
-            id: issue.resp_id,
-            office_Action_Id: issue.office_action_id,
-            issue_id: issue.id
-        }})
+
+        this.props.dispatch({
+            type: 'DELETE_RESPONSE', payload: {
+                id: issue.resp_id,
+                office_Action_Id: issue.office_action_id,
+                issue_id: issue.id
+            }
+        })
     }
 
     handleTemplateDeleteClose = () => {
@@ -296,11 +315,11 @@ class TextEditor extends Component {
     render() {
         const { classes, issue } = this.props;
         console.log('issue', issue);
-        
+
         return (
             <div className={classes.editorContainer}>
                 {this.state.showToolbar ?
-                    <FormatToolbar>
+                    <FormatToolbar >
                         <div className={classes.toolbarMain}>
                             {this.renderMarkButton('bold', 'format_bold')}
                             {this.renderMarkButton('italic', 'format_italic')}
@@ -321,7 +340,7 @@ class TextEditor extends Component {
                                     <DeleteOutline />
                                 </IconButton>
                             </Tooltip>
-                            <DeleteDialog 
+                            <DeleteDialog
                                 open={this.state.deleteDialogOpen}
                                 handleDeleteTemplate={() => this.handleDeleteTemplate(issue)}
                                 handleTemplateDeleteClose={this.handleTemplateDeleteClose}
