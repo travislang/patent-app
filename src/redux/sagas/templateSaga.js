@@ -43,7 +43,7 @@ function* fetchTemplates(action){
         const {type_Id} = action.payload;
 
         // Request templates from API by
-        const { data : templatesResponseData } = yield axios.get(`/api/template/by_type${type_Id}`);
+        const { data : templatesResponseData } = yield axios.get(`/api/template/by_type/${type_Id}`);
 
         // Updat redux 
         yield dispatch({

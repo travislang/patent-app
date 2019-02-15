@@ -103,7 +103,7 @@ class AppDrawer extends Component {
         // get all response texts
         this.props.dispatch({ type: 'FETCH_RESPONSES', payload: { office_Action_Id: oaId}})
         // get all templates
-        this.props.dispatch({ type: 'FETCH_ALL_TEMPLATES'})
+        // this.props.dispatch({ type: 'FETCH_TEMPLATES'})
     }
 
     handleNewIssueDialogOpen = () => {
@@ -119,7 +119,11 @@ class AppDrawer extends Component {
             currentIssue: issue,
             templateOpen: true
         })
-        // this.props.dispatch({ type: 'FETCH_ALL_TEMPLATES'})
+        console.log('fffffff', issue.template_type_id);
+        
+        this.props.dispatch({ type: 'FETCH_TEMPLATES', payload: {
+            type_Id: issue.template_type_id
+        }})
     };
 
     handleTemplateClose = () => {

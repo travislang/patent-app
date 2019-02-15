@@ -8,7 +8,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 class DeleteTemplateDialog extends React.Component {
     render() {
-        const oaId = this.props;
         return (
             <Dialog
                 open={this.props.open}
@@ -26,7 +25,7 @@ class DeleteTemplateDialog extends React.Component {
                     <Button onClick={this.props.handleTemplateDeleteClose} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={() => this.props.handleDeleteTemplate()} color="primary" autoFocus>
+                    <Button onClick={this.props.handleDeleteTemplate} color="primary" autoFocus>
                         Delete
                     </Button>
                 </DialogActions>

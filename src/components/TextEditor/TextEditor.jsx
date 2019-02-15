@@ -256,8 +256,26 @@ class TextEditor extends Component {
         }
     }
 
-    handleDeleteTemplate = () => {
+    
 
+    // claims: ""
+    // id: 10
+    // office_action_id: 1
+    // resp_id: 31
+    // section: "header"
+    // template_id: null
+    // template_type_id: 23
+    // text: "testing"
+    // type: "Header"
+
+    handleDeleteTemplate = (issue) => {
+        console.log('delete issue', issue);
+        
+        this.props.dispatch({ type: 'DELETE_RESPONSE', payload: {
+            id: issue.resp_id,
+            office_Action_Id: issue.office_action_id,
+            issue_id: issue.id
+        }})
     }
 
     handleTemplateDeleteClose = () => {
@@ -277,6 +295,8 @@ class TextEditor extends Component {
 
     render() {
         const { classes, issue } = this.props;
+        console.log('issue', issue);
+        
         return (
             <div className={classes.editorContainer}>
                 {this.state.showToolbar ?
@@ -303,7 +323,7 @@ class TextEditor extends Component {
                             </Tooltip>
                             <DeleteDialog 
                                 open={this.state.deleteDialogOpen}
-                                handleDeleteTemplate={this.handleDeleteTemplate}
+                                handleDeleteTemplate={() => this.handleDeleteTemplate(issue)}
                                 handleTemplateDeleteClose={this.handleTemplateDeleteClose}
                             />
                             <Tooltip title='Editor Options'>
@@ -335,7 +355,6 @@ class TextEditor extends Component {
                     className={'mainEditor'}
                     ref={this.ref}
                     value={this.state.value}
-                    
                     onChange={this.onChange}
                     onKeyDown={this.onKeyDown}
                     renderMark={this.renderMark}

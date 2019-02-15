@@ -79,16 +79,18 @@ router.put('/edit/:responseId', rejectUnauthenticated, (req, res) => {
 });
 
 router.delete('/delete/:responseId', rejectUnauthenticated, (req, res) => {
+    console.log('respid', req.params.responseId);
+    
     const query =
         `DELETE FROM "response_text"
         WHERE "response_text"."id"=$1
-            AND EXISTS
+            AND (EXISTS
                 (SELECT * FROM "application"
                 JOIN "office_action" ON "application"."id"="office_action"."application_id"
                 JOIN "issue" ON "issue"."office_action_id"="office_action"."id"
                 JOIN "response_text" ON "response_text"."issue_id" = "issue"."id"
                 WHERE ("application"."user_id"=$2 AND "response_text"."id" = $1))
-            OR $3;`;
+            OR $3);`;
     pool.query(
         query, [
             req.params.responseId,
