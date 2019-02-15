@@ -63,7 +63,9 @@ class AddTemplateDialog extends React.Component {
     }
 
     componentDidMount(){
-        // this.props.dispatch({type:'FETCH_ALL_TEMPLATES'})
+        // this.props.dispatch({type:'FETCH_TEMPLATES', payload: {
+        //     type_id:
+        // }})
     }
 
     handleChange = event => {
@@ -180,7 +182,6 @@ class AddTemplateDialog extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    templates: state.template.allTemplates,
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(AddTemplateDialog));
