@@ -269,11 +269,11 @@ class TextEditor extends Component {
     // type: "Header"
 
     handleDeleteTemplate = (issue) => {
-        console.log(issue);
+        console.log('delete issue', issue);
         
         this.props.dispatch({ type: 'DELETE_RESPONSE', payload: {
             id: issue.resp_id,
-            office_Action_Id: issue.office_Action_Id,
+            office_Action_Id: issue.office_action_id,
             issue_id: issue.id
         }})
     }
