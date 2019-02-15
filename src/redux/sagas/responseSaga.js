@@ -89,7 +89,7 @@ try {
     } = action.payload;
 
     // Make delete request to api with response id as query param
-    yield axios.delete(`/api/response/delete/${id}`,{ issue_id })
+    yield axios.delete(`/api/response/delete/${id}`,)
 
     // Update redux
     yield dispatch({type:'FETCH_RESPONSES', payload: {office_Action_Id}});
