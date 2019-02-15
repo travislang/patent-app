@@ -36,7 +36,12 @@ const styles = theme => ({
     inputFieldsContainer: {
         margin: theme.spacing.unit * 3
     },
-    cssFocused: {},
+    styledHeader: {
+        backgroundColor: '#1796f0',
+        '& h2': {
+          color: 'white',
+        }
+    }
 });
 
 
@@ -61,8 +66,11 @@ class NewUserDialog extends React.Component {
         // Verify all fields not empty
         for (let key in this.state) {
             if (this.state[key].text == '') {
+
+                // Synchonously update state and force rerender
+                // setState wasn't being called in time for this.fieldsVerified()
                 this.state[key].error = true;
-                return;
+                this.forceUpdate();
             }
         }
 
@@ -155,10 +163,9 @@ class NewUserDialog extends React.Component {
                 maxWidth='lg'
                 open={this.props.open}
                 className={classes.dialogContainer}
-                onClose={this.props.handleClose}
-                aria-labelledby="form-dialog-title"
             >
-                <DialogTitle align='center' id="form-dialog-title"> New User
+                <DialogTitle className={classes.styledHeader} align='center'> 
+                    New User
                 </DialogTitle>
                 <DialogContent>
                     <Grid container direction='column' alignItems='center'>
@@ -166,7 +173,6 @@ class NewUserDialog extends React.Component {
                             <Grid container justify='space-between'>
                                 <Grid item>
                                     <Grid container direction='column'>
-
                                         <TextField
                                             autoComplete={'off'}
                                             error={this.state.userName.error}
@@ -287,6 +293,7 @@ class NewUserDialog extends React.Component {
                                             error={this.state.password.error}
                                             id="outlined-lastDateCheck"
                                             label="Desired password"
+                                            type="password"
                                             className={classes.appNumTextField}
                                             value={this.state.password.text}
                                             onChange={(e) => {
@@ -301,6 +308,7 @@ class NewUserDialog extends React.Component {
                                             error={this.state.retypedPassword.error}
                                             id="outlined-lastDateCheck"
                                             label="Re-type password"
+                                            type="password"
                                             className={classes.appNumTextField}
                                             value={this.state.retypedPassword.text}
                                             onChange={(e) => {

@@ -15,7 +15,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = theme => ({
     row: {
-        cursor: 'pointer',
         '&:nth-of-type(odd)': {
             backgroundColor: `#efefef`,
         },

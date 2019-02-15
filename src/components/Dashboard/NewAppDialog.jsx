@@ -29,6 +29,13 @@ const styles = theme => ({
     },
     inputFieldsContainer: {
         margin: theme.spacing.unit * 3
+    },
+    styledHeader: {
+        backgroundColor: '#1796f0',
+        marginBottom: '30px',
+        '& h2': {
+          color: 'white',
+        }
     }
 });
 
@@ -118,7 +125,7 @@ class NewAppDialog extends React.Component {
                 onClose={this.handleCloseDialog}
                 aria-labelledby="form-dialog-title"
             >
-                <DialogTitle align='center' id="form-dialog-title">New        Application
+                <DialogTitle className={classes.styledHeader} align='center' id="form-dialog-title">New        Application
                 </DialogTitle>
                 <DialogContent>
                     <Grid container direction='column' alignItems='center'>

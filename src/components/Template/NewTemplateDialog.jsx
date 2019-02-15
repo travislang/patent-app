@@ -16,6 +16,11 @@ const styles = theme => ({
     dialogContainer: {
         minWidth: 700
     },
+    textfield: {
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        width: 615,
+    },
     appNumTextField: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
@@ -27,112 +32,88 @@ const styles = theme => ({
             },
         }
     },
-    searchAppNum: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
     inputFieldsContainer: {
-        margin: theme.spacing.unit * 3
+        margin: theme.spacing.unit
     },
-    cssFocused: {},
+    styledHeader: {
+        backgroundColor: '#1796f0',
+        '& h2': {
+            color: 'white',
+        }
+    }
 });
 
 
 class NewTemplateDialog extends React.Component {
 
     state = {
-        user: { text: '', error: false },
-        signatureName: { text: '', error: false },
-        phoneNumber: { text: '', error: false },
-        firmName: { text: '', error: false },
-
+        templateName: { text: '', error: false },
+        user: { text: 'All', error: false },
+        field: { text: '', error: false },
+        templateText: { text: '', error: false }
     };
-    handleRegisterClick = () => {
+
+    handleChange = (key) => (event) => {
+
+        //
+        this.setState({
+            [key]: { text: event.target.value, error: false }
+        })
+
+    }
+
+    handleAddClick = () => {
+
         // Verify all fields not empty
         for (let key in this.state) {
             if (this.state[key].text == '') {
+
+                // Synchonously update state and force rerender
+                // setState wasn't being called in time for this.fieldsVerified()
                 this.state[key].error = true;
-                return;
+                this.forceUpdate();
             }
         }
-        // Verify passwords
-        if (!this.passwordsDoMatch()) {
-            console.log('Passwords do not match!');
-            this.setState({
-                retypedPassword: { text: '', error: true }
-            })
-            return;
-        }
+
 
         if (this.fieldsVerified()) {
-            // Destructure state into payload as requested by route
-            const {
-                userName,
-                signatureName,
-                phoneNumber,
-                firmName,
-                registrationNumber,
-                usptoCustomerNumber,
-                depositAccountNumber,
-                password
-            } = this.state;
-
-            // Dispatch action to register saga
+            // Off to SAGA! 
             this.props.dispatch({
-                type: 'REGISTER_USER', payload: {
-                    user_name: userName.text,
-                    signature_name: signatureName.text,
-                    phone_number: phoneNumber.text,
-                    firm_name: firmName.text,
-                    registration_number: registrationNumber.text,
-                    uspto_customer_number: usptoCustomerNumber.text,
-                    deposit_account_number: depositAccountNumber.text,
-                    password: password.text
+                type: 'POST_TEMPLATE',
+                payload: {
+                    user_id: this.state.user.text,
+                    type_id: this.state.field.text,
+                    template_name: this.state.templateName.text,
+                    content: this.state.templateText.text,
                 }
             })
+
+            this.props.handleClose();
+
+            // Revert state
+            for (let key in this.state) {
+                this.setState({
+                    [key]: { text: '', error: false }
+                })
+            }
+
         }
     }
 
     fieldsVerified = () => {
         for (let key in this.state) {
-            if (this.state[key].error) {
-                return false
+            if (this.state[key].error === true) {
+                return false;
             }
         }
 
         return true;
     }
 
-    passwordsDoMatch = () => {
-        // Fields filled
-        if (this.state.password.text != '' && this.state.retypedPassword.text != '') {
-            // Fields match
-            if (this.state.password.text == this.state.retypedPassword.text) {
-                return true
-            } else {
-                return false;
-            }
-
-        } else {
-            return false;
-        }
-    }
-
     render() {
+        console.log('rendered');
+
         const { classes } = this.props;
-
-        //   "user_name" VARCHAR (20) UNIQUE NOT NULL,
-        //   "password" VARCHAR (255) NOT NULL,
-
-        //   "is_admin" BOOLEAN DEFAULT FALSE,
-        //   "signature_name" VARCHAR(70),
-        //   "registration_number" VARCHAR(10),
-        //   "phone_number" VARCHAR(20),
-        //   "firm_name" VARCHAR(70),
-        //   "uspto_customer_number" VARCHAR(9),
-        //   "deposit_account_number" VARCHAR(9),
-        //   "active" BOOLEAN DEFAULT TRUE
 
         return (
             <Dialog
@@ -140,26 +121,45 @@ class NewTemplateDialog extends React.Component {
                 open={this.props.open}
                 className={classes.dialogContainer}
                 onClose={this.props.handleClose}
-                aria-labelledby="form-dialog-title"
             >
-                <DialogTitle align='center' id="form-dialog-title"> New Template
+                <DialogTitle className={classes.styledHeader} align='center'>
+                    New Template
                 </DialogTitle>
+
                 <DialogContent>
                     <Grid container direction='column' alignItems='center'>
                         <Grid item className={classes.inputFieldsContainer}>
-                            <Grid container justify='space-between'>
+                            <Grid container style={{ display: 'inline-block' }} justify='space-between'>
                                 <Grid item>
-                                    <Grid container direction='column'>
+                                    <Grid container direction='row'>
+                                        <TextField
+                                            error={this.state.templateName.error}
+                                            label="Name"
+                                            placeholder={'ex. 209 Rejection § 103'}
+                                            className={classes.textfield}
+                                            value={this.state.name}
+                                            onChange={this.handleChange('templateName')}
+                                            margin="normal"
+                                        />
+                                    </Grid>
+                                </Grid>
+
+                                <Grid item>
+                                    <Grid container direction='row'>
                                         <TextField
                                             select
+                                            error={this.state.user.error}
                                             label="User"
                                             className={classes.appNumTextField}
-                                            value={this.state.user}
-                                            onChange={this.handleUserId}
+                                            value={this.state.user.text}
+                                            onChange={this.handleChange('user')}
                                             margin="normal"
                                             variant="outlined"
                                             margin="dense"
                                         >
+                                            <MenuItem value={' '}>
+                                                {'All'}
+                                            </MenuItem>
                                             {this.props.reduxState.userList.map(user => (
                                                 <MenuItem key={user.id} value={user.id}>
                                                     {user.user_name}
@@ -167,78 +167,41 @@ class NewTemplateDialog extends React.Component {
                                             ))}
                                         </TextField>
                                         <TextField
-                                            autoComplete={'off'}
-                                            // error={this.state.userName.error}
-                                            id="outlined-applicantName"
-                                            label="User name"
+                                            error={this.state.field.error}
+                                            select
+                                            label="Template Type"
                                             className={classes.appNumTextField}
-                                            // value={this.state.userName.text}
-                                            onChange={(e) => {
-                                                this.setState({ userName: { text: e.target.value, error: false } })
-                                            }}
+                                            value={this.state.field.text}
+                                            onChange={this.handleChange('field')}
                                             margin="normal"
                                             variant="outlined"
-                                            margin='dense'
-                                        />
-                                        <TextField
-                                            autoComplete={'off'}
-                                            // error={this.state.signatureName.error}
-                                            id="outlined-lastDateCheck"
-                                            label="Signature name"
-                                            className={classes.appNumTextField}
-                                            // value={this.state.signatureName.text}
-                                            onChange={(e) => {
-                                                this.setState({ signatureName: { text: e.target.value, error: false } })
-                                            }}
-                                            margin="normal"
-                                            variant="outlined"
-                                            margin='dense'
-                                        />
-                                        <TextField
-                                            autoComplete={'off'}
-                                            // error={this.state.phoneNumber.error}
-                                            id="outlined-lastDateCheck"
-                                            label="Phone"
-                                            className={classes.appNumTextField}
-                                            // value={this.state.phoneNumber.text}
-                                            onChange={(e) => {
-                                                this.setState({ phoneNumber: { text: e.target.value, error: false } })
-                                            }}
-                                            margin="normal"
-                                            variant="outlined"
-                                            margin='dense'
-                                        />
-                                        <TextField
-                                            autoComplete={'off'}
-                                            // error={this.state.firmName.error}
-                                            id="outlined-lastDateCheck"
-                                            label="Firm"
-                                            className={classes.appNumTextField}
-                                            // value={this.state.firmName.text}
-                                            onChange={(e) => {
-                                                this.setState({ firmName: { text: e.target.value, error: false } })
-                                            }}
-                                            margin="normal"
-                                            variant="outlined"
-                                            margin='dense'
-                                        />
+                                            margin="dense"
+                                        >
+                                            <MenuItem value={''}>
+                                                {'None'}
+                                            </MenuItem>
+                                            {this.props.reduxState.template.types.map((type, i) => (
+                                                <MenuItem key={i} value={type.id}>
+                                                    {type.type}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
                                     </Grid>
                                 </Grid>
+
                                 <Grid item>
-                                    <Grid container direction='column'>
+                                    <Grid container direction='row'>
                                         <TextField
-                                            autoComplete={'off'}
-                                            // error={this.state.registrationNumber.error}
-                                            id="outlined-lastDateCheck"
-                                            label="Registration number"
-                                            className={classes.appNumTextField}
-                                            // value={this.state.registrationNumber.text}
-                                            onChange={(e) => {
-                                                this.setState({ registrationNumber: { text: e.target.value, error: false } })
-                                            }}
+                                            error={this.state.templateText.error}
+                                            id="outlined-multiline-static"
+                                            multiline
+                                            rows="4"
+                                            className={classes.textfield}
                                             margin="normal"
+                                            placeholder={'Type here ...'}
                                             variant="outlined"
-                                            margin='dense'
+                                            value={this.state.templateText.text}
+                                            onChange={this.handleChange('templateText')}
                                         />
                                     </Grid>
                                 </Grid>
@@ -266,9 +229,9 @@ class NewTemplateDialog extends React.Component {
                     <Button
                         variant='contained'
                         color='primary'
-                        onClick={this.handleRegisterClick}
+                        onClick={this.handleAddClick}
                     >
-                        Add Template
+                        Add
                     </Button>
                 </DialogActions>
             </Dialog>

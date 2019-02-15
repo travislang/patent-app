@@ -51,9 +51,13 @@ class TemplatePage extends Component {
     state = {
         showAddDialog: false,
     }
+
     componentDidMount() {
-        this.props.dispatch({ type: 'FETCH_ALL_TEMPLATES' })
+        this.props.dispatch({ type:'FETCH_ALL_TEMPLATES' })
+        this.props.dispatch({ type:'FETCH_USERS'})
+        this.props.dispatch({ type:'FETCH_TEMPLATE_TYPES'})
     };
+    
     handleClose = () => {
         this.setState({ 
             showAddDialog: false 
