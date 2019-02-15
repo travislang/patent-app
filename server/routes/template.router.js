@@ -17,7 +17,24 @@ router.get('/types', rejectUnauthenticated, (req, res) => {
     );
 });
 
-router.get('/:typeId', rejectUnauthenticated, (req, res) => {
+router.get('/all', rejectUnauthenticated, (req, res) => {
+    const query =
+        `SELECT "template".*, "template_type"."type", "user"."user_name" FROM "template"
+        RIGHT JOIN "template_type" ON "template"."type_id"="template_type"."id"
+        LEFT JOIN "user" ON "template"."user_id"="user"."id"
+        WHERE "template"."user_id"=$1 OR "template"."user_id" IS NULL OR $2=TRUE
+        ORDER BY "template"."id";`;
+    pool.query(query, [req.user.id, req.user.is_admin])
+        .then((results) => {
+            res.send(results.rows);
+        }).catch((err) => {
+            res.sendStatus(500);
+            console.error('Error in GET /template/all', err);
+        }
+    );
+});
+
+router.get('/by_type/:typeId', rejectUnauthenticated, (req, res) => {
     const { typeId } = req.params;
     const query =
         `SELECT "template".*, "template_type"."type" FROM "template"
@@ -38,7 +55,8 @@ router.post('/add', rejectUnauthenticated, (req, res) => {
     // assume that admin user will be inserting for use by all users, thus user_id is null
     let userIdToInsert;
     if (req.user.is_admin) {
-        userIdToInsert = null;
+        userIdToInsert = req.body.user_id === '' ? null : req.body.user_id;
+        console.log(userIdToInsert);
     } else {
         userIdToInsert = req.user.id;
     }
@@ -57,7 +75,7 @@ router.post('/add', rejectUnauthenticated, (req, res) => {
             res.sendStatus(500);
             console.error('Error in POST /template/add', err);
         }
-        );
+    );
 });
 
 router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
@@ -84,6 +102,21 @@ router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
             }
         );
     }
+});
+
+router.delete('/delete/:id', (req,res) => {
+    const {id} = req.params;
+
+    const queryString = '`DELETE FROM "template" WHERE "template"."id"=$1;';
+
+    pool.query(queryString, [id])
+        .then(result => {
+            res.sendStatus(204);
+        })
+        .catch(err => {
+            res.sendStatus(500)
+            console.error('Error in delete /template/delete', err);
+        })
 });
 
 module.exports = router;

@@ -24,6 +24,7 @@ import AddTemplateDialog from '../PreviewPage/AddTemplateDialog';
 
 import { HashLink as Link } from 'react-router-hash-link';
 import AddIssueDialog from '../PreviewPage/AddIssueDialog';
+import AlertDialog from './AlertDialog';
 import axios from 'axios';
 
 const drawerWidth = 300;
@@ -83,8 +84,10 @@ class AppDrawer extends Component {
     state = {
         open: false,
         templateOpen: false,
-        currentIssue: {}
-    }
+        currentIssue: {},
+        alertDialogOpen: false,
+        confirmedExport: false,
+    };
 
     componentDidMount() {
         const appId = this.props.match.params.appId;
@@ -94,7 +97,6 @@ class AppDrawer extends Component {
         // get current office action
         this.props.dispatch({ type: 'FETCH_OFFICE_ACTION', payload: {officeActionResponseId: oaId}})
         // get current office action issues
-        console.log('FETCH_ISSUES', oaId);
         this.props.dispatch({ type: 'FETCH_ISSUES', payload: { office_action_id: oaId } })
         // get all template types for dialog
         this.props.dispatch({ type: 'FETCH_TEMPLATE_TYPES' })
@@ -123,44 +125,53 @@ class AppDrawer extends Component {
             templateOpen: false,
             currentIssue: {}
          });
-    }
+    };
 
     handleStatusChange = (statusId) => {
         const appId = this.props.match.params.appId;
-        const oaId = this.props.match.params.oaId;
-        console.log('statusId', statusId);
-        
+        const oaId = this.props.match.params.oaId;        
         this.props.dispatch({ type: 'UPDATE_OFFICE_ACTION', payload: {
             id: oaId,
             application_id: appId,
             status_id: statusId
         }})
-    }
+    };
 
     // take user back to application view
     handleBack = () => {
         this.props.history.goBack();
-    }
+    };
 
-    // handleDocxDownload = () => {
-    //     axios({
-    //         url: '/api/download',
-    //         method: 'GET',
-    //         responseType: 'blob',
-    //     }).then((response) => {
-    //         const url = window.URL.createObjectURL(new Blob([response.data]));
-    //         const link = document.createElement('a');
-    //         link.href = url;
-    //         link.setAttribute('download', 'file.pdf');
-    //         document.body.appendChild(link);
-    //         link.click();
-    //     });
-    // }
+    handleDocxDownload = () => {
+        const numUnaddressedIssues = this.issuesUnaddressed();
+        if ( numUnaddressedIssues !== 0) {
+            this.setState({
+                alertDialogOpen: true,
+            });
+        }
+    };
+
+    issuesUnaddressed = () => {
+        // All issues are addressed if the number of issues = number of responses
+        return this.props.issuesList.length - this.props.responses.length;
+    };
+
+    confirmedExport = () => {
+        this.setState({
+            confirmedExport: true,
+        });
+    };
+
+    handleAlertDialogClose = () => {
+        this.setState({
+            alertDialogOpen: false,
+        });
+    };
+
 
     render() {
         const { classes, currentApplication, officeAction, issuesList, templates, templateTypes } = this.props;
         const oaId = this.props.match.params.oaId;
-        console.log('issuesList', issuesList);
         return (
             <div className={classes.root}>
                 <CssBaseline />
@@ -314,7 +325,7 @@ class AppDrawer extends Component {
                             <ListItemIcon style={{ margin: 0 }}>
                                 <Add fontSize='large' />
                             </ListItemIcon>
-                            <ListItemText primaryTypographyProps={primaryTypographyStyles} primary='Add New Item' />
+                            <ListItemText primaryTypographyProps={primaryTypographyStyles} primary='Add Item' />
                         </ListItem>
                     </div>
                     <AddIssueDialog 
@@ -335,17 +346,20 @@ class AppDrawer extends Component {
                     <div className={classes.toolbar} />
                     <PreviewDoc oaId={oaId} issuesList={issuesList} />
                 </main>
-                <a href={`http://localhost:5000/api/download/${oaId}`}>
-                    <Fab
-                        variant="extended"
-                        className={classes.fab}
-                        // onClick={this.handleDocxDownload}
-                    >
-                        <CloudDownload className={classes.extendedIcon} />
-                        Export as Docx
-                    </Fab>
-                </a>
-                
+                <Fab 
+                    variant="extended" 
+                    className={classes.fab}
+                    onClick={this.handleDocxDownload}
+                >
+                    <CloudDownload className={classes.extendedIcon} onClick={this.handleDocxDownload} />
+                    Export as Docx
+                </Fab>
+                <AlertDialog 
+                    open={this.state.alertDialogOpen} 
+                    handleConfirm={this.confirmedExport}
+                    handleClose={this.handleAlertDialogClose}
+                    numIssues={this.issuesUnaddressed()}
+                />
             </div>
         );
     }

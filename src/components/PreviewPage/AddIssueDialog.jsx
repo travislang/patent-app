@@ -140,7 +140,7 @@ class AddIssueDialog extends React.Component {
                             Cancel
                         </Button>
                         <Button onClick={this.handleSubmit} color="primary">
-                            Add Template
+                            Add Item
                         </Button>
                     </DialogActions>
                 </Dialog>

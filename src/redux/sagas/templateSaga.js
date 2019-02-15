@@ -6,6 +6,35 @@ import axios from 'axios';
 
 // *----------* Template Sagas *----------*
 
+function* postTemplate(action){
+    try {
+
+
+        const {
+        user_id,
+        type_id,
+        template_name,
+        content,
+        } = action.payload;
+
+        console.log('user id = ', user_id);
+
+        yield axios.post('/api/template/add', {
+            user_id,
+            type_id,
+            template_name,
+            content,
+        });
+
+
+
+        yield dispatch({type:'FETCH_ALL_TEMPLATES'})
+
+    } catch (error) {
+        console.log(`Error in postTemplate: ${error}`);
+    }
+}
+
 // Worker saga responsible for handling FETCH_TEMPLATES actions
 function* fetchTemplates(action){
     try {
@@ -14,7 +43,7 @@ function* fetchTemplates(action){
         const {type_Id} = action.payload;
 
         // Request templates from API by
-        const { data : templatesResponseData } = yield axios.get(`/api/template/${type_Id}`);
+        const { data : templatesResponseData } = yield axios.get(`/api/template/by_type${type_Id}`);
 
         // Updat redux 
         yield dispatch({
@@ -45,9 +74,36 @@ function* fetchTemplateTypes (){
     }
 }
 
+function* fetchAllTemplates() {
+    try {
+        const { data: templatesResponseData } = yield axios.get('/api/template/all')
+        yield dispatch({
+            type: 'SET_ALL_TEMPLATES',
+            payload: templatesResponseData
+        });
+    } catch (error) {
+        console.log(`Error in fetchAllTemplates`);
+    }
+}
+
+function* deleteTemplate(action){
+    try {
+        const {id} = action.payload;
+
+        yield axios.delete(`/api/template/delete/${id}`);
+
+        yield dispatch({type:'FETCH_ALL_TEMPLATES'})
+    } catch (error) {
+        console.log(`Error in deleteTemplate`);
+    }
+}
+
 function* templateSaga (){
+    yield takeLatest('POST_TEMPLATE', postTemplate);
     yield takeLatest('FETCH_TEMPLATES', fetchTemplates);
     yield takeLatest('FETCH_TEMPLATE_TYPES', fetchTemplateTypes);
+    yield takeLatest('FETCH_ALL_TEMPLATES', fetchAllTemplates);
+    yield takeLatest('DELETE_TEMPLATE', deleteTemplate)
 }
 
 export default templateSaga;

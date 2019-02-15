@@ -36,7 +36,12 @@ const styles = theme => ({
     inputFieldsContainer: {
         margin: theme.spacing.unit * 3
     },
-    cssFocused: {},
+    styledHeader: {
+        backgroundColor: '#1796f0',
+        '& h2': {
+          color: 'white',
+        }
+    }
 });
 
 // Main Component being exported
@@ -72,7 +77,6 @@ class NewUserDialog extends React.Component {
                 this.setState({
                     isError: true,
                 });
-                return; // take out
             }
         }
         // Verify User does not already exist
@@ -150,10 +154,9 @@ class NewUserDialog extends React.Component {
                 maxWidth='lg'
                 open={this.props.open}
                 className={classes.dialogContainer}
-                onClose={this.props.handleClose}
-                aria-labelledby="form-dialog-title"
             >
-                <DialogTitle align='center' id="form-dialog-title"> New User
+                <DialogTitle className={classes.styledHeader} align='center'> 
+                    New User
                 </DialogTitle>
                 <DialogContent>
                     <Grid container direction='column' alignItems='center'>
@@ -161,7 +164,6 @@ class NewUserDialog extends React.Component {
                             <Grid container justify='space-between'>
                                 <Grid item>
                                     <Grid container direction='column'>
-
                                         <TextField
                                             autoComplete={'off'}
                                             error={!this.state.userName && this.state.isError ? true : false}

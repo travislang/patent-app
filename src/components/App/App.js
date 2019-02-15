@@ -19,6 +19,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import AppTheme from '../MuiTheme';
 import OfficeActions from '../OfficeActions/OfficeActions';
 import usersPage from '../UsersPage/UsersPage';
+import TemplatePage from '../Template/TemplatePage';
 
 class App extends Component {
     componentDidMount() {
@@ -43,7 +44,10 @@ class App extends Component {
                                 path="/application/:id"
                                 component={OfficeActions}
                             />
-
+                            <ProtectedRoute
+                                path="/template"
+                                component={TemplatePage}
+                            />
                             <ProtectedRoute
                                 path="/office-action/:appId/:oaId"
                                 component={PreviewPage}
