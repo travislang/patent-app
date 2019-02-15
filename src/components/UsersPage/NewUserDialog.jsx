@@ -4,13 +4,13 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core';
 
 import { connect } from 'react-redux';
 
 import Grid from '@material-ui/core/Grid'
+import AlertDialog from '../AlertDialog/AlertDialog';
 
 
 const styles = theme => ({
@@ -44,36 +44,41 @@ const styles = theme => ({
     }
 });
 
-
+// Main Component being exported
 class NewUserDialog extends React.Component {
 
     state = {
-        userName: { text: '', error: false },
-        signatureName: { text: '', error: false },
-        phoneNumber: { text: '', error: false },
-        firmName: { text: '', error: false },
+        userName: '',
+        signatureName: '',
+        phoneNumber: '',
+        firmName: '',
+        registrationNumber: '',
+        usptoCustomerNumber: '',
+        depositAccountNumber: '',
+        password: '',
+        retypedPassword: '',
+        isError: false,
+        open: false
+    };
 
-        registrationNumber: { text: '', error: false },
-        usptoCustomerNumber: { text: '', error: false },
-        depositAccountNumber: { text: '', error: false },
+    handleClickOpen = () => {
+        this.setState({ open: true });
+    };
 
-        password: { text: '', error: false },
-        retypedPassword: { text: '', error: false },
+    handleClose = () => {
+        this.setState({ open: false });
     };
 
     handleRegisterClick = () => {
 
         // Verify all fields not empty
         for (let key in this.state) {
-            if (this.state[key].text == '') {
-
-                // Synchonously update state and force rerender
-                // setState wasn't being called in time for this.fieldsVerified()
-                this.state[key].error = true;
-                this.forceUpdate();
+            if (this.state[key] === '') {
+                this.setState({
+                    isError: true,
+                });
             }
         }
-
         // Verify User does not already exist
 
 
@@ -81,61 +86,47 @@ class NewUserDialog extends React.Component {
 
 
         // Verify passwords
-        if (!this.passwordsDoMatch()) {
-            console.log('Passwords do not match!');
-            this.setState({
-                retypedPassword: { text: '', error: true }
-            })
-            return;
+        if (this.state.retypedPassword !== this.state.password) {
+            return; // doesn't allow user to be created if password dont match
         }
+        // Destructure state into payload as requested by route
+        const {
+            userName,
+            signatureName,
+            phoneNumber,
+            firmName,
+            registrationNumber,
+            usptoCustomerNumber,
+            depositAccountNumber,
+            password
+        } = this.state;
 
-        if (this.fieldsVerified()) {
-            // Destructure state into payload as requested by route
-            const {
-                userName,
-                signatureName,
-                phoneNumber,
-                firmName,
-                registrationNumber,
-                usptoCustomerNumber,
-                depositAccountNumber,
-                password
-            } = this.state;
-
-            // Dispatch action to register saga
-            this.props.dispatch({
-                type: 'REGISTER_USER', payload: {
-                    user_name: userName.text,
-                    signature_name: signatureName.text,
-                    phone_number: phoneNumber.text,
-                    firm_name: firmName.text,
-                    registration_number: registrationNumber.text,
-                    uspto_customer_number: usptoCustomerNumber.text,
-                    deposit_account_number: depositAccountNumber.text,
-                    password: password.text
-                }
-            })
-        }
-    }
-
-    fieldsVerified = () => {
-        for (let key in this.state) {
-            if (this.state[key].error) {
-                return false
+        // Dispatch action to register saga
+        this.props.dispatch({
+            type: 'REGISTER_USER', payload: {
+                user_name: userName,
+                signature_name: signatureName,
+                phone_number: phoneNumber,
+                firm_name: firmName,
+                registration_number: registrationNumber,
+                uspto_customer_number: usptoCustomerNumber,
+                deposit_account_number: depositAccountNumber,
+                password: password
             }
-        }
-
-        return true;
+        })
+        // Update Users List
+        this.props.dispatch({ type: 'FETCH_USERS' })
+        this.handleClickOpen();
     }
 
     passwordsDoMatch = () => {
         // Fields filled
-        if (this.state.password.text != '' && this.state.retypedPassword.text != '') {
+        if (this.state.password !== '' && this.state.retypedPassword !== '') {
             // Fields match
-            if (this.state.password.text == this.state.retypedPassword.text) {
-                return true
+            if (this.state.password == this.state.retypedPassword) {
+                return false
             } else {
-                return false;
+                return true;
             }
 
         } else {
@@ -175,13 +166,13 @@ class NewUserDialog extends React.Component {
                                     <Grid container direction='column'>
                                         <TextField
                                             autoComplete={'off'}
-                                            error={this.state.userName.error}
-                                            id="outlined-applicantName"
+                                            error={!this.state.userName && this.state.isError ? true : false}
+                                            id="outlined-userName"
                                             label="User name"
                                             className={classes.appNumTextField}
                                             value={this.state.userName.text}
                                             onChange={(e) => {
-                                                this.setState({ userName: { text: e.target.value, error: false } })
+                                                this.setState({ userName: e.target.value })
                                             }}
                                             margin="normal"
                                             variant="outlined"
@@ -190,13 +181,13 @@ class NewUserDialog extends React.Component {
 
                                         <TextField
                                             autoComplete={'off'}
-                                            error={this.state.signatureName.error}
-                                            id="outlined-lastDateCheck"
+                                            error={!this.state.signatureName && this.state.isError ? true : false}
+                                            id="outlined-signName"
                                             label="Signature name"
                                             className={classes.appNumTextField}
                                             value={this.state.signatureName.text}
                                             onChange={(e) => {
-                                                this.setState({ signatureName: { text: e.target.value, error: false } })
+                                                this.setState({ signatureName: e.target.value })
                                             }}
                                             margin="normal"
                                             variant="outlined"
@@ -205,13 +196,13 @@ class NewUserDialog extends React.Component {
 
                                         <TextField
                                             autoComplete={'off'}
-                                            error={this.state.phoneNumber.error}
-                                            id="outlined-lastDateCheck"
+                                            error={!this.state.phoneNumber && this.state.isError ? true : false}
+                                            id="outlined-phone"
                                             label="Phone"
                                             className={classes.appNumTextField}
                                             value={this.state.phoneNumber.text}
                                             onChange={(e) => {
-                                                this.setState({ phoneNumber: { text: e.target.value, error: false } })
+                                                this.setState({ phoneNumber: e.target.value })
                                             }}
                                             margin="normal"
                                             variant="outlined"
@@ -220,13 +211,13 @@ class NewUserDialog extends React.Component {
 
                                         <TextField
                                             autoComplete={'off'}
-                                            error={this.state.firmName.error}
-                                            id="outlined-lastDateCheck"
+                                            error={!this.state.firmName && this.state.isError ? true : false}
+                                            id="outlined-firm"
                                             label="Firm"
                                             className={classes.appNumTextField}
                                             value={this.state.firmName.text}
                                             onChange={(e) => {
-                                                this.setState({ firmName: { text: e.target.value, error: false } })
+                                                this.setState({ firmName: e.target.value })
                                             }}
                                             margin="normal"
                                             variant="outlined"
@@ -240,13 +231,13 @@ class NewUserDialog extends React.Component {
 
                                         <TextField
                                             autoComplete={'off'}
-                                            error={this.state.registrationNumber.error}
-                                            id="outlined-lastDateCheck"
+                                            error={!this.state.registrationNumber && this.state.isError ? true : false}
+                                            id="outlined-regNum"
                                             label="Registration number"
                                             className={classes.appNumTextField}
                                             value={this.state.registrationNumber.text}
                                             onChange={(e) => {
-                                                this.setState({ registrationNumber: { text: e.target.value, error: false } })
+                                                this.setState({ registrationNumber: e.target.value })
                                             }}
                                             margin="normal"
                                             variant="outlined"
@@ -255,13 +246,13 @@ class NewUserDialog extends React.Component {
 
                                         <TextField
                                             autoComplete={'off'}
-                                            error={this.state.usptoCustomerNumber.error}
-                                            id="outlined-lastDateCheck"
+                                            error={!this.state.usptoCustomerNumber && this.state.isError ? true : false}
+                                            id="outlined-usptoCustomerNum"
                                             label="USPTO Customer number"
                                             className={classes.appNumTextField}
                                             value={this.state.usptoCustomerNumber.text}
                                             onChange={(e) => {
-                                                this.setState({ usptoCustomerNumber: { text: e.target.value, error: false } })
+                                                this.setState({ usptoCustomerNumber: e.target.value })
                                             }}
                                             margin="normal"
                                             variant="outlined"
@@ -270,13 +261,13 @@ class NewUserDialog extends React.Component {
 
                                         <TextField
                                             autoComplete={'off'}
-                                            error={this.state.depositAccountNumber.error}
-                                            id="outlined-lastDateCheck"
+                                            error={!this.state.depositAccountNumber && this.state.isError ? true : false}
+                                            id="outlined-depositAccount"
                                             label="Deposit account number"
                                             className={classes.appNumTextField}
                                             value={this.state.depositAccountNumber.text}
                                             onChange={(e) => {
-                                                this.setState({ depositAccountNumber: { text: e.target.value, error: false } })
+                                                this.setState({ depositAccountNumber: e.target.value })
                                             }}
                                             margin="normal"
                                             variant="outlined"
@@ -290,14 +281,14 @@ class NewUserDialog extends React.Component {
 
                                         <TextField
                                             autoComplete={'off'}
-                                            error={this.state.password.error}
-                                            id="outlined-lastDateCheck"
+                                            error={!this.state.password && this.state.isError ? true : false}
+                                            id="outlined-password"
                                             label="Desired password"
                                             type="password"
                                             className={classes.appNumTextField}
                                             value={this.state.password.text}
                                             onChange={(e) => {
-                                                this.setState({ password: { text: e.target.value, error: false } })
+                                                this.setState({ password: e.target.value })
                                             }}
                                             margin="normal"
                                             variant="outlined"
@@ -305,14 +296,15 @@ class NewUserDialog extends React.Component {
                                         />
                                         <TextField
                                             autoComplete={'off'}
-                                            error={this.state.retypedPassword.error}
-                                            id="outlined-lastDateCheck"
+                                            error={this.passwordsDoMatch()}
+                                            id="outlined-passwordCheck"
                                             label="Re-type password"
                                             type="password"
+                                            required
                                             className={classes.appNumTextField}
                                             value={this.state.retypedPassword.text}
                                             onChange={(e) => {
-                                                this.setState({ retypedPassword: { text: e.target.value, error: false } })
+                                                this.setState({ retypedPassword: e.target.value })
                                             }}
                                             variant="outlined"
                                             margin='dense'
@@ -331,10 +323,13 @@ class NewUserDialog extends React.Component {
                             // Revert state
                             for (let key in this.state) {
                                 this.setState({
-                                    [key]: { text: '', error: false }
+                                    [key]: ''
                                 })
                             }
-
+                            this.setState({
+                                isError: false,
+                                open: false,
+                            })
                         }}
                         variant='contained'
                         color="default">
@@ -348,6 +343,13 @@ class NewUserDialog extends React.Component {
                         Register
                     </Button>
                 </DialogActions>
+                <AlertDialog
+                    open={this.state.open}
+                    handleClose={this.handleClose}
+                    item={this.state.userName}
+                    title="User Added"
+                    followUpClose={()=>{this.props.handleClose()}}
+                />
             </Dialog>
         );
     }
