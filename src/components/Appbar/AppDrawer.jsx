@@ -358,7 +358,7 @@ class AppDrawer extends Component {
                     onClick={this.handleDocxDownload}
                 >
                     <CloudDownload className={classes.extendedIcon} />
-                    Export as Docx
+                        Export as Docx
                 </Fab>
                 <AlertDialog 
                     open={this.state.alertDialogOpen} 
