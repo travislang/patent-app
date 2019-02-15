@@ -52,7 +52,7 @@ function* fetchTemplates(action){
         })
 
     } catch (error) {
-        console.log(`Error in fetchTemplates`);
+        console.log(`Error in fetchTemplates: ${error}`);
     }
 }
 

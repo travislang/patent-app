@@ -62,6 +62,10 @@ class AddTemplateDialog extends React.Component {
         templateId: ''
     }
 
+    componentDidMount(){
+        // this.props.dispatch({type:'FETCH_ALL_TEMPLATES'})
+    }
+
     handleChange = event => {
         this.setState({ 
             [event.target.name]: event.target.value,
@@ -129,13 +133,13 @@ class AddTemplateDialog extends React.Component {
                                                 id: 'template',
                                             }}
                                         >
-                                            <MenuItem value={{}}>
+                                            <MenuItem key={-1} value={''} >
                                                 <em>None</em>
                                             </MenuItem>
-                                            {templates.map(template => {
+                                            {templates.map((template,i) => {
                                                 return (
                                                     <MenuItem 
-                                                        key={template.id} 
+                                                        key={i} 
                                                         value={template}
                                                     >
                                                         {template.template_name}
@@ -176,6 +180,7 @@ class AddTemplateDialog extends React.Component {
 }
 
 const mapStateToProps = state => ({
+    templates: state.template.allTemplates,
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(AddTemplateDialog));

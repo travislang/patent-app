@@ -59,6 +59,7 @@ class OfficeActions extends Component {
         const appId = this.props.match.params.id;
         this.props.dispatch({ type: 'FETCH_APPLICATION',payload: appId })
         this.props.dispatch({ type: 'FETCH_OFFICE_ACTIONS', payload: { application_id: appId}})
+        // this.props.dispatch({ type: 'FETCH_ALL_TEMPLATES'})
     }
     handleClose = () => {
         this.setState({ dialogOpen: false });
