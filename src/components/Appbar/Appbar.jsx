@@ -24,9 +24,9 @@ const styles = theme => ({
     navItem: {
         marginRight: theme.spacing.unit * 3,
         textDecoration: 'none',
+        transition: 'all .1s',
         '&:hover': {
             transform: 'scale(1.1)',
-            textDecoration: 'underline'
         }
     }
 
