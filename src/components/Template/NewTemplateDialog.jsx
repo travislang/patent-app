@@ -12,6 +12,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from '@material-ui/core';
 
+import verifyTemplate from '../../modules/template/verifyTemplate';
+
 const styles = theme => ({
     dialogContainer: {
         minWidth: 700
@@ -43,41 +45,37 @@ const styles = theme => ({
     }
 });
 
-
 class NewTemplateDialog extends React.Component {
-
     state = {
         templateName: { text: '', error: false },
         user: { text: 'All', error: false },
         field: { text: '', error: false },
         templateText: { text: '', error: false }
     };
-
     handleChange = (key) => (event) => {
-
-        //
         this.setState({
             [key]: { text: event.target.value, error: false }
-        })
-
+        });
+    };
+    handleTemplateChange = (event) => {
+        this.setState({
+            templateText: {
+                text: event.target.value,
+                error: !verifyTemplate(event.target.value),
+            },
+        });
     }
-
     handleAddClick = () => {
-
         // Verify all fields not empty
         for (let key in this.state) {
             if (this.state[key].text == '') {
-
                 // Synchonously update state and force rerender
                 // setState wasn't being called in time for this.fieldsVerified()
                 this.state[key].error = true;
                 this.forceUpdate();
             }
         }
-
-
         if (this.fieldsVerified()) {
-            // Off to SAGA! 
             this.props.dispatch({
                 type: 'POST_TEMPLATE',
                 payload: {
@@ -86,35 +84,25 @@ class NewTemplateDialog extends React.Component {
                     template_name: this.state.templateName.text,
                     content: this.state.templateText.text,
                 }
-            })
-
+            });
             this.props.handleClose();
-
-            // Revert state
             for (let key in this.state) {
                 this.setState({
                     [key]: { text: '', error: false }
-                })
+                });
             }
-
         }
     }
-
     fieldsVerified = () => {
         for (let key in this.state) {
             if (this.state[key].error === true) {
                 return false;
             }
         }
-
         return true;
     }
-
     render() {
-        console.log('rendered');
-
         const { classes } = this.props;
-
         return (
             <Dialog
                 maxWidth='lg'
@@ -201,7 +189,7 @@ class NewTemplateDialog extends React.Component {
                                             placeholder={'Type here ...'}
                                             variant="outlined"
                                             value={this.state.templateText.text}
-                                            onChange={this.handleChange('templateText')}
+                                            onChange={this.handleTemplateChange}
                                         />
                                     </Grid>
                                 </Grid>
