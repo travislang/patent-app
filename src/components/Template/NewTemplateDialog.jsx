@@ -50,7 +50,8 @@ class NewTemplateDialog extends React.Component {
         templateName: { text: '', error: false },
         user: { text: 'All', error: false },
         field: { text: '', error: false },
-        templateText: { text: '', error: false }
+        templateText: { text: '', error: false },
+        templateCursor: { start: 0, end: 0, },
     };
     handleChange = (key) => (event) => {
         this.setState({
@@ -64,7 +65,15 @@ class NewTemplateDialog extends React.Component {
                 error: !verifyTemplate(event.target.value),
             },
         });
-    }
+    };
+    handleTemplateCursor = (event) => {
+        this.setState({
+            templateCursor: {
+                start: event.target.selectionStart,
+                end: event.target.selectionEnd,
+            }
+        });
+    };
     handleAddClick = () => {
         // Verify all fields not empty
         for (let key in this.state) {
@@ -190,6 +199,8 @@ class NewTemplateDialog extends React.Component {
                                             variant="outlined"
                                             value={this.state.templateText.text}
                                             onChange={this.handleTemplateChange}
+                                            onMouseUp={this.handleTemplateCursor}
+                                            onKeyUp={this.handleTemplateCursor}
                                         />
                                     </Grid>
                                 </Grid>
