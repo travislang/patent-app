@@ -83,23 +83,25 @@ class NewTemplateDialog extends React.Component {
         });
     };
     handleInsertClick = (event) => {
-        // const field = 'hiya';
-        // const { text } = this.state.templateText;
-        // const { start, end } = this.state.templateCursor;
-        // const newTemplateText =
-        //     text.slice(0, start)
-        //     + field
-        //     + text.slice(end);
-        // this.setState({
-        //     templateText: {
-        //         text: newTemplateText,
-        //         error: !verifyTemplate(newTemplateText),
-        //     }
-        // });
         this.setState({
             fieldMenuAnchor: event.currentTarget,
         });
-        console.log('anchor:', event.currentTarget, Boolean(this.state.fieldMenuAnchor));
+    };
+    handleFieldMenuClick = (field) => () => {
+        const { text } = this.state.templateText;
+        const { start, end } = this.state.templateCursor;
+        const newTemplateText =
+            text.slice(0, start)
+            + field
+            + text.slice(end);
+        this.setState({
+            ...this.state,
+            templateText: {
+                text: newTemplateText,
+                error: !verifyTemplate(newTemplateText),
+            },
+            fieldMenuAnchor: null,
+        });
     };
     handleAddClick = () => {
         // Verify all fields not empty
@@ -263,7 +265,10 @@ class NewTemplateDialog extends React.Component {
                         Add
                     </Button>
                 </DialogActions>
-                <FieldMenu anchorEl={this.state.fieldMenuAnchor}/>
+                <FieldMenu 
+                    anchorEl={this.state.fieldMenuAnchor}
+                    handleClick={this.handleFieldMenuClick}
+                />
             </Dialog>
         );
     }
