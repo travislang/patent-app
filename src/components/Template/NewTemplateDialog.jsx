@@ -54,7 +54,6 @@ const styles = theme => ({
 
 class NewTemplateDialog extends React.Component {
     state = {
-        fieldKeys: ['templateName', 'user', 'field', 'templateText'],
         templateName: { text: '', error: false },
         user: { text: 'All', error: false },
         field: { text: '', error: false },
@@ -109,16 +108,7 @@ class NewTemplateDialog extends React.Component {
         });
     };
     handleAddClick = () => {
-        // Verify all fields not empty
-        for (let key of this.state.fieldKeys) {
-            if (this.state[key].text == '') {
-                // Synchonously update state and force rerender
-                // setState wasn't being called in time for this.fieldsVerified()
-                this.state[key].error = true;
-                this.forceUpdate();
-            }
-        }
-        if (this.fieldsVerified()) {
+        if (this.checkForInputErrors()) {
             this.props.dispatch({
                 type: 'POST_TEMPLATE',
                 payload: {
@@ -129,21 +119,43 @@ class NewTemplateDialog extends React.Component {
                 }
             });
             this.props.handleClose();
-            for (let key of this.state.fieldKeys) {
-                this.setState({
-                    [key]: { text: '', error: false }
-                });
-            }
+            this.clearFields();
         }
-    }
-    fieldsVerified = () => {
-        for (let key of this.state.fieldKeys) {
-            if (this.state[key].error === true) {
-                return false;
-            }
-        }
-        return true;
-    }
+    };
+    clearFields = () => {
+        this.setState({
+            ...this.state,
+            templateName: { text: '', error: false },
+            user: { text: '', error: false },
+            field: { text: '', error: false },
+            templateText: { text: '', error: false },
+        });
+    };
+    checkForInputErrors = () => {
+        const templateNameError = this.state.templateName.text === '';
+        const userError = this.state.user.text === '';
+        const fieldError = this.state.field.text === '';
+        const templateTextError = !verifyTemplate(this.state.templateText.text);
+        this.setState({
+            templateName: {
+                ...this.state.templateName,
+                error: templateNameError,
+            },
+            user: {
+                ...this.state.user,
+                error: userError,
+            },
+            field: {
+                ...this.state.field,
+                error: fieldError,
+            },
+            templateText: {
+                ...this.state.templateText,
+                error: templateTextError,
+            },
+        });
+        return (!templateNameError && !userError && !fieldError && !templateTextError);
+    };
     render() {
         const { classes } = this.props;
         return (
@@ -229,7 +241,7 @@ class NewTemplateDialog extends React.Component {
                                             rows="4"
                                             className={classes.textfield}
                                             margin="normal"
-                                            placeholder={'Type here ... (right-click to insert field codes)'}
+                                            placeholder={'Type here ...'}
                                             variant="outlined"
                                             value={this.state.templateText.text}
                                             onChange={this.handleTemplateChange}
