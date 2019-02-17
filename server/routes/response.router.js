@@ -78,9 +78,7 @@ router.put('/edit/:responseId', rejectUnauthenticated, (req, res) => {
     );
 });
 
-router.delete('/delete/:responseId', rejectUnauthenticated, (req, res) => {
-    console.log('respid', req.params.responseId);
-    
+router.delete('/delete/:responseId', rejectUnauthenticated, (req, res) => {    
     const query =
         `DELETE FROM "response_text"
         WHERE "response_text"."id"=$1

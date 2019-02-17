@@ -56,7 +56,6 @@ router.post('/add', rejectUnauthenticated, (req, res) => {
     let userIdToInsert;
     if (req.user.is_admin) {
         userIdToInsert = req.body.user_id === '' ? null : req.body.user_id;
-        console.log(userIdToInsert);
     } else {
         userIdToInsert = req.user.id;
     }
@@ -79,7 +78,6 @@ router.post('/add', rejectUnauthenticated, (req, res) => {
 });
 
 router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
-    console.log('user:', req.user);
     if (!req.user.is_admin && req.body.user_id !== req.user.id) {
         res.sendStatus(403);
     } else {
