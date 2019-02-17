@@ -122,6 +122,10 @@ class NewTemplateDialog extends React.Component {
             this.clearFields();
         }
     };
+    handleCancel = () => {
+        this.props.handleClose();
+        this.clearFields();
+    };
     clearFields = () => {
         this.setState({
             ...this.state,
@@ -262,14 +266,7 @@ class NewTemplateDialog extends React.Component {
                 </DialogContent>
                 <DialogActions>
                     <Button
-                        onClick={() => {
-                            this.props.handleClose();
-                            for (let key of this.state.fieldKeys) {
-                                this.setState({
-                                    [key]: { text: '', error: false }
-                                });
-                            }
-                        }}
+                        onClick={this.handleCancel}
                         variant='contained'
                         color="default">
                         Cancel
