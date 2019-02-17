@@ -81,7 +81,13 @@ class NewTemplateDialog extends React.Component {
     };
     handleInsertClick = () => {
         const field = 'hiya';
-        const newTemplateText = this.state.templateText.text + field;
+        const { text } = this.state.templateText;
+        const { start, end } = this.state.templateCursor;
+        // const newTemplateText = this.state.templateText.text + field;
+        const newTemplateText =
+            text.slice(0, start)
+            + field
+            + text.slice(end);
         this.setState({
             templateText: {
                 text: newTemplateText,
