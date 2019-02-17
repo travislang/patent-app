@@ -54,6 +54,7 @@ const styles = theme => ({
 
 class NewTemplateDialog extends React.Component {
     state = {
+        fieldKeys: ['templateName', 'user', 'field', 'templateText'],
         templateName: { text: '', error: false },
         user: { text: 'All', error: false },
         field: { text: '', error: false },
@@ -105,7 +106,7 @@ class NewTemplateDialog extends React.Component {
     };
     handleAddClick = () => {
         // Verify all fields not empty
-        for (let key in this.state) {
+        for (let key of this.state.fieldKeys) {
             if (this.state[key].text == '') {
                 // Synchonously update state and force rerender
                 // setState wasn't being called in time for this.fieldsVerified()
@@ -124,7 +125,7 @@ class NewTemplateDialog extends React.Component {
                 }
             });
             this.props.handleClose();
-            for (let key in this.state) {
+            for (let key of this.state.fieldKeys) {
                 this.setState({
                     [key]: { text: '', error: false }
                 });
@@ -132,7 +133,7 @@ class NewTemplateDialog extends React.Component {
         }
     }
     fieldsVerified = () => {
-        for (let key in this.state) {
+        for (let key of this.state.fieldKeys) {
             if (this.state[key].error === true) {
                 return false;
             }
@@ -247,7 +248,7 @@ class NewTemplateDialog extends React.Component {
                     <Button
                         onClick={() => {
                             this.props.handleClose();
-                            for (let key in this.state) {
+                            for (let key of this.state.fieldKeys) {
                                 this.setState({
                                     [key]: { text: '', error: false }
                                 });
