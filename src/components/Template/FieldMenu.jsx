@@ -24,7 +24,7 @@ class FieldMenu extends React.Component {
                 <Menu
                     anchorEl={this.props.anchorEl}
                     open={Boolean(this.props.anchorEl)}
-                    onClose={this.handleClose}
+                    onClose={this.props.handleClose}
                 >
                     {menuItems}
                 </Menu>

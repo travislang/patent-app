@@ -96,11 +96,15 @@ class NewTemplateDialog extends React.Component {
             + field
             + text.slice(end);
         this.setState({
-            ...this.state,
             templateText: {
                 text: newTemplateText,
                 error: !verifyTemplate(newTemplateText),
             },
+        });
+        this.handleFieldMenuClose();
+    };
+    handleFieldMenuClose = () => {
+        this.setState({
             fieldMenuAnchor: null,
         });
     };
@@ -269,6 +273,7 @@ class NewTemplateDialog extends React.Component {
                 <FieldMenu 
                     anchorEl={this.state.fieldMenuAnchor}
                     handleClick={this.handleFieldMenuClick}
+                    handleClose={this.handleFieldMenuClose}
                 />
             </Dialog>
         );
