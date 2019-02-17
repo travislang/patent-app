@@ -13,11 +13,6 @@ const testTemplate = [
     // { description: '', template: , expectedResult:  },
 ];
 
-const testFieldValues = {
-    inventor_name: 'INVENTOR',
-    application_number: '14/123456789',
-};
-
 for (let testCase of testTemplate) {
     test(`${testCase.description}`, () => {
         expect(templateIsLegal(testCase.template)).toBe(testCase.expectedResult);

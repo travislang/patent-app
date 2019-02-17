@@ -12,6 +12,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from '@material-ui/core';
 
+import FieldMenu from './FieldMenu';
+
 import verifyTemplate from '../../modules/template/verifyTemplate';
 
 const styles = theme => ({
@@ -57,6 +59,7 @@ class NewTemplateDialog extends React.Component {
         field: { text: '', error: false },
         templateText: { text: '', error: false },
         templateCursor: { start: 0, end: 0, },
+        fieldMenuAnchor: null,
     };
     handleChange = (key) => (event) => {
         this.setState({
@@ -79,21 +82,24 @@ class NewTemplateDialog extends React.Component {
             }
         });
     };
-    handleInsertClick = () => {
-        const field = 'hiya';
-        const { text } = this.state.templateText;
-        const { start, end } = this.state.templateCursor;
-        // const newTemplateText = this.state.templateText.text + field;
-        const newTemplateText =
-            text.slice(0, start)
-            + field
-            + text.slice(end);
+    handleInsertClick = (event) => {
+        // const field = 'hiya';
+        // const { text } = this.state.templateText;
+        // const { start, end } = this.state.templateCursor;
+        // const newTemplateText =
+        //     text.slice(0, start)
+        //     + field
+        //     + text.slice(end);
+        // this.setState({
+        //     templateText: {
+        //         text: newTemplateText,
+        //         error: !verifyTemplate(newTemplateText),
+        //     }
+        // });
         this.setState({
-            templateText: {
-                text: newTemplateText,
-                error: !verifyTemplate(newTemplateText),
-            }
+            fieldMenuAnchor: event.currentTarget,
         });
+        console.log('anchor:', event.currentTarget, Boolean(this.state.fieldMenuAnchor));
     };
     handleAddClick = () => {
         // Verify all fields not empty
@@ -257,6 +263,7 @@ class NewTemplateDialog extends React.Component {
                         Add
                     </Button>
                 </DialogActions>
+                <FieldMenu anchorEl={this.state.fieldMenuAnchor}/>
             </Dialog>
         );
     }
