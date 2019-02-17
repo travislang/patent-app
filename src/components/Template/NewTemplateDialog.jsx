@@ -42,7 +42,12 @@ const styles = theme => ({
         '& h2': {
             color: 'white',
         }
-    }
+    },
+    insertButton: {
+        margin: 0,
+        marginLeft: theme.spacing.unit,
+        color: '#858585',
+    },
 });
 
 class NewTemplateDialog extends React.Component {
@@ -71,6 +76,16 @@ class NewTemplateDialog extends React.Component {
             templateCursor: {
                 start: event.target.selectionStart,
                 end: event.target.selectionEnd,
+            }
+        });
+    };
+    handleInsertClick = () => {
+        const field = 'hiya';
+        const newTemplateText = this.state.templateText.text + field;
+        this.setState({
+            templateText: {
+                text: newTemplateText,
+                error: !verifyTemplate(newTemplateText),
             }
         });
     };
@@ -195,7 +210,7 @@ class NewTemplateDialog extends React.Component {
                                             rows="4"
                                             className={classes.textfield}
                                             margin="normal"
-                                            placeholder={'Type here ...'}
+                                            placeholder={'Type here ... (right-click to insert field codes)'}
                                             variant="outlined"
                                             value={this.state.templateText.text}
                                             onChange={this.handleTemplateChange}
@@ -204,6 +219,12 @@ class NewTemplateDialog extends React.Component {
                                         />
                                     </Grid>
                                 </Grid>
+                                <Button 
+                                    className={classes.insertButton} 
+                                    size={'small'}
+                                    onClick={this.handleInsertClick}
+                                    >Insert Field
+                                </Button>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -212,14 +233,11 @@ class NewTemplateDialog extends React.Component {
                     <Button
                         onClick={() => {
                             this.props.handleClose();
-
-                            // Revert state
                             for (let key in this.state) {
                                 this.setState({
                                     [key]: { text: '', error: false }
-                                })
+                                });
                             }
-
                         }}
                         variant='contained'
                         color="default">
