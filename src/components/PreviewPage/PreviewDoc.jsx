@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 
-import {TextEditor} from '../TextEditor/index';
+import { TextEditor } from '../TextEditor/index';
 import { Value } from 'slate';
 
 import Plain from 'slate-plain-serializer';
@@ -32,32 +32,80 @@ const styles = theme => ({
 });
 
 const initialValue = (issue) => {
-    if(issue.text) {
+    if (issue.text) {
         return Plain.deserialize(issue.text)
     }
 }
 
 const PreviewDoc = (props) => {
-    const {classes} = props;
+    const { classes } = props;
     const responseList = props.responseList;
     const issues = props.issuesList;
     const oaId = props.oaId;
     if (responseList.length > 0) {
         return (
-            issues.map(issue => {
-                console.log('issue', issue);
-                
-                return issue.text ?
-                    (
-                        <div key={issue.id} id={Number(issue.id)} className={classes.root}>
-                            <Paper className={classes.content}>
-                                <TextEditor issue={issue} initialVal={initialValue(issue)} />
-                            </Paper>
-                        </div>
-                    )
-                    :
-                    null
-            })
+            <div>
+                {issues.map(issue => {
+                    if (issue.section === 'header') {
+                        return issue.text ?
+                            (
+                                <div key={issue.id} id={Number(issue.id)} className={classes.root}>
+                                    <Paper className={classes.content}>
+                                        <TextEditor issue={issue} initialVal={initialValue(issue)} />
+                                    </Paper>
+                                </div>
+                            )
+                            :
+                            null
+                        }
+                    })
+                }
+                {issues.map(issue => {
+                    if (issue.section === 'amendment') {
+                        return issue.text ?
+                            (
+                                <div key={issue.id} id={Number(issue.id)} className={classes.root}>
+                                    <Paper className={classes.content}>
+                                        <TextEditor issue={issue} initialVal={initialValue(issue)} />
+                                    </Paper>
+                                </div>
+                            )
+                            :
+                            null
+                        }
+                    })
+                }
+                {issues.map(issue => {
+                    if (issue.section === 'issue') {
+                        return issue.text ?
+                            (
+                                <div key={issue.id} id={Number(issue.id)} className={classes.root}>
+                                    <Paper className={classes.content}>
+                                        <TextEditor issue={issue} initialVal={initialValue(issue)} />
+                                    </Paper>
+                                </div>
+                            )
+                            :
+                            null
+                        }
+                    })
+                }
+                {issues.map(issue => {
+                    if (issue.section === 'footer') {
+                        return issue.text ?
+                            (
+                                <div key={issue.id} id={Number(issue.id)} className={classes.root}>
+                                    <Paper className={classes.content}>
+                                        <TextEditor issue={issue} initialVal={initialValue(issue)} />
+                                    </Paper>
+                                </div>
+                            )
+                            :
+                            null
+                        }
+                    })
+                }
+            </div>
         )
     } else {
         return (
@@ -70,10 +118,10 @@ const PreviewDoc = (props) => {
                         On the left side there is a drawer where all of the addressable items will be.  If the text is grey it means that item has not been addressed yet. If the item has been addressed it will be green with a checkmark next to it.
                     </Typography>
                     <Typography className={classes.defaultText} variant='body1' gutterBottom>
-                        To add additional items to the list click on 'Add Item'.  
+                        To add additional items to the list click on 'Add Item'.
                     </Typography>
                     <Typography className={classes.defaultText} variant='body1' gutterBottom>
-                        Click on an item on the left to choose an editable template and get started.  
+                        Click on an item on the left to choose an editable template and get started.
                     </Typography>
                 </Paper>
             </div>
