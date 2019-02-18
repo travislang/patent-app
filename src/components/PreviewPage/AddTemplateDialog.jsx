@@ -105,6 +105,15 @@ class AddTemplateDialog extends React.Component {
         // close modal
         this.props.handleTemplateClose();
     }
+
+    handleClose = () => {
+        this.setState({
+            template: {},
+            templateText: '',
+            templateId: ''
+        })
+        this.props.handleTemplateClose();
+    }
     
 
     render() {
@@ -115,7 +124,7 @@ class AddTemplateDialog extends React.Component {
                     maxWidth='lg'
                     open={this.props.open}
                     className={classes.dialogContainer}
-                    onClose={this.props.handleTemplateClose}
+                    onClose={this.handleClose}
                     aria-labelledby="add-new-issue"
                 >
                     <DialogTitle id="add-new-issue">Select A Template</DialogTitle>
@@ -173,7 +182,7 @@ class AddTemplateDialog extends React.Component {
 
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.props.handleTemplateClose} color="primary">
+                        <Button onClick={this.handleClose} color="primary">
                             Cancel
                         </Button>
                         <Button onClick={this.handleSubmit} color="primary">
