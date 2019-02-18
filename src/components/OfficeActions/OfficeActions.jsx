@@ -108,7 +108,7 @@ class OfficeActions extends Component {
                                         <Typography gutterBottom color='textPrimary' variant='h6'>
                                             Customer Number: 
                                             <span className={classes.infoHeading}>
-                                                test
+                                                590235
                                             </span>
                                         </Typography>
                                     </Grid>

@@ -97,6 +97,11 @@ class AddTemplateDialog extends React.Component {
                 text: content
             }
         })
+        this.setState({
+            template: {},
+            templateText: '',
+            templateId: ''
+        })
         // close modal
         this.props.handleTemplateClose();
     }

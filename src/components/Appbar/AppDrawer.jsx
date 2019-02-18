@@ -218,7 +218,7 @@ class AppDrawer extends Component {
                                     issue.text ?
                                         <ListItem 
                                                 component={Link} 
-                                                to={issue.id} 
+                                            to={`#${issue.id}`} 
                                                 button 
                                                 key={issue.id}
                                             >
@@ -246,7 +246,7 @@ class AppDrawer extends Component {
                                     issue.text ?
                                         <ListItem 
                                             component={Link}
-                                            to={issue.id} 
+                                            to={`#${issue.id}`} 
                                             button 
                                             key={issue.id}
                                         >
@@ -302,7 +302,7 @@ class AppDrawer extends Component {
                                     issue.text ?
                                         <ListItem 
                                             component={Link}
-                                            to={issue.id}  
+                                            to={`#${issue.id}`}  
                                             button 
                                             key={issue.id}
                                             >
@@ -352,14 +352,18 @@ class AppDrawer extends Component {
                     <div className={classes.toolbar} />
                     <PreviewDoc oaId={oaId} issuesList={issuesList} />
                 </main>
-                <Fab 
-                    variant="extended" 
-                    className={classes.fab}
-                    onClick={this.handleDocxDownload}
-                >
-                    <CloudDownload className={classes.extendedIcon} />
-                    Export as Docx
-                </Fab>
+                <a href={`http://localhost:5000/api/download/${oaId}`}>
+                    <Fab
+                        variant="extended"
+                        className={classes.fab}
+                        // commented out for demo
+                        // onClick={this.handleDocxDownload}
+                    >
+                        <CloudDownload className={classes.extendedIcon} />
+                        Export as Docx
+                    </Fab>
+                </a>
+                
                 <AlertDialog 
                     open={this.state.alertDialogOpen} 
                     oaId={officeAction.id}
