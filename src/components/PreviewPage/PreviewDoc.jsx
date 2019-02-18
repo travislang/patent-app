@@ -45,6 +45,8 @@ const PreviewDoc = (props) => {
     if (responseList.length > 0) {
         return (
             issues.map(issue => {
+                console.log('issue', issue);
+                
                 return issue.text ?
                     (
                         <div key={issue.id} id={Number(issue.id)} className={classes.root}>

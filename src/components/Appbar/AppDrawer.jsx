@@ -218,7 +218,7 @@ class AppDrawer extends Component {
                                     issue.text ?
                                         <ListItem 
                                                 component={Link} 
-                                                to={issue.id} 
+                                            to={`#${issue.id}`} 
                                                 button 
                                                 key={issue.id}
                                             >
@@ -246,7 +246,7 @@ class AppDrawer extends Component {
                                     issue.text ?
                                         <ListItem 
                                             component={Link}
-                                            to={issue.id} 
+                                            to={`#${issue.id}`} 
                                             button 
                                             key={issue.id}
                                         >
@@ -302,7 +302,7 @@ class AppDrawer extends Component {
                                     issue.text ?
                                         <ListItem 
                                             component={Link}
-                                            to={issue.id}  
+                                            to={`#${issue.id}`}  
                                             button 
                                             key={issue.id}
                                             >
