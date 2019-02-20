@@ -37,7 +37,7 @@ The SQL commands create an adminstrator user account with the following credenti
 username: admin
 password: admin
 ```
-**Be sure** to log into this account **immediately** upon deployment and change both the username and password. 
+**Be sure to immediately** make a new administrator account and mark this account as inactive upon deployment.
 
 ## Screenshot
 
@@ -46,13 +46,14 @@ password: admin
 How to perform common tasks:
 
 ### Log In and Update Admin Account
-For security, the first user must edit the built-in admin account. Log in as described in the Initial admin account section, above, and follow the instructions to edit this user, below.
-### Add/Edit User
+For security, the first user must inactivate the built-in admin account. Log in as described in the Initial admin account section, above, and follow the instructions to inactivate this user, below.
+### Add User
 This feature in only available to admin users.
 To add a user:
 1. Log in using an admin account.
 1. Choose Users from the navigation bar.
 1. 
+### Change user's active status
 ### Add Application
 ### Find Application
 ### Add Office Action
