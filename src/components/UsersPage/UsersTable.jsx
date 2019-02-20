@@ -89,7 +89,6 @@ class UsersTable extends Component {
                                 <TableCell align="center" style={{ cursor: 'pointer' }}  component="th" scope="row">
                                     <Checkbox 
                                         checked={user.active}
-                                        value={user.active} 
                                         color="primary" 
                                         onClick={() => this.handleActiveClick(user.id)}
                                     />
@@ -97,7 +96,6 @@ class UsersTable extends Component {
                                 <TableCell align="center" style={{ cursor: 'pointer' }} component="th" scope="row">
                                     <Checkbox
                                         checked={user.is_admin}
-                                        value={user.is_admin}
                                         color="primary"
                                         onClick={() => this.handleAdminClick(user.id)}
                                     />
