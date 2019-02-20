@@ -8,7 +8,6 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import { connect } from 'react-redux';
@@ -143,7 +142,6 @@ class ApplicationTable extends React.Component {
 
 
     render() {
-        // console.log(this.props.applicationList)
         const { classes } = this.props;
         const data = this.props.applicationList;
         const { order, orderBy, rowsPerPage, page } = this.state;

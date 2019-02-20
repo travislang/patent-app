@@ -13,9 +13,11 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 });
 
 router.get('/list', rejectIfNotAdmin, (req, res) => {
-  const query = `SELECT * FROM "user" ORDER BY "user_name";`;
+  const query = `SELECT *, '' AS "password" FROM "user" ORDER BY "user_name";`;
   pool.query(query)
     .then( (results) => {
+      console.log(results.rows)
+      // delete results.rows.password // don't send passwords, even if hashed
       res.send(results.rows);
     })
     .catch( (err) => {

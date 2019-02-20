@@ -351,15 +351,14 @@ class AppDrawer extends Component {
                     <div className={classes.toolbar} />
                     <PreviewDoc oaId={oaId} issuesList={issuesList} />
                 </main>
-                    <Fab
-                        variant="extended"
-                        className={classes.fab}
-                        onClick={this.handleDocxDownload}
-                    >
-                        <CloudDownload className={classes.extendedIcon} />
-                        Export as Docx
-                    </Fab>
-                
+                <Fab
+                    variant="extended"
+                    className={classes.fab}
+                    onClick={this.handleDocxDownload}
+                >
+                    <CloudDownload className={classes.extendedIcon} />
+                    Export as Docx
+                </Fab>
                 <AlertDialog 
                     open={this.state.alertDialogOpen} 
                     oaId={officeAction.id}
