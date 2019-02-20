@@ -16,15 +16,6 @@ function* fetchApplications() {
         // Request all applications 
         const applicationResponseData = yield axios.get('api/application/status');
 
-        // Format dates for each O.A.R to mm/dd/yyyy
-        // for(const data of officeActionResponse.data ){
-        //     if(typeof data.uspto_mailing_date != null){
-        //         data.uspto_mailing_date = moment(data.uspto_mailing_date).format('L');
-        //     }
-        //     if (typeof data.response_sent_date != null) {
-        //         data.response_sent_date = moment(data.response_sent_date).format('L');
-        //     }
-        // }
 
         // Format dates of each application by mm/dd/yyyy
         for (const application of applicationResponseData.data){
@@ -42,7 +33,7 @@ function* fetchApplications() {
         })
 
     } catch (error) {
-        console.log(`Error in fetchApplications: ${error}`);
+        console.error(`Error in fetchApplications: ${error}`);
     }
 }
 
@@ -73,7 +64,7 @@ function* fetchApplication(action) {
         })
 
     } catch (error) {
-        console.log(`Error in fetchApplication: ${error}`);
+        console.error(`Error in fetchApplication: ${error}`);
     }
 }
 
@@ -116,7 +107,7 @@ function* postApplication(action) {
         // Now that our applications table has been updated, we need to reflect this in our redux state
         yield dispatch({ type: 'FETCH_APPLICATIONS' })
     } catch (error) {
-        console.log(`Error in postApplication: ${error}`);
+        console.error(`Error in postApplication: ${error}`);
     }
 }
 
@@ -160,7 +151,7 @@ function* updateApplication(action) {
 
 
     } catch (error) {
-        console.log(`Error in updateApplication: ${error}`);
+        console.error(`Error in updateApplication: ${error}`);
     }
 }
 
@@ -171,9 +162,6 @@ function* deleteApplication(action) {
 
         // deconstruct payload
         const id = action.payload;
-
-        console.log(`Deleting application ${id}`);
-
         // Send request to api to delete an application by id
         yield axios.delete(`api/application/delete/${id}`);
 
@@ -181,7 +169,7 @@ function* deleteApplication(action) {
         yield dispatch({ type: 'FETCH_APPLICATIONS' });
 
     } catch (error) {
-        console.log(`Error in deleteApplication: ${error}`);
+        console.error(`Error in deleteApplication: ${error}`);
     }
 
 }

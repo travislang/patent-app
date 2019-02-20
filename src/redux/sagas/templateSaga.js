@@ -16,9 +16,7 @@ function* postTemplate(action){
         template_name,
         content,
         } = action.payload;
-
-        console.log('user id = ', user_id);
-
+        
         yield axios.post('/api/template/add', {
             user_id,
             type_id,
@@ -52,7 +50,7 @@ function* fetchTemplates(action){
         })
 
     } catch (error) {
-        console.log(`Error in fetchTemplates: ${error}`);
+        console.error(`Error in fetchTemplates: ${error}`);
     }
 }
 
@@ -70,7 +68,7 @@ function* fetchTemplateTypes (){
         })
 
     } catch (error) {
-        console.log(`Error in fetchTemplateTypes`);
+        console.error(`Error in fetchTemplateTypes`);
     }
 }
 
@@ -82,7 +80,7 @@ function* fetchAllTemplates() {
             payload: templatesResponseData
         });
     } catch (error) {
-        console.log(`Error in fetchAllTemplates`);
+        console.error(`Error in fetchAllTemplates`);
     }
 }
 
@@ -94,7 +92,7 @@ function* deleteTemplate(action){
 
         yield dispatch({type:'FETCH_ALL_TEMPLATES'})
     } catch (error) {
-        console.log(`Error in deleteTemplate`);
+        console.error(`Error in deleteTemplate`);
     }
 }
 
