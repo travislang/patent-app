@@ -273,21 +273,7 @@ class TextEditor extends Component {
         }
     }
 
-
-
-    // claims: ""
-    // id: 10
-    // office_action_id: 1
-    // resp_id: 31
-    // section: "header"
-    // template_id: null
-    // template_type_id: 23
-    // text: "testing"
-    // type: "Header"
-
     handleDeleteTemplate = (issue) => {
-        console.log('delete issue', issue);
-
         this.props.dispatch({
             type: 'DELETE_RESPONSE', payload: {
                 id: issue.resp_id,
@@ -295,6 +281,7 @@ class TextEditor extends Component {
                 issue_id: issue.id
             }
         })
+        this.handleTemplateDeleteClose();
     }
 
     handleTemplateDeleteClose = () => {
@@ -390,4 +377,8 @@ class TextEditor extends Component {
     }
 }
 
-export default connect()(withStyles(styles)(TextEditor));
+const mapStateToProps = state => ({
+    responseList: state.application.currentOfficeActionResponseTextList
+});
+
+export default connect(mapStateToProps)(withStyles(styles)(TextEditor));

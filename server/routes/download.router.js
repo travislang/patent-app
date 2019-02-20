@@ -33,7 +33,6 @@ router.get('/:officeActionId', rejectUnauthenticated, async (req, res) => {
 async function createDocx(query, officeActionId) {
     try {
         let responseText = await pool.query(query, [officeActionId])
-        console.log('this is responses', responseText.rows);
         // Create document
         let doc = new docx.Document();
 
@@ -67,7 +66,7 @@ async function createDocx(query, officeActionId) {
         return b64string;
     }
     catch( err ) {
-        console.log('error getting responses in download route', err);
+        console.error('error getting responses in download route', err);
     }
 }
 
