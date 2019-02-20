@@ -1,59 +1,47 @@
 # ResponseGen Patent App
 ResponseGen organizes and streamlines communicating with the patent office during patent prosecution. Users create a document structure comprising different parts of the response to office actions, including special sections responsive to each reason for rejection given by the patent examiner. The sections are templated for ease of use, and fill in the correct data based on the specific patent application.
 
-Response is a single-page application that runs in a browser for desktop use, and has server-side and relational database components to store the data.
+ResponseGen is a single-page application that runs in a browser for desktop use, and has server-side and relational database components to store the data.
 
-Uses React, Redux, Express, Passport, PostgreSQL, Draft.js, and DOCX. (A full list of dependencies can be found in `package.json`.)
+## Built With
+Uses React, Redux, Node.js, Express, Passport, PostgreSQL, Slate.js (rich-text editor), and DOCX (Word-compatible file generation). (A full list of dependencies can be found in `package.json`.)
 
+## Getting Started
 
-## Prerequisites
-
-Before you get started, make sure you have the following software installed on your computer:
+First, ensure that you have the following software installed on your computer:
 
 - [Node.js](https://nodejs.org/en/)
-- [PostrgeSQL](https://www.postgresql.org/)
+- [PostgreSQL](https://www.postgresql.org/)
 - [Nodemon](https://nodemon.io/)
 
-## Create database and table
+## Installing
+
+To get the development environment running:
+
+Download this project.
+npm install
+npm start
+
+## Create database, tables, and needed records
 ResponseGen stores data in a database in PostgreSQL.
 
-To make the initial database, 
+To make the initial database, execute the SQL commands found in the database.sql file. Use a tool like Postico (https://eggerapps.at/postico/) to execute the commands.
 
+The commands will create the database and tables, and will also populate some tables with needed data.
 
-## Debugging
+### Initial admin account
+Only an authenticated adminstrator user may register and edit user accounts. Because of this, an initial administrator user account must exist.
 
-To debug, you will need to run the client-side separately from the server. Start the client by running the command `npm run client`. Start the debugging server by selecting the Debug button.
+The SQL commands create an adminstrator user account with the following credentials:
+```
+username: admin
+password: admin
+```
+**Be sure** to log into this account **immediately** upon deployment and change both the username and password. 
 
+## Screenshot
 
-
-## Production Build
-
-Before pushing to Heroku, run `npm run build` in terminal. This will create a build folder that contains the code Heroku will be pointed at. You can test this build by typing `npm start`. Keep in mind that `npm start` will let you preview the production build but will **not** auto update.
-
-* Start postgres if not running already by using `brew services start postgresql`
-* Run `npm start`
-* Navigate to `localhost:5000`
-
-## Lay of the Land
-
-* `src/` contains the React application
-* `public/` contains static assets for the client-side
-* `build/` after you build the project, contains the transpiled code from `src/` and `public/` that will be viewed on the production site
-* `server/` contains the Express App
-
-This code is also heavily commented. We recommend reading through the comments, getting a lay of the land, and becoming comfortable with how the code works before you start making too many changes. If you're wondering where to start, consider reading through component file comments in the following order:
-
-* src/components
-  * App/App
-  * Footer/Footer
-  * Nav/Nav
-  * AboutPage/AboutPage
-  * InfoPage/InfoPage
-  * UserPage/UserPage
-  * LoginPage/LoginPage
-  * RegisterPage/RegisterPage
-  * LogOutButton/LogOutButton
-  * ProtectedRoute/ProtectedRoute
+## Documentation
 
 ## Deployment
 
@@ -65,6 +53,9 @@ This code is also heavily commented. We recommend reading through the comments, 
 1. Add an environment variable for `SERVER_SESSION_SECRET` with a nice random string for security
 1. In the deploy section, select manual deploy
 
-## Update Documentation
+## Authors
 
-Customize this ReadMe and the code comments in this project to read less like a starter repo and more like a project. Here is an example: https://gist.github.com/PurpleBooth/109311bb0361f32d87a2
+This project was authored by David Mayou, Josh Byron, Phia Thao, and Travis Lang.
+
+## Acknowledgements
+The authors acknowledge the inspiration of Brian Wallenfelt, and technical assistance of the the staff and instructors at Prime Digital Academy.
