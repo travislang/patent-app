@@ -19,8 +19,8 @@ const styles = theme => ({
 
     },
     paper: {
-        margin: theme.spacing.unit * 15,
-        width: 1040,
+        margin: theme.spacing.unit * 10,
+        width: 1240,
     },
     title: {
         padding: `${theme.spacing.unit * 2}px 0 0`
@@ -48,29 +48,20 @@ const styles = theme => ({
 
 
 class UsersPage extends Component {
-
     state = {
         showUserRegistration: false
-    }
-
-    componentDidMount(){
-        
-        // Load users into redux
+    };
+    componentDidMount(){   
         this.props.dispatch({type: 'FETCH_USERS'})
-
-    }
-
+    };
     handleClose = () => {
         this.setState({ showUserRegistration: false });
     };
-
     handleNewApp = () => {
         this.setState({ showUserRegistration: true})
-    }
-
+    };
     render() {
         const {classes} = this.props;
-
         return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>

@@ -31,37 +31,21 @@ const styles = theme => ({
 });
 
 class UsersTable extends Component {
-
-    /*
-    
-    "user_name" VARCHAR (20) UNIQUE NOT NULL,
-      "password" VARCHAR (255) NOT NULL,
-      "is_admin" BOOLEAN DEFAULT FALSE,
-      "signature_name" VARCHAR(70),
-      "registration_number" VARCHAR(10),
-      "phone_number" VARCHAR(20),
-      "firm_name" VARCHAR(70),
-      "uspto_customer_number" VARCHAR(9),
-      "deposit_account_number" VARCHAR(9),
-      "active" BOOLEAN DEFAULT TRUE
-  
-    */
-
-    handleDeleteClick = (id) => {
-        console.log('Deleting ID: ', id);
-
+    handleActiveClick = (id) => {
         this.props.dispatch({
             type: 'UPDATE_USER_ACTIVITY',
             payload: { id }
         })
-    }
-
+    };
+    handleAdminClick = (id) => {
+        this.props.dispatch({
+            type: 'UPDATE_USER_ADMIN',
+            payload: { id }
+        });
+    };
     render() {
-
         const { classes, users } = this.props;
-
         console.log(this.props);
-
         return (
             <Paper className={classes.root} style={{ boxShadow: 'none' }}>
                 <Table className={classes.table} style={{ boxShadow: 'none' }}>
@@ -75,49 +59,47 @@ class UsersTable extends Component {
                             <TableCell style={{ color: 'white' }} align="left">Customer No.</TableCell>
                             <TableCell style={{ color: 'white' }} align="left">Deposit No.</TableCell>
                             <TableCell style={{ color: 'white' }} align="left">Active</TableCell>
+                            <TableCell style={{ color: 'white' }} align="left">Admin</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {users.map(user => (
                             <TableRow className={classes.row} key={user.id}>
-
                                 <TableCell component="th" scope="row">
                                     {user.user_name}
                                 </TableCell>
-
                                 <TableCell component="th" scope="row">
                                     {user.signature_name}
                                 </TableCell>
-
                                 <TableCell component="th" scope="row">
                                     {user.registration_number}
                                 </TableCell>
-
                                 <TableCell component="th" scope="row">
                                     {user.phone_number}
                                 </TableCell>
-
                                 <TableCell component="th" scope="row">
                                     {user.firm_name}
                                 </TableCell>
-
                                 <TableCell component="th" scope="row">
                                     {user.uspto_customer_number}
                                 </TableCell>
-
                                 <TableCell component="th" scope="row">
                                     {user.deposit_account_number}
                                 </TableCell>
-
                                 <TableCell align="center" style={{ cursor: 'pointer' }}  component="th" scope="row">
-                                                <Checkbox 
-                                                    checked={user.active}
-                                                    value={user.active} 
-                                                    color="primary" 
-                                                    onClick={() => this.handleDeleteClick(user.id)}
-                                                />
+                                    <Checkbox 
+                                        checked={user.active}
+                                        color="primary" 
+                                        onClick={() => this.handleActiveClick(user.id)}
+                                    />
                                 </TableCell>
-
+                                <TableCell align="center" style={{ cursor: 'pointer' }} component="th" scope="row">
+                                    <Checkbox
+                                        checked={user.is_admin}
+                                        color="primary"
+                                        onClick={() => this.handleAdminClick(user.id)}
+                                    />
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

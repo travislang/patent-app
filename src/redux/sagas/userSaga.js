@@ -61,12 +61,23 @@ function* updateUserActivity(action){
   } catch (error) {
     console.error(`Error in updateUserActivity: ${error}`);
   }
-}
+};
+
+function* updateUserAdmin(action) {
+  try {
+    const { id } = action.payload;
+    yield axios.put(`/api/user/admin/${id}`)
+    yield put({ type: 'FETCH_USERS' });
+  } catch (error) {
+    console.error(`Error in updateUserAdmin: ${error}`);
+  }
+};
 
 function* userSaga() {
   yield takeLatest('FETCH_USER', fetchUser);
   yield takeLatest('FETCH_USERS', fetchUsers);
   yield takeLatest('UPDATE_USER_ACTIVITY', updateUserActivity)
-}
+  yield takeLatest('UPDATE_USER_ADMIN', updateUserAdmin)
+};
 
 export default userSaga;
