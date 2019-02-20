@@ -14,7 +14,6 @@ import Fab from '@material-ui/core/Fab';
 import CloudDownload from '@material-ui/icons/CloudDownload';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import Add from '@material-ui/icons/Add';
-import LensIcon from '@material-ui/icons/Lens';
 
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -25,7 +24,6 @@ import AddTemplateDialog from '../PreviewPage/AddTemplateDialog';
 import { HashLink as Link } from 'react-router-hash-link';
 import AddIssueDialog from '../PreviewPage/AddIssueDialog';
 import AlertDialog from './AlertDialog';
-import axios from 'axios';
 
 const drawerWidth = 300;
 
@@ -102,8 +100,6 @@ class AppDrawer extends Component {
         this.props.dispatch({ type: 'FETCH_TEMPLATE_TYPES' })
         // get all response texts
         this.props.dispatch({ type: 'FETCH_RESPONSES', payload: { office_Action_Id: oaId}})
-        // get all templates
-        // this.props.dispatch({ type: 'FETCH_TEMPLATES'})
     }
 
     handleNewIssueDialogOpen = () => {
@@ -119,8 +115,6 @@ class AppDrawer extends Component {
             currentIssue: issue,
             templateOpen: true
         })
-        console.log('fffffff', issue.template_type_id);
-        
         this.props.dispatch({ type: 'FETCH_TEMPLATES', payload: {
             type_Id: issue.template_type_id
         }})
@@ -218,7 +212,7 @@ class AppDrawer extends Component {
                                     issue.text ?
                                         <ListItem 
                                                 component={Link} 
-                                            to={`#${issue.id}`} 
+                                                to={`#${issue.id}`} 
                                                 button 
                                                 key={issue.id}
                                             >
