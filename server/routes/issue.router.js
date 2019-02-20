@@ -35,7 +35,6 @@ router.get('/by_office_action/:officeActionId', rejectUnauthenticated, (req, res
 });
 
 router.post('/add', rejectUnauthenticated, (req, res) => {
-    console.log('post /api/issue/add:',req.user, req.body);
     const query =
         `INSERT INTO "issue" (
             "office_action_id",
@@ -67,7 +66,6 @@ router.post('/add', rejectUnauthenticated, (req, res) => {
 
 router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
     const { id } = req.params;
-    console.log('in put', req.user, req.body);
     const query =
         `UPDATE "issue" SET
             "office_action_id"=$2,
