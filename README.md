@@ -1,5 +1,9 @@
-# Patent App
-Uses React, Redux, Express, Passport, and PostgreSQL (a full list of dependencies can be found in `package.json`).
+# ResponseGen Patent App
+ResponseGen organizes and streamlines communicating with the patent office during patent prosecution. Users create a document structure comprising different parts of the response to office actions, including special sections responsive to each reason for rejection given by the patent examiner. The sections are templated for ease of use, and fill in the correct data based on the specific patent application.
+
+Response is a single-page application that runs in a browser for desktop use, and has server-side and relational database components to store the data.
+
+Uses React, Redux, Express, Passport, PostgreSQL, Draft.js, and DOCX. (A full list of dependencies can be found in `package.json`.)
 
 
 ## Prerequisites
@@ -11,7 +15,9 @@ Before you get started, make sure you have the following software installed on y
 - [Nodemon](https://nodemon.io/)
 
 ## Create database and table
+ResponseGen stores data in a database in PostgreSQL.
 
+To make the initial database, 
 
 
 ## Debugging
