@@ -20,7 +20,7 @@ function* fetchStatuses(){
         })
 
     } catch (error) {
-        console.log(`Error in fetchStatuses: ${error}`);
+        console.error(`Error in fetchStatuses: ${error}`);
     }
 }
 

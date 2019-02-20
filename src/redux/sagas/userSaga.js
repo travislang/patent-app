@@ -20,7 +20,7 @@ function* fetchUser() {
     // the client-side code know the user is logged in
     yield put({ type: 'SET_USER', payload: response.data });
   } catch (error) {
-    console.log('User get request failed', error);
+    console.error('User get request failed', error);
   }
 }
 
@@ -42,7 +42,7 @@ function* fetchUsers(){
     // the client-side code know the user is logged in
     yield put({ type: 'SET_USERS', payload: response.data });
   } catch (error) {
-    console.log('Users get request failed', error);
+    console.error('Users get request failed', error);
   }
 }
 
@@ -59,7 +59,7 @@ function* updateUserActivity(action){
     yield put({type:'FETCH_USERS'});
 
   } catch (error) {
-    console.log(`Error in updateUserActivity: ${error}`);
+    console.error(`Error in updateUserActivity: ${error}`);
   }
 }
 
