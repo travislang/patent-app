@@ -119,7 +119,6 @@ class AppDrawer extends Component {
             currentIssue: issue,
             templateOpen: true
         })
-        console.log('fffffff', issue.template_type_id);
         
         this.props.dispatch({ type: 'FETCH_TEMPLATES', payload: {
             type_Id: issue.template_type_id

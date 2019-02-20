@@ -30,8 +30,6 @@ router.get('/:officeActionId', rejectUnauthenticated, async (req, res) => {
     })
 })
 
-
-
 async function createDocx(query, officeActionId) {
     try {
         let responseText = await pool.query(query, [officeActionId])
