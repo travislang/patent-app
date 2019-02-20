@@ -89,22 +89,31 @@ To add an issue:
 1. Select the application from the Dashboard.
 1. Select an office action to which to add an issue.
 1. Press the Add Item button on the left-hand side of the view at the bottom of the Office Action Issues list.
+1. Choose a Template, enter relevant claims, and click Add Issue.
 
-### Add Responses
+### Add/Edit Responses
 Only non-admin users may add responses.
 To add a response:
+1. Select the application and then the office action to make a response for.
+1. Select the issue in the left-hand side of the view in the Office Action Issues list. Issues without responses are shown in gray text.
+1. Select the desired Template and press Add Template. You may edit the text either in the Template Preview, later in the Document Preview.
 
 ### Add Template
+Only admin-level users may add templates.
+1. Select Templates from the Navigation Bar.
+1. Press the Add Template button.
+1. Enter the Template Name.
+1. Select the user for which the Template will appear. Selecting All makes it available to all non-admin users.
+1. Select the Template Type. The Template will be available for that type.
+1. Type the Template text in the Type Here... box.
+You will only be able to add the Template if the Template text has valid syntax.
+
+#### Adding a field to a template
+You may insert a text field that will be automatically filled in with data related to the user, application, office action, or issue, depending on the field.
+
+To add a field, position the cursor at the point to insert the field, press the Insert Field button, and choose the field from the list.
 
 ## Deployment
-
-1. Create a new Heroku project
-1. Link the Heroku project to the project GitHub Repo
-1. Create an Heroku Postgres database
-1. Connect to the Heroku Postgres database from Postico
-1. Create the necessary tables
-1. Add an environment variable for `SERVER_SESSION_SECRET` with a nice random string for security
-1. In the deploy section, select manual deploy
 
 ## Authors
 
