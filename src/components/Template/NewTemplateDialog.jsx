@@ -12,6 +12,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from '@material-ui/core';
 
+import FieldMenu from './FieldMenu';
+
+import verifyTemplate from '../../modules/template/verifyTemplate';
+
 const styles = theme => ({
     dialogContainer: {
         minWidth: 700
@@ -40,44 +44,71 @@ const styles = theme => ({
         '& h2': {
             color: 'white',
         }
-    }
+    },
+    insertButton: {
+        margin: 0,
+        marginLeft: theme.spacing.unit,
+        color: '#858585',
+    },
 });
 
-
 class NewTemplateDialog extends React.Component {
-
     state = {
         templateName: { text: '', error: false },
         user: { text: 'All', error: false },
         field: { text: '', error: false },
-        templateText: { text: '', error: false }
+        templateText: { text: '', error: false },
+        templateCursor: { start: 0, end: 0, },
+        fieldMenuAnchor: null,
     };
-
     handleChange = (key) => (event) => {
-
-        //
         this.setState({
             [key]: { text: event.target.value, error: false }
-        })
-
-    }
-
-    handleAddClick = () => {
-
-        // Verify all fields not empty
-        for (let key in this.state) {
-            if (this.state[key].text == '') {
-
-                // Synchonously update state and force rerender
-                // setState wasn't being called in time for this.fieldsVerified()
-                this.state[key].error = true;
-                this.forceUpdate();
+        });
+    };
+    handleTemplateChange = (event) => {
+        this.setState({
+            templateText: {
+                text: event.target.value,
+                error: !verifyTemplate(event.target.value),
+            },
+        });
+    };
+    handleTemplateCursor = (event) => {
+        this.setState({
+            templateCursor: {
+                start: event.target.selectionStart,
+                end: event.target.selectionEnd,
             }
-        }
-
-
-        if (this.fieldsVerified()) {
-            // Off to SAGA! 
+        });
+    };
+    handleInsertClick = (event) => {
+        this.setState({
+            fieldMenuAnchor: event.currentTarget,
+        });
+    };
+    handleFieldMenuClick = (field) => () => {
+        const { text } = this.state.templateText;
+        const { start, end } = this.state.templateCursor;
+        const newTemplateText =
+            text.slice(0, start)
+            + field
+            + text.slice(end);
+        this.setState({
+            templateText: {
+                text: newTemplateText,
+                error: !verifyTemplate(newTemplateText),
+            },
+        });
+        this.handleFieldMenuClose();
+    };
+    handleFieldMenuClose = () => {
+        this.setState({
+            fieldMenuAnchor: null,
+        });
+    };
+    handleAddClick = () => {
+        if (this.checkForInputErrors()) {
             this.props.dispatch({
                 type: 'POST_TEMPLATE',
                 payload: {
@@ -86,35 +117,51 @@ class NewTemplateDialog extends React.Component {
                     template_name: this.state.templateName.text,
                     content: this.state.templateText.text,
                 }
-            })
-
+            });
             this.props.handleClose();
-
-            // Revert state
-            for (let key in this.state) {
-                this.setState({
-                    [key]: { text: '', error: false }
-                })
-            }
-
+            this.clearFields();
         }
-    }
-
-    fieldsVerified = () => {
-        for (let key in this.state) {
-            if (this.state[key].error === true) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
+    };
+    handleCancel = () => {
+        this.props.handleClose();
+        this.clearFields();
+    };
+    clearFields = () => {
+        this.setState({
+            ...this.state,
+            templateName: { text: '', error: false },
+            user: { text: '', error: false },
+            field: { text: '', error: false },
+            templateText: { text: '', error: false },
+        });
+    };
+    checkForInputErrors = () => {
+        const templateNameError = this.state.templateName.text === '';
+        const userError = this.state.user.text === '';
+        const fieldError = this.state.field.text === '';
+        const templateTextError = !verifyTemplate(this.state.templateText.text);
+        this.setState({
+            templateName: {
+                ...this.state.templateName,
+                error: templateNameError,
+            },
+            user: {
+                ...this.state.user,
+                error: userError,
+            },
+            field: {
+                ...this.state.field,
+                error: fieldError,
+            },
+            templateText: {
+                ...this.state.templateText,
+                error: templateTextError,
+            },
+        });
+        return (!templateNameError && !userError && !fieldError && !templateTextError);
+    };
     render() {
-        console.log('rendered');
-
         const { classes } = this.props;
-
         return (
             <Dialog
                 maxWidth='lg'
@@ -201,27 +248,25 @@ class NewTemplateDialog extends React.Component {
                                             placeholder={'Type here ...'}
                                             variant="outlined"
                                             value={this.state.templateText.text}
-                                            onChange={this.handleChange('templateText')}
+                                            onChange={this.handleTemplateChange}
+                                            onMouseUp={this.handleTemplateCursor}
+                                            onKeyUp={this.handleTemplateCursor}
                                         />
                                     </Grid>
                                 </Grid>
+                                <Button 
+                                    className={classes.insertButton} 
+                                    size={'small'}
+                                    onClick={this.handleInsertClick}
+                                    >Insert Field
+                                </Button>
                             </Grid>
                         </Grid>
                     </Grid>
                 </DialogContent>
                 <DialogActions>
                     <Button
-                        onClick={() => {
-                            this.props.handleClose();
-
-                            // Revert state
-                            for (let key in this.state) {
-                                this.setState({
-                                    [key]: { text: '', error: false }
-                                })
-                            }
-
-                        }}
+                        onClick={this.handleCancel}
                         variant='contained'
                         color="default">
                         Cancel
@@ -234,6 +279,11 @@ class NewTemplateDialog extends React.Component {
                         Add
                     </Button>
                 </DialogActions>
+                <FieldMenu 
+                    anchorEl={this.state.fieldMenuAnchor}
+                    handleClick={this.handleFieldMenuClick}
+                    handleClose={this.handleFieldMenuClose}
+                />
             </Dialog>
         );
     }

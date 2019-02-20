@@ -12,7 +12,7 @@ const legalCodes = [
 
 const claimCodes = [
     'claim(s)',
-    'claimsisare',
+    'claim(s)is/are',
 ];
 
 const keys = [
