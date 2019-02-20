@@ -15,7 +15,7 @@ const rejectUnauthenticated = (req, res, next) => {
 };
 
 const rejectIfNotAdmin = (req, res, next) => {
-  if (req.user && req.user.is_admin) {
+  if (req.user && req.user.is_admin && req.user.active) {
     next();
   } else {
     res.sendStatus(403);
