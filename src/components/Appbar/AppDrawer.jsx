@@ -143,11 +143,15 @@ class AppDrawer extends Component {
     };
 
     handleDocxDownload = () => {
+        const oaId = this.props.match.params.oaId;
         const numUnaddressedIssues = this.issuesUnaddressed();
         if ( numUnaddressedIssues !== 0) {
             this.setState({
                 alertDialogOpen: true,
             });
+        }
+        else {
+            window.location = `http://localhost:5000/api/download/${oaId}`
         }
     };
 
@@ -346,17 +350,14 @@ class AppDrawer extends Component {
                     <div className={classes.toolbar} />
                     <PreviewDoc oaId={oaId} issuesList={issuesList} />
                 </main>
-                <a href={`http://localhost:5000/api/download/${oaId}`}>
                     <Fab
                         variant="extended"
                         className={classes.fab}
-                        // commented out for demo
-                        // onClick={this.handleDocxDownload}
+                        onClick={this.handleDocxDownload}
                     >
                         <CloudDownload className={classes.extendedIcon} />
                         Export as Docx
                     </Fab>
-                </a>
                 
                 <AlertDialog 
                     open={this.state.alertDialogOpen} 
