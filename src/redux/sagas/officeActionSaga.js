@@ -12,7 +12,6 @@ import moment from 'moment';
 // Worker saga responsible for handling 'FETCH_OFFICE_ACTIONS' actions
 function* fetchOfficeActions(action){
     try {
-        console.log(`HERE!`);
         // Deconstruct payload
         const {
             application_id
@@ -38,7 +37,7 @@ function* fetchOfficeActions(action){
         })
 
     } catch (error) {
-        console.log(`Error in fetchOfficeActions: ${error}`);
+        console.error(`Error in fetchOfficeActions: ${error}`);
     }
 }
 
@@ -62,7 +61,7 @@ function* fetchOfficeAction(action){
         })
 
     } catch (error) {
-        console.log(`Error in fetchOfficeAction: ${error}`);
+        console.error(`Error in fetchOfficeAction: ${error}`);
     }
 }
 
@@ -91,7 +90,7 @@ function* postOfficeAction(action){
         yield dispatch({type: 'FETCH_OFFICE_ACTIONS', payload: {application_id}})
 
     } catch (error) {
-        console.log(`Error in postOfficeAction: ${error}`);
+        console.error(`Error in postOfficeAction: ${error}`);
     }
 }
 
@@ -123,14 +122,13 @@ function* updateOfficeAction(action){
         yield dispatch({type: 'FETCH_OFFICE_ACTION', payload: {officeActionResponseId: id}})
 
     } catch (error) {
-        console.log(`Error in updateOfficeAction: ${error}`);
+        console.error(`Error in updateOfficeAction: ${error}`);
     }
 }
 
 // worker saga responsible for handling DELETE_OFFICE_ACTION actions
 function* deleteOfficeAction(action){
     try {
-        console.log(`hit`);
         // Deconstruct payload
         const {
             id,
@@ -144,7 +142,7 @@ function* deleteOfficeAction(action){
         yield dispatch({type: 'FETCH_OFFICE_ACTIONS', payload: {application_id}})
 
     } catch (error) {
-        console.log(`Error in deleteOfficeAction: ${error}`);
+        console.error(`Error in deleteOfficeAction: ${error}`);
     }
 }
 

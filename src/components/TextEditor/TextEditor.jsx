@@ -114,8 +114,6 @@ class TextEditor extends Component {
                     text: content
                 }
             })
-            console.log('issue', issue);
-
         }
         this.setState({ value })
     }
@@ -144,7 +142,6 @@ class TextEditor extends Component {
 
     onMarkClick = (e, type) => {
         e.preventDefault();
-        console.log(e);
         this.editor.toggleMark(type);
     }
 
@@ -301,8 +298,6 @@ class TextEditor extends Component {
 
     render() {
         const { classes, issue } = this.props;
-        console.log('issue', issue);
-
         return (
             <div className={classes.editorContainer}>
                 {this.state.showToolbar ?

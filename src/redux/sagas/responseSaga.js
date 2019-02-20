@@ -28,7 +28,7 @@ function* postResponse(action){
         yield dispatch({type:'FETCH_RESPONSES', payload: {office_Action_Id}});
         yield dispatch({ type: 'FETCH_ISSUES', payload: { office_action_id: office_Action_Id } })
     } catch (error) {
-        console.log(`Error in postResposne: ${error}`);
+        console.error(`Error in postResposne: ${error}`);
     }
 }
 
@@ -49,7 +49,7 @@ function* fetchResponses(action){
         })
 
     } catch (error) {
-        console.log(`Error in fetchResponses: ${error}`);
+        console.error(`Error in fetchResponses: ${error}`);
     }
 }
 
@@ -74,7 +74,7 @@ function* updateResponse(action){
         // Update redux
         yield dispatch({type:'FETCH_RESPONSES', payload: {office_Action_Id}});
     } catch (error) {
-        console.log(`Error in updateResponse: ${error}`);
+        console.error(`Error in updateResponse: ${error}`);
     }
 }
 
@@ -95,7 +95,7 @@ try {
     yield dispatch({type:'FETCH_RESPONSES', payload: {office_Action_Id}});
     yield dispatch({ type: 'FETCH_ISSUES', payload: { office_action_id: office_Action_Id } });
 } catch (error) {
-    console.log(`Error in deleteResponse: ${error}`);
+    console.error(`Error in deleteResponse: ${error}`);
 }
 }
 

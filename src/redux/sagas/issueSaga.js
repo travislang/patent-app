@@ -29,7 +29,7 @@ function* postIssue(action){
         // Now that database has update, we must make a fetch again to update redux
         yield dispatch({ type: 'FETCH_ISSUES', payload: { office_action_id: office_action_id}}) 
     } catch (error) {
-        console.log(`Error in postIssue: ${error}`);
+        console.error(`Error in postIssue: ${error}`);
     }
 }
 
@@ -50,7 +50,7 @@ function* fetchIssues(action){
         })
 
     } catch (error) {
-        console.log(`Error in fetchIssues: ${error}`);
+        console.error(`Error in fetchIssues: ${error}`);
     }
 }
 
@@ -79,7 +79,7 @@ function* updateIssue(action){
         yield dispatch({type: 'FETCH_ISSUES'}) 
 
     } catch (error) {
-        console.log(`Error in updateIssue: ${error}`);
+        console.error(`Error in updateIssue: ${error}`);
     }
 }
 
@@ -101,7 +101,7 @@ function* deleteIssue(action){
         yield dispatch({type: 'FETCH_ISSUES', payload: {office_action_id}})
 
     } catch (error) {
-        console.log(`Error in deleteIssue: ${error}`);
+        console.error(`Error in deleteIssue: ${error}`);
     }
 
 }

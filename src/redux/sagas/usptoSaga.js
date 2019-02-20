@@ -16,7 +16,7 @@ function* fetchApplication(action){
         yield put({ type: 'SET_USPTO_APP_DATA', payload: response.data});
 
     } catch(error) {
-        console.log('Fail to get application', error)
+        console.error('Fail to get application', error)
     }
 }
 
