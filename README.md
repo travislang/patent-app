@@ -43,6 +43,16 @@ password: admin
 
 ## Documentation
 
+How to perform common tasks:
+
+### Add/Edit User
+### Add Application
+### Find Application
+### Add Office Action
+### Add Issues
+### Add Responses
+### Add Template
+
 ## Deployment
 
 1. Create a new Heroku project
