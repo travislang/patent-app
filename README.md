@@ -11,21 +11,23 @@ Uses React, Redux, Node.js, Express, Passport, PostgreSQL, Slate.js (rich-text e
 First, ensure that you have the following software installed on your computer:
 
 - [Node.js](https://nodejs.org/en/)
-- [PostgreSQL](https://www.postgresql.org/)
-- [Nodemon](https://nodemon.io/)
+- [PostgreSQL](https://www.postgresql.org/) 
+- [Postico](https://eggerapps.at/postico/)
 
 ## Installing
 
 To get the development environment running:
 
-Download this project.
-npm install
-npm start
+- Download this project
+- npm install
+- Open two terminals and in each run one of these commands: 
+    - npm run client
+    - npm run server
 
 ## Create database, tables, and needed records
 ResponseGen stores data in a database in PostgreSQL.
 
-To make the initial database, execute the SQL commands found in the database.sql file. Use a tool like Postico (https://eggerapps.at/postico/) to execute the commands.
+To make the initial database, execute the SQL commands found in the database.sql file. Use a tool like Postico (https://eggerapps.at/postico/) to execute the commands and view the data.
 
 The commands will create the database and tables, and will also populate some tables with needed data.
 
@@ -37,9 +39,20 @@ The SQL commands create an adminstrator user account with the following credenti
 username: admin
 password: admin
 ```
-**Be sure to immediately** make a new administrator account and mark this account as inactive upon deployment.
+**Be sure to immediately** 
+make a new administrator account and mark this account as inactive upon deployment.
 
 ## Screenshot
+![screenshot](/public/images/responsegen-mockup.png)
+
+
+<img src= "Assets/Screen Shot 2019-02-21 at 4.37.55 PM.png" width=100%>
+
+<img src= "Assets/Screen Shot 2019-02-21 at 4.28.07 PM.png" width=100%>
+
+<img src= "Assets/Screen Shot 2019-02-21 at 4.28.53 PM.png" width=100%>
+
+<img src= "Assets/Screen Shot 2019-02-21 at 4.28.34 PM.png" width=100%>
 
 ## Documentation
 
@@ -47,6 +60,7 @@ How to perform common tasks:
 
 ### Log In and Update Admin Account
 For security, the first user must inactivate the built-in admin account. Log in as described in the Initial admin account section, above, and follow the instructions to inactivate this user, below.
+
 ### Add User
 This feature in only available to admin users.
 To add a user:
@@ -55,6 +69,7 @@ To add a user:
 1. Press the Register User button.
 1. Add fields as appropriate and press Register.
 To make the new user an admin, find the user in the resulting list click the checkbox in the admin column.
+
 ### Change user's active status
 This feature in only available to admin users.
 To add a user:
@@ -62,7 +77,8 @@ To add a user:
 1. Choose Users from the navigation bar.
 1. Click the checkbox in the Active column.
 If you make the user account that you're loggin in with inactive, you will immediately be unable to operate the application.
-If no admin-level user accounts are active, then you will be unable to use the functions of the Users page. 
+If no admin-level user accounts are active, then you will be unable to use the functions of the Users page.
+
 ### Add Application
 All users may add an application.
 To add an application:
@@ -114,6 +130,14 @@ You may insert a text field that will be automatically filled in with data relat
 To add a field, position the cursor at the point to insert the field, press the Insert Field button, and choose the field from the list.
 
 ## Deployment
+
+Create a new Heroku project
+1. Link the Heroku project to the project GitHub Repo
+1. Create an Heroku Postgres database
+1. Connect to the Heroku Postgres database from Postico
+1. Create the necessary tables
+1. Add an environment variable for `SERVER_SESSION_SECRET` with a nice random string for security
+1. In the deploy section, select manual deploy
 
 ## Authors
 
