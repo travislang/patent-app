@@ -43,8 +43,6 @@ password: admin
 make a new administrator account and mark this account as inactive upon deployment.
 
 ## Screenshot
-![screenshot](/public/images/responsegen-mockup.png)
-
 
 <img src= "Assets/Screen Shot 2019-02-21 at 4.37.55 PM.png" width=100%>
 
