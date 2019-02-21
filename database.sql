@@ -87,7 +87,7 @@ CREATE TABLE "field_code" (
 -- DO NOT leave this account unmodified on a live server.
 INSERT INTO "user" ("user_name", "password", "is_admin")
 VALUES
-('admin', '$2b$10$jGgyR6x7KyoQwowqxJHGlujj2KpUssCzzIjmKIAzJ3itZ8P55MOE.', 'true'), --pw admin
+('admin', '$2b$10$jGgyR6x7KyoQwowqxJHGlujj2KpUssCzzIjmKIAzJ3itZ8P55MOE.', 'true'); --pw admin
 
 -- Populate values for status
 INSERT INTO "status" ("status") VALUES ('Pending'), ('Inactive'), ('Active');
