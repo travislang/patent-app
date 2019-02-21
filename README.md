@@ -44,6 +44,14 @@ make a new administrator account and mark this account as inactive upon deployme
 
 ## Screenshot
 
+<img src= "Assets/Screen Shot 2019-02-21 at 4.37.55 PM.png" width=100%>
+
+<img src= "Assets/Screen Shot 2019-02-21 at 4.28.07 PM.png" width=100%>
+
+<img src= "Assets/Screen Shot 2019-02-21 at 4.28.53 PM.png" width=100%>
+
+<img src= "Assets/Screen Shot 2019-02-21 at 4.28.34 PM.png" width=100%>
+
 ## Documentation
 
 How to perform common tasks:
