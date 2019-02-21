@@ -143,9 +143,11 @@ class AppDrawer extends Component {
         this.props.history.goBack();
     };
 
+    // download docx
     handleDocxDownload = () => {
         const oaId = this.props.match.params.oaId;
         const numUnaddressedIssues = this.issuesUnaddressed();
+
         if ( numUnaddressedIssues !== 0) {
             this.setState({
                 alertDialogOpen: true,
@@ -172,7 +174,6 @@ class AppDrawer extends Component {
             alertDialogOpen: false,
         });
     };
-
 
     render() {
         const { classes, currentApplication, officeAction, issuesList, templates, templateTypes } = this.props;
