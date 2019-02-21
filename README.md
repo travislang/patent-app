@@ -40,6 +40,8 @@ password: admin
 **Be sure to immediately** make a new administrator account and mark this account as inactive upon deployment.
 
 ## Screenshot
+![screenshot](/public/images/responsegen-mockup.png)
+
 
 ## Documentation
 
