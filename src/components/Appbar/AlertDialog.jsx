@@ -34,7 +34,7 @@ class AlertDialog extends React.Component {
                         </Button>
                         <a style={{
                             outline: 'none', textDecoration: 'none'
-                        }} href={`https://salty-citadel-60307.herokuapp.com/api/download/${oaId}`}>
+                        }} href={`https://responsegen.herokuapp.com/api/download/${oaId}`}>
                             <Button onClick={this.handleConfirm} color="primary" autoFocus>
                                 Export
                             </Button>
