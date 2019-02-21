@@ -152,7 +152,7 @@ class AppDrawer extends Component {
             });
         }
         else {
-            window.location = `http://localhost:5000/api/download/${oaId}`
+            window.location = `https://salty-citadel-60307.herokuapp.com/api/download/${oaId}`
         }
     };
 
