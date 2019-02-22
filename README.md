@@ -31,6 +31,9 @@ To make the initial database, execute the SQL commands found in the database.sql
 
 The commands will create the database and tables, and will also populate some tables with needed data.
 
+To change the database name, edit line 5 of pool.js (located at /server/modules/pool.js)
+    const DATABASE_NAME = 'patent_app';
+
 ### Initial admin account
 Only an authenticated adminstrator user may register and edit user accounts. Because of this, an initial administrator user account must exist.
 
@@ -43,8 +46,6 @@ password: admin
 make a new administrator account and mark this account as inactive upon deployment.
 
 ## Screenshot
-![screenshot](/public/images/responsegen-mockup.png)
-
 
 <img src= "Assets/Screen Shot 2019-02-21 at 4.37.55 PM.png" width=100%>
 
@@ -128,16 +129,6 @@ You will only be able to add the Template if the Template text has valid syntax.
 You may insert a text field that will be automatically filled in with data related to the user, application, office action, or issue, depending on the field.
 
 To add a field, position the cursor at the point to insert the field, press the Insert Field button, and choose the field from the list.
-
-## Deployment
-
-Create a new Heroku project
-1. Link the Heroku project to the project GitHub Repo
-1. Create an Heroku Postgres database
-1. Connect to the Heroku Postgres database from Postico
-1. Create the necessary tables
-1. Add an environment variable for `SERVER_SESSION_SECRET` with a nice random string for security
-1. In the deploy section, select manual deploy
 
 ## Authors
 
