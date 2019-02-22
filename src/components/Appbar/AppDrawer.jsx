@@ -154,7 +154,7 @@ class AppDrawer extends Component {
             });
         }
         else {
-            window.location = `https://responsegendemo.herokuapp.com/api/download/${oaId}`
+            window.location = `https://responsegen.herokuapp.com/api/download/${oaId}`
         }
     };
 
