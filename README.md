@@ -29,6 +29,9 @@ To make the initial database, execute the SQL commands found in the database.sql
 
 The commands will create the database and tables, and will also populate some tables with needed data.
 
+To change the database name, edit line 5 of pool.js (located at /server/modules/pool.js)
+    const DATABASE_NAME = 'patent_app';
+
 ### Initial admin account
 Only an authenticated adminstrator user may register and edit user accounts. Because of this, an initial administrator user account must exist.
 
@@ -112,8 +115,6 @@ You will only be able to add the Template if the Template text has valid syntax.
 You may insert a text field that will be automatically filled in with data related to the user, application, office action, or issue, depending on the field.
 
 To add a field, position the cursor at the point to insert the field, press the Insert Field button, and choose the field from the list.
-
-## Deployment
 
 ## Authors
 
